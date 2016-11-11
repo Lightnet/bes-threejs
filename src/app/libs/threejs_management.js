@@ -1,4 +1,11 @@
-console.log("threejs m?");
+console.log("init node threejs");
+
+//import THREE from 'three';
+var THREE = require('three');
+
+//console.log(THREE());
+var vet = new THREE.Vector3(3, 0, 3);
+console.log(vet);
 
 export class Game {
 	constructor(settings) {

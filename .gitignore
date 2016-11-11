@@ -1,2 +1,5 @@
 dist
 node_modules/
+public/js/app.js
+public/js/clientsocketio.js
+public/js/threejs_scene.js

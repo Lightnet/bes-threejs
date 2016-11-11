@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-	"wbabel": "babel src_browser/ --watch --out-dir public/js/",
-	"babel": "babel --presets es2015 src_browser/index.js -o public/js/index.js",
+    "wbabel": "babel src_browser/ --watch --out-dir public/js/",
+    "babel": "babel --presets es2015 src_browser/index.js -o public/js/index.js",
     "dev": "nodemon --exec babel-node src/index.js",
     "prestart": "babel src --out-dir dist",
     "start": "node dist/index.js"
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "express": "^4.14.0",
-    "socket.io": "^1.5.1"
+    "socket.io": "^1.5.1",
+    "three": "^0.82.1"
   }
 }

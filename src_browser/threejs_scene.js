@@ -25,11 +25,8 @@ var render = function () {
 	renderer.render(scene, camera);
 };
 
-//render();
 
 	// your code here
-
-
 	//document.body.appendChild( renderer.domElement );
 	//canvas.appendChild( renderer.domElement );
 	render();
