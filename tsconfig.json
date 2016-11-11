@@ -1,0 +1,27 @@
+{
+      "externalTranspiler": "babel",
+      "compilerOptions": {
+            "target": "es6",
+            "declaration": false,
+            "noImplicitAny": false,
+            "removeComments": false,
+            "sourceMap": true,
+            "baseUrl": "src",
+            "outDir": "dist"
+      },
+      "filesGlob": [
+            "**/*.ts",
+            "**/*.tsx",
+            "!node_modules/**"
+      ],
+      "files": [
+            "src/index.ts",
+            "src/public/index.ts"
+      ],
+      "exclude": [
+            "node_modules"
+      ],
+      "atom": {
+            "rewriteTsconfig": true
+      }
+}
