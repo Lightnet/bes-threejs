@@ -1,3 +1,15 @@
+/*
+ *
+ */
+
+//listen window load
+function addEvent(element, eventName, fn) {
+    if (element.addEventListener)
+        element.addEventListener(eventName, fn, false);
+    else if (element.attachEvent)
+        element.attachEvent('on' + eventName, fn);
+}
+
 class App {
 	constructor(settings) {
 		this.messages = [];
@@ -11,13 +23,30 @@ class App {
 
 class Game {
 	constructor() {
+		this.scene = null;
+		this.camera = null;
+		this.canvas = null;
+		this.renderer = null;
+		this.io = null;
+	}
+
+	setup_network(){
+		this.socket = io();
+		this.socket.on('connect', function () {
+		    console.log('server connected');
+		});
+
+		this.socket.on('disconnect', function () {
+		    console.log('server disconnected');
+		});
+	}
+
+	setup(){
 		this.scene = new THREE.Scene();
 		this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 		this.canvas = document.getElementById("application-canvas");
 		this.renderer = new THREE.WebGLRenderer({canvas:this.canvas});
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
-		this.basesetup();
-		this.setup();
 	}
 
 	basesetup(){
@@ -28,10 +57,6 @@ class Game {
 		this.camera.position.z = 5;
 	}
 
-	setup(){
-
-	}
-
 	render(){
 		requestAnimationFrame(()=>{this.render()});
 		this.cube.rotation.x += 0.1;
@@ -39,15 +64,24 @@ class Game {
 		this.renderer.render(this.scene, this.camera);
 	}
 
-	init(){
+	load(){
+		this.setup_network();
+		this.setup();
+		this.basesetup();
 		this.render();
+	}
+
+	init(){
+
+		addEvent(window, 'load', ()=>{
+			this.load();
+		});
+
 	}
 }
 
 
-window.onload = function(){
-	console.log("init service?");
-	var game = new Game();
-	console.log(game);
-	game.init();
-}
+var game = new Game();
+console.log(game);
+//set up and listen window loads
+game.init();
