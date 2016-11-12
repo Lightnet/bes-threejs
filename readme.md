@@ -4,6 +4,8 @@ Created by: Lightnet
 
 Code Language: Babel es6
 
+OS: Window 10 64bit Tested (window 32 bit)
+
 Information: Run on es6 for nodejs and web browser that is to compile to better javascript. It simple design for threejs javascript es6 to develop easy build game or frame design build around nodejs server and client web browser client application. It not for production that is currently in develop phase.
 
 
@@ -15,6 +17,8 @@ Dev Folders:
 
 Required:
  * nodejs 7.0.0
+
+ Please note there are other softwares that current need to run for headless server.
 
 Install Packages:
  * npm install

@@ -8,11 +8,13 @@ import path from 'path';
 //file for index.html
 app.use("/", express.static('./public'));
 
-import {Game,GamePlugin} from './app/libs/threejs_management';
+import {Game,GamePlugin} from './app/libs/threejsapi';
 
 //console.log(Game);
 //console.log(GamePlugin);
 var threejsgame = new Game();
+threejsgame.init();
+
 //console.log(threejsgame);
 //threejsgame.add("test");
 //console.log(threejsgame.messages);
@@ -22,6 +24,7 @@ io.on('connection', function (socket) {
 	console.log("client connect.");
 	threejsgame.connect(io,socket);
 	socket.on('disconnect', function (data) {
+		console.log('client disconnect');
 		threejsgame.disconnect(io,socket);
 	});
 });

@@ -65,6 +65,10 @@ class Game {
 	}
 
 	load(){
+
+	}
+
+	init_simple(){
 		this.setup_network();
 		this.setup();
 		this.basesetup();
@@ -72,11 +76,9 @@ class Game {
 	}
 
 	init(){
-
 		addEvent(window, 'load', ()=>{
-			this.load();
+			this.init_simple();
 		});
-
 	}
 }
 
