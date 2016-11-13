@@ -1,6 +1,11 @@
 /*
- *
- */
+    Project Name: Discord Modular Bot
+    Link:https://github.com/Lightnet/bes-threejs
+    Created By: Lightnet
+    License: cc (creative commons)
+
+    Information: Please read the readme.md file for more information.
+*/
 
 //listen window load
 function addEvent(element, eventName, fn) {

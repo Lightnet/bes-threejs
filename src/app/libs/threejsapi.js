@@ -1,3 +1,12 @@
+/*
+    Project Name: Discord Modular Bot
+    Link:https://github.com/Lightnet/bes-threejs
+    Created By: Lightnet
+    License: cc (creative commons)
+
+    Information: Please read the readme.md file for more information.
+*/
+
 //console.log("init node threejs api");
 
 var window = {};
@@ -5,12 +14,14 @@ var document = {};
 var Ammo = {};
 
 //import THREE from 'three';
+//var plugin = require('./plugin');
+//plugin.AddPlugin();
 var THREE = require('three');
 //console.log(THREE());
 //var vet = new THREE.Vector3(3, 0, 3);
 //console.log(vet);
 var canvas;
-
+//this is for frame render vars
 var fps = require('fps')
 var ticker = fps({
     every: 60   // update every 10 frames
@@ -108,15 +119,5 @@ export class Game {
 				}, 1000 / 60);
 		    }
 		});
-	}
-}
-
-export class GamePlugin {
-	constructor(settings) {
-		this.messages = [];
-		this.clients = [];
-	}
-	add(message){
-		this.messages.push(message);
 	}
 }

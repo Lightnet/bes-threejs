@@ -1,3 +1,53 @@
+/*
+    Project Name: Discord Modular Bot
+    Link:https://github.com/Lightnet/bes-threejs
+    Created By: Lightnet
+    License: cc (creative commons)
+
+    Information: Please read the readme.md file for more information.
+*/
+
+var fs = require('fs');
+
+var configpath = __dirname +'/app/config.json';
+//console.log(configpath);
+var config;
+if (fs.existsSync(configpath)) {
+    //console.log("config found!");
+    config = require(configpath);
+    //console.log('config file exists');
+}
+else
+{
+    //console.log("config not found!");
+    config = {
+        blocalhost: true,
+        host: "127.0.0.1",
+		port:80,
+        database:"",
+		bdatabase:true,
+		token:"",
+		btoken:true,
+		tokentype:""
+    };
+    //console.log("creating config file.");
+    fs.writeFile(configpath, JSON.stringify(config, null, 4), function (err) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            //console.log("JSON saved to " + configpath);
+        }
+    });
+}
+
+//var plugin = require(__dirname + '/app/lib/plugin');
+var plugin = require('./app/libs/plugin');
+//console.log(plugin());
+//console.log(plugin);
+//plugin.AddPlugin();
+
+//console.log(config);
 
 import express from 'express';
 var app = express();
@@ -10,14 +60,8 @@ app.use("/", express.static('./public'));
 
 import {Game,GamePlugin} from './app/libs/threejsapi';
 
-//console.log(Game);
-//console.log(GamePlugin);
 var threejsgame = new Game();
 threejsgame.init();
-
-//console.log(threejsgame);
-//threejsgame.add("test");
-//console.log(threejsgame.messages);
 
 //socket.io
 io.on('connection', function (socket) {
