@@ -40,17 +40,24 @@ class Game {
 		this.io = null;
 		this.objects = [];
 		this.raycaster = new THREE.Raycaster();
-		this.mouse = new THREE.Vector2()
+		this.mouse = new THREE.Vector2();
+
+		this.reload = false;
 	}
 
 	setup_network(){
+		var self = this;
 		this.socket = io();
 		this.socket.on('connect', function () {
 		    console.log('server connected');
+			if(this.reload){
+				location.reload();
+			}
 		});
 
 		this.socket.on('disconnect', function () {
 		    console.log('server disconnected');
+			this.reload = true;
 		});
 	}
 
@@ -95,6 +102,9 @@ class Game {
 		//group.add( new Element( '', - 240, 0, 0, - Math.PI / 2 ) );
 		//this.scenecss3d.add( group );
 
+		var controls = new THREE.TrackballControls( this.cameracss3d );
+		controls.rotateSpeed = 4;
+
 		var blocker = document.getElementById( 'blocker' );
 		blocker.style.display = 'none';
 
@@ -103,7 +113,7 @@ class Game {
 		var self = this;
 		function animate() {
 			requestAnimationFrame( animate );
-			//controls.update();
+			controls.update();
 			//console.log("update?");
 			self.renderercss3d.render( self.scenecss3d, self.cameracss3d );
 		}
@@ -142,11 +152,13 @@ class Game {
 		webgldiv.appendChild(this.renderer.domElement)
 
 		var object = new THREE.CSS3DObject( webgldiv );
-		object.position.set( 0, 0, -100 );
+		object.position.set( 0, 0, 0 );
 		object.rotation.y = 0;
 
 		var group = new THREE.Group();
 		group.add( object );
+		this.setup_editor(group);
+
 		this.scenecss3d.add( group );
 	}
 
@@ -186,12 +198,12 @@ class Game {
 	}
 
 	basesetup(){
+
 		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 		this.cube = new THREE.Mesh( geometry, material );
 		this.scene.add( this.cube );
 		this.camera.position.z = 5;
-
 		this.objects.push(this.cube);
 	}
 
@@ -209,11 +221,54 @@ class Game {
 			var intersects = self.raycaster.intersectObjects( self.scene.children );
 
 			if ( intersects.length > 0 ) {
-				console.log(intersects[ 0 ].object);
+				//console.log(intersects[ 0 ].object);
 			}
 		}
+	}
+
+	setup_editor(group){
+		var _div_l = document.createElement( 'div' );
+		_div_l.style.width = '480px';
+		_div_l.style.height = '360px';
+		_div_l.style.backgroundColor = '#000';
+
+		var _element_l  = document.createElement('div');
+		_element_l.style.width = '480px';
+		_element_l.style.height = '360px';
+		_element_l.style.border = '0px';
+		_element_l.innerHTML = 'Plain text inside a div.<br>Assets?';
+    	_element_l.className = 'three-div';
+		_div_l.appendChild( _element_l );
+
+		var object = new THREE.CSS3DObject( _div_l );
+		object.position.set( -450, 100, 10 );
+		object.rotation.y = 0;
+
+		group.add( object );
+
+		var _div_r = document.createElement( 'div' );
+		_div_r.style.width = '480px';
+		_div_r.style.height = '360px';
+		_div_r.style.backgroundColor = '#000';
+
+		var _element_r  = document.createElement('div');
+		_element_r.style.width = '480px';
+		_element_r.style.height = '360px';
+		_element_r.style.border = '0px';
+		_element_r.innerHTML = 'Plain text inside a div.<br>Scene?';
+    	_element_r.className = 'three-div';
+		_div_r.appendChild( _element_r );
+
+		var object = new THREE.CSS3DObject( _div_r );
+		object.position.set( 450, 100, 10 );
+		object.rotation.y = 0;
+
+		group.add( object );
+
+
 
 	}
+
 
 	setup_renderpass(){
 		var copyPass = new THREE.ShaderPass(THREE.CopyShader);
@@ -249,11 +304,15 @@ class Game {
 	init_simple(){
 		this.setup_network();
 
+		//content render
 		this.setup_css3d();
 
+		//panel render
 		this.setup_webgl();
 		this.setup_hud();
 		this.basesetup();
+
+		//this.setup_editor();
 
 		this.setup_mouseraycast();
 		//render pass with two secnes
