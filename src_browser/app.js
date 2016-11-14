@@ -18,19 +18,27 @@ function addEvent(element, eventName, fn) {
         element.attachEvent('on' + eventName, fn);
 }
 
-class App {
-	constructor(settings) {
-		this.messages = [];
-		this.clients = [];
-		console.log("init?");
-	}
-	add(message){
-		this.messages.push(message);
-	}
-}
-
 class Game {
-	constructor() {
+	constructor(settings) {
+
+		if(settings != null){
+			if(settings['mode'] != null){
+				this.mode = settings['mode'];
+			}else{
+				this.mode = "game;";
+			}
+			console.log("mode: "+this.mode);
+
+			if(settings['load'] !=null ){
+				this.bmap = true;
+				this.mapurl = settings['load'];
+			}else{
+				this.bmap = false;
+				this.mapurl = "";
+			}
+			console.log("Map: " + this.bmap + " url: "+ this.mapurl);
+		}
+
 		this.scene = null;
 		this.scenehud = null;
 		this.camera = null;
@@ -87,7 +95,7 @@ class Game {
 
 		this.cameracss3d = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
 		//this.cameracss3d.position.set( 500, 350, 750 );
-		this.cameracss3d.position.set( 0, 0, 750 );
+		this.cameracss3d.position.set( 0, 0, 1024 );
 		this.scenecss3d = new THREE.Scene();
 		this.renderercss3d = new THREE.CSS3DRenderer();
 		this.renderercss3d.setSize( window.innerWidth, window.innerHeight );
@@ -130,36 +138,45 @@ class Game {
 	}
 
 	setup_webgl(){
-		var webgldiv = document.createElement( 'div' );
-		webgldiv.style.width = '800px';
-		webgldiv.style.height = '600px';
-		webgldiv.style.backgroundColor = '#000';
+		if(this.mode == "editor"){
+			var webgldiv = document.createElement( 'div' );
+			webgldiv.style.width = '800px';
+			webgldiv.style.height = '600px';
+			webgldiv.style.backgroundColor = '#000';
+		}
 
 		this.scene = new THREE.Scene();
-		//this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 		this.camera = new THREE.PerspectiveCamera( 75, 800/600, 0.1, 1000 );
-		//this.canvas = document.getElementById("application-canvas");
-		this.renderer = new THREE.WebGLRenderer();
-		this.renderer.domElement.style.position = 'absolute';
-		this.renderer.domElement.style.top = 0;
-		//this.renderer.setSize( window.innerWidth, window.innerHeight );
-		this.renderer.setSize( 800, 600 );
+
+		if(this.mode == "editor"){
+			this.renderer = new THREE.WebGLRenderer();
+			this.renderer.domElement.style.position = 'absolute';
+			this.renderer.domElement.style.top = 0;
+			this.renderer.setSize( 800, 600 );
+		}else{
+			this.canvas = document.getElementById("container");
+			this.renderer = new THREE.WebGLRenderer();
+			this.renderer.setSize( window.innerWidth, window.innerHeight );
+			this.canvas.appendChild(this.renderer.domElement);
+		}
 
 		this.renderer.autoClear = false;
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = THREE.PCFShadowMap; //THREE.BasicShadowMap;
 
-		webgldiv.appendChild(this.renderer.domElement)
+		if(this.mode == "editor"){
+			webgldiv.appendChild(this.renderer.domElement)
 
-		var object = new THREE.CSS3DObject( webgldiv );
-		object.position.set( 0, 0, 0 );
-		object.rotation.y = 0;
+			var object = new THREE.CSS3DObject( webgldiv );
+			object.position.set( 0, 0, 0 );
+			object.rotation.y = 0;
 
-		var group = new THREE.Group();
-		group.add( object );
-		this.setup_editor(group);
+			var group = new THREE.Group();
+			group.add( object );
+			this.setup_editor(group);
 
-		this.scenecss3d.add( group );
+			this.scenecss3d.add( group );
+		}
 	}
 
 	//works mesh over lap scenes
@@ -241,7 +258,7 @@ class Game {
 		_div_l.appendChild( _element_l );
 
 		var object = new THREE.CSS3DObject( _div_l );
-		object.position.set( -450, 100, 10 );
+		object.position.set( -600, 100, 10 );
 		object.rotation.y = 0;
 
 		group.add( object );
@@ -260,12 +277,10 @@ class Game {
 		_div_r.appendChild( _element_r );
 
 		var object = new THREE.CSS3DObject( _div_r );
-		object.position.set( 450, 100, 10 );
+		object.position.set( 600, 100, 10 );
 		object.rotation.y = 0;
 
 		group.add( object );
-
-
 
 	}
 
@@ -298,21 +313,25 @@ class Game {
 	}
 
 	load(){
-
+		console.log("load map?");
 	}
 
 	init_simple(){
 		this.setup_network();
 
 		//content render
-		this.setup_css3d();
+		if(this.mode == "editor"){
+			this.setup_css3d();
+		}
 
 		//panel render
 		this.setup_webgl();
 		this.setup_hud();
 		this.basesetup();
 
-		//this.setup_editor();
+		if(this.bmap){
+			this.load();
+		}
 
 		this.setup_mouseraycast();
 		//render pass with two secnes
@@ -328,7 +347,7 @@ class Game {
 }
 
 
-var game = new Game();
-console.log(game);
+//var game = new Game();
+//console.log(game);
 //set up and listen window loads
-game.init();
+//game.init();
