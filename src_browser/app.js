@@ -20,6 +20,7 @@ function addEvent(element, eventName, fn) {
 
 class Game {
 	constructor(settings) {
+		this.version = "0.0.1";
 
 		if(settings != null){
 			if(settings['mode'] != null){
@@ -45,7 +46,7 @@ class Game {
 		this.camerahud = null;
 		this.canvas = null;
 		this.renderer = null;
-		this.io = null;
+		//this.io = null;
 		this.objects = [];
 		this.raycaster = new THREE.Raycaster();
 		this.mouse = new THREE.Vector2();
@@ -112,12 +113,18 @@ class Game {
 
 		var controls = new THREE.TrackballControls( this.cameracss3d );
 		controls.rotateSpeed = 4;
+		controls.zoomSpeed = 0.01;
+		//console.log(controls);
 
-		var blocker = document.getElementById( 'blocker' );
-		blocker.style.display = 'none';
+		//var blocker = document.getElementById( 'blocker' );
+		//blocker.style.display = 'none';
 
-		document.addEventListener( 'mousedown', function () { blocker.style.display = ''; } );
-		document.addEventListener( 'mouseup', function () { blocker.style.display = 'none'; } );
+		document.addEventListener( 'mousedown', function () {
+			//blocker.style.display = '';
+		});
+		document.addEventListener( 'mouseup', function () {
+			//blocker.style.display = 'none';
+		});
 		var self = this;
 		function animate() {
 			requestAnimationFrame( animate );
@@ -244,18 +251,36 @@ class Game {
 	}
 
 	setup_editor(group){
+		//ASSETS
+
+		var assetstable = new webix.ui({
+            container:"assets",
+            view:"datatable",
+            columns:[
+                { id:"title", header:"Assets"}
+            ],
+			data:[
+				{id:1,title:"test"},
+				{id:2,title:"test2"}
+			]
+        });
+
+
 		var _div_l = document.createElement( 'div' );
 		_div_l.style.width = '480px';
 		_div_l.style.height = '360px';
 		_div_l.style.backgroundColor = '#000';
 
-		var _element_l  = document.createElement('div');
-		_element_l.style.width = '480px';
-		_element_l.style.height = '360px';
-		_element_l.style.border = '0px';
-		_element_l.innerHTML = 'Plain text inside a div.<br>Assets?';
-    	_element_l.className = 'three-div';
-		_div_l.appendChild( _element_l );
+		//var _element_l  = document.createElement('div');
+		//_element_l.style.width = '480px';
+		//_element_l.style.height = '360px';
+		//_element_l.style.border = '0px';
+		//_element_l.innerHTML = 'Plain text inside a div.<br>Assets?';
+    	//_element_l.className = 'three-div';
+		//_div_l.appendChild( _element_l );
+
+		var assetsid = document.getElementById('assets');
+		_div_l.appendChild( assetsid );
 
 		var object = new THREE.CSS3DObject( _div_l );
 		object.position.set( -600, 100, 10 );
@@ -263,18 +288,43 @@ class Game {
 
 		group.add( object );
 
+
+		// SCENE
+
 		var _div_r = document.createElement( 'div' );
 		_div_r.style.width = '480px';
 		_div_r.style.height = '360px';
 		_div_r.style.backgroundColor = '#000';
 
-		var _element_r  = document.createElement('div');
-		_element_r.style.width = '480px';
-		_element_r.style.height = '360px';
-		_element_r.style.border = '0px';
-		_element_r.innerHTML = 'Plain text inside a div.<br>Scene?';
-    	_element_r.className = 'three-div';
-		_div_r.appendChild( _element_r );
+		//var _element_r  = document.createElement('div');
+		//_element_r.style.width = '480px';
+		//_element_r.style.height = '360px';
+		//_element_r.style.border = '0px';
+		//_element_r.innerHTML = 'Plain text inside a div.<br>Scene?';
+    	//_element_r.className = 'three-div';
+		//_div_r.appendChild( _element_r );
+
+		var scenetable = new webix.ui({
+            container:"scene",
+            view:"tree",
+			select:true,
+			data: [
+		        {id:"root", value:"Cars", open:true, data:[
+		            { id:"1", open:true, value:"Toyota", data:[
+		                { id:"1.1", value:"Avalon" },
+		                { id:"1.2", value:"Corolla" },
+		                { id:"1.3", value:"Camry" }
+		            ]},
+		            { id:"2", open:true, value:"Skoda", data:[
+		                { id:"2.1", value:"Octavia" },
+		                { id:"2.2", value:"Superb" }
+		            ]}
+		        ]}
+		    ]
+        });
+
+		var sceneid = document.getElementById('scene');
+		_div_r.appendChild( sceneid );
 
 		var object = new THREE.CSS3DObject( _div_r );
 		object.position.set( 600, 100, 10 );

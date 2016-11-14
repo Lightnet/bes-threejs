@@ -4,19 +4,22 @@
 		<title> threejs </title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<script src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<link rel="stylesheet" href="/css/bootstrap.min.css" >
-		<script src="/js/jquery.min.js"></script>
-		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/three.min.js"></script>
-		<script src="/js/controls/TrackballControls.js"></script>
-		<script src="/js/renderers/CSS3DRenderer.js"></script>
-		<script src='/js/shaders/CopyShader.js'></script>
-		<script src='/js/postprocessing/EffectComposer.js'></script>
-		<script src='/js/postprocessing/ClearPass.js'></script>
-		<script src='/js/postprocessing/RenderPass.js'></script>
-		<script src='/js/postprocessing/MaskPass.js'></script>
-		<script src='/js/postprocessing/ShaderPass.js'></script>
+		<link rel="stylesheet" href="/css/webix.css" type="text/css">
+
+		<script type="text/javascript" src="/js/webix.js"></script>
+		<script type="text/javascript" src="/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/js/three.min.js"></script>
+		<script type="text/javascript" src="/js/controls/TrackballControls.js"></script>
+		<script type="text/javascript" src="/js/renderers/CSS3DRenderer.js"></script>
+		<script type="text/javascript" src='/js/shaders/CopyShader.js'></script>
+		<script type="text/javascript" src='/js/postprocessing/EffectComposer.js'></script>
+		<script type="text/javascript" src='/js/postprocessing/ClearPass.js'></script>
+		<script type="text/javascript" src='/js/postprocessing/RenderPass.js'></script>
+		<script type="text/javascript" src='/js/postprocessing/MaskPass.js'></script>
+		<script type="text/javascript" src='/js/postprocessing/ShaderPass.js'></script>
 
 		<!--
 		<script src="/js/threejs_scene.js"></script>
@@ -48,9 +51,12 @@
 		</style>
 	</head>
 	<body>
+		<div id="assets" style="width:480px;height:360px;"></div>
+		<div id="scene" style="width:480px;height:360px;"></div>
 		<div id="container"></div>
+		<!--
 		<div id="blocker"></div>
-
+		-->
 		<script>
 			var game = new Game({mode:"editor"});
 			console.log(game);
