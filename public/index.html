@@ -53,15 +53,20 @@
 	<body>
 		<div id="assets" style="width:480px;height:360px;"></div>
 		<div id="scene" style="width:480px;height:360px;"></div>
+
+		<div id="object" style="width:480px;height:360px;"></div>
+		<div id="scriptcomponents" style="width:480px;height:360px;"></div>
+		<div id="components" style="width:480px;height:360px;"></div>
+		<div id="menu" style="width:480px;height:360px;"></div>
 		<div id="container"></div>
 		<!--
 		<div id="blocker"></div>
 		-->
 		<script>
-			var game = new Game({mode:"editor"});
+			var game = new Game({mode:"editor",bupdateobjects:true,bablephysics:false});
 			console.log(game);
 			//set up and listen window loads
-			game.init();
+			//game.init();
 		</script>
 	</body>
 </html>

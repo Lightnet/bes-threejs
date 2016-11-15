@@ -58,10 +58,10 @@ import path from 'path';
 //file for index.html
 app.use("/", express.static('./public'));
 
-import {Game,GamePlugin} from './app/libs/threejsapi';
+import {Game} from './app/libs/threejsapi';
 
 var threejsgame = new Game();
-threejsgame.init();
+//threejsgame.init();
 
 //socket.io
 io.on('connection', function (socket) {
