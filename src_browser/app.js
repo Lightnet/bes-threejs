@@ -252,18 +252,30 @@ class Game {
 
 	setup_editor(group){
 		//ASSETS
-
+		//autowidth:true,
 		var assetstable = new webix.ui({
             container:"assets",
             view:"datatable",
             columns:[
-                { id:"title", header:"Assets"}
+				{ id:"filetype", header:"Type"},
+                { id:"title", header:"Assets",fillspace:true}
             ],
 			data:[
 				{id:1,title:"test"},
 				{id:2,title:"test2"}
-			]
+			],
+			select:"row",
+			on:{
+    			"onItemClick":function(id, e, trg){
+        			webix.message("Click on row: " + id.row+", column: " + id.column);
+				}
+    		} //default click behavior that is true for any datatable cell
         });
+
+		assetstable.add({
+		    title:"Best film ever"
+		});
+
 
 
 		var _div_l = document.createElement( 'div' );
@@ -320,8 +332,22 @@ class Game {
 		                { id:"2.2", value:"Superb" }
 		            ]}
 		        ]}
-		    ]
+		    ],
+			select: true,
+			on: {"onItemClick": function (id, e, node) {
+				//alert("item has just been clicked");
+				var item = this.getItem(id);
+				console.log(item);
+			}}
         });
+		//http://docs.webix.com/api__link__ui.tree_onitemclick_event.html
+		console.log(scenetable);
+
+		scenetable.add({ value:"New item"}, 0);
+
+		//scenetable.add( {value:"New item"}, 0, parentId);
+		//var nodeId = tree.getSelectedId();
+		scenetable.add( {value:"New item"}, 0, 2);
 
 		var sceneid = document.getElementById('scene');
 		_div_r.appendChild( sceneid );
