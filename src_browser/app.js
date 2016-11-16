@@ -192,23 +192,30 @@ class Game {
 		}
 
 		this.scene = new THREE.Scene();
+		this.scene.name = "scene";
+		//this.scene.background = new THREE.Color( 0xff0000 );
+		this.scene.background = new THREE.Color( 0xEEEEEE );
 		this.camera = new THREE.PerspectiveCamera( 75, 800/600, 0.1, 1000 );
-
+		//renderer = new THREE.WebGLRenderer( { alpha: true } ); // init like this
 		if(this.mode == "editor"){
-			this.renderer = new THREE.WebGLRenderer();
+			this.renderer = new THREE.WebGLRenderer({ alpha: true,antialias: true  });
 			this.renderer.domElement.style.position = 'absolute';
 			this.renderer.domElement.style.top = 0;
 			this.renderer.setSize( 800, 600 );
+			//this.renderer.setClearColor( 0xffffff, 0);
+			//this.renderer.setClearColor(0xEEEEEE);
 		}else{
 			this.canvas = document.getElementById("container");
-			this.renderer = new THREE.WebGLRenderer();
+			this.renderer = new THREE.WebGLRenderer({ alpha: true,antialias: true  });
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
+			//this.renderer.setClearColor( 0xffffff, 0);
+			//this.renderer.setClearColor(0xEEEEEE);
 			this.canvas.appendChild(this.renderer.domElement);
 		}
 
 		this.renderer.autoClear = false;
-		this.renderer.shadowMap.enabled = true;
-		this.renderer.shadowMap.type = THREE.PCFShadowMap; //THREE.BasicShadowMap;
+		//this.renderer.shadowMap.enabled = true;
+		//this.renderer.shadowMap.type = THREE.PCFShadowMap; //THREE.BasicShadowMap;
 
 		if(this.mode == "editor"){
 			webgldiv.appendChild(this.renderer.domElement)
@@ -224,7 +231,7 @@ class Game {
 			this.scenecss3d.add( group );
 		}
 
-		this.setup_webgl_basics();
+		//this.setup_webgl_basics();
 	}
 
 	//works mesh over lap scenes
@@ -240,6 +247,9 @@ class Game {
         //var cube = new THREE.Mesh( geometry, material );
         //cube.position.x = 1;
 		//this.scenehud.add( cube );
+	}
+
+	setup_hud_draw(){
 		this.hudCanvas = document.createElement('canvas');
 		var width = window.innerWidth;
         var height = window.innerHeight;
@@ -261,6 +271,7 @@ class Game {
         var plane = new THREE.Mesh(planeGeometry, material);
 		this.scenehud.add(plane);
 	}
+
 
 	setup_webgl_basics(){
 
@@ -391,7 +402,7 @@ class Game {
 			}}
         });
 		//http://docs.webix.com/api__link__ui.tree_onitemclick_event.html
-		console.log(scenetable);
+		//console.log(scenetable);
 
 		scenetable.add({ value:"New item"}, 0);
 
@@ -1837,9 +1848,9 @@ class Game {
 		if(this.bablephysics){
 			this.initPhysics();
 		}
+		console.log("game init");
 	}
 }
-
 
 //var game = new Game();
 //console.log(game);
