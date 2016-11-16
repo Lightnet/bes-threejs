@@ -5,3 +5,5 @@ public/js/clientsocketio.js
 public/js/threejs_scene.js
 public/js/example_threejs_ammo.js
 public/js/example_threejs_game.js
+public/js/example_threejs_cannon.js
+public/js/example_threejs_oimo.js

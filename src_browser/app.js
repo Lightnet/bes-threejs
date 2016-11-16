@@ -25,6 +25,8 @@ class Game {
 		this.bfixedassetpath = true;
 		this.reload = false;//web browser editor reload url
 
+		this.ToRad = 0.0174532925199432957;
+
 		this.scene = null;
 		this.scenehud = null;
 		this.camera = null;
@@ -40,6 +42,9 @@ class Game {
 		this.physicsIndex = 2;
 		this.setPhysicsType = ['Oimo.js', 'Cannon.js', 'Ammo.js'];
 		this.world = null;
+		this.meshs = [];
+		this.bodies = [];
+		this.grounds = [];
 
 		this.scenenodes = [];//editor scene
 
@@ -183,6 +188,14 @@ class Game {
 		window.addEventListener( 'resize', onWindowResize, false );
 	}
 
+	setup_trackcamera(){
+		var controls = new THREE.TrackballControls( this.camera );
+		controls.rotateSpeed = 4;
+		controls.zoomSpeed = 0.01;
+		this.trackcamera = controls;
+		controls = null;
+	}
+
 	setup_webgl(){
 		if(this.mode == "editor"){
 			var webgldiv = document.createElement( 'div' );
@@ -232,6 +245,7 @@ class Game {
 		}
 
 		//this.setup_webgl_basics();
+		this.setup_trackcamera();
 	}
 
 	//works mesh over lap scenes
@@ -442,6 +456,9 @@ class Game {
 		requestAnimationFrame(()=>{this.render()});
 		//this.cube.rotation.x += 0.1;
 		//this.cube.rotation.y += 0.1;
+		if(this.trackcamera !=null){
+			this.trackcamera.update();
+		}
 
 		//custom update function check
         if (this.scene != null) {
@@ -1709,7 +1726,7 @@ class Game {
 			this.world = new Ammo.btDiscreteDynamicsWorld(this.dispatcher, this.overlappingPairCache, this.solver, this.collisionConfiguration);
 			this.world.setGravity(new Ammo.btVector3(0, -10, 0));
 			this.trans = new Ammo.btTransform(); // taking this out of the loop below us reduces the leaking
-			this.createAmmoScene();
+			//this.createAmmoScene();
 		}
 	}
 
@@ -1727,17 +1744,35 @@ class Game {
 					pt = manifold.getContactPoint(j);
 				}
 			}
+			var tbv30 = new Ammo.btVector3();
 			for (var ii = 0; ii < this.bodies.length; ii++) {
 				var mesh = this.meshs[ii];
 				var body = this.bodies[ii];
 				//console.log(body.sleeping);
 				if (body.getMotionState()) {
+					//get location or position
 					body.getMotionState().getWorldTransform(this.trans);
 					//console.log("world pos = " + [this.trans.getOrigin().x().toFixed(2), this.trans.getOrigin().y().toFixed(2), this.trans.getOrigin().z().toFixed(2)]);
-					mesh.position.set(this.trans.getOrigin().x().toFixed(2), this.trans.getOrigin().y().toFixed(2), this.trans.getOrigin().z().toFixed(2));
-					mesh.rotation.set(this.trans.getRotation().x().toFixed(2), this.trans.getRotation().y().toFixed(2), this.trans.getRotation().z().toFixed(2), this.trans.getRotation().w().toFixed(2));
+					if(mesh !=null){
+						//console.log(mesh);
+						mesh.position.set(this.trans.getOrigin().x().toFixed(2), this.trans.getOrigin().y().toFixed(2), this.trans.getOrigin().z().toFixed(2));
+						mesh.rotation.set(this.trans.getRotation().x().toFixed(2), this.trans.getRotation().y().toFixed(2), this.trans.getRotation().z().toFixed(2), this.trans.getRotation().w().toFixed(2));
+					}
+
+					if (this.trans.getOrigin().y().toFixed(2) < -100) {
+						var x = 150;
+						var z = -100 + Math.random() * 200;
+						var y = 100 + Math.random() * 1000;
+						body.setLinearVelocity(tbv30);
+						body.setAngularVelocity(tbv30);
+						var transform = body.getCenterOfMassTransform();
+						console.log(transform);
+						transform.setOrigin(new Ammo.btVector3(x, y, z));
+						console.log("reset?");
+					}
 				}
 			}
+			tbv30 = null;
 		}
 	}
 
@@ -1775,8 +1810,8 @@ class Game {
 				//console.log(mesh.position);
 				mesh.quaternion.copy(body.getQuaternion());
 				//console.log(body.numContacts);
-				if (body.numContacts > 0) {
-				}
+				//if (body.numContacts > 0) {
+				//}
 				if (mesh.position.y < -100) {
 					var x = 150;
 					var z = -100 + Math.random() * 200;
