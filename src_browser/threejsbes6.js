@@ -1,5 +1,5 @@
 /*
-    Project Name: Discord Modular Bot
+    Project Name: bes-threejs
     Link:https://github.com/Lightnet/bes-threejs
     Created By: Lightnet
     License: cc (creative commons)
@@ -7,18 +7,14 @@
     Information: Please read the readme.md file for more information.
 */
 
-//var vec = new THREE.Vector3();
-//console.log(vec);
-
-//listen window load
-function addEvent(element, eventName, fn) {
-    if (element.addEventListener)
-        element.addEventListener(eventName, fn, false);
-    else if (element.attachEvent)
-        element.attachEvent('on' + eventName, fn);
+//place holder id
+function object3d() {
+    this.uuid = "";
+    this.name = "";
+    return this;
 }
 
-class Game {
+class Threejsbes6 {
 	constructor(settings) {
 		this.version = "0.0.1";
 		this.antialias = true;//threejs
@@ -48,7 +44,7 @@ class Game {
 		this.grounds = [];
 
 		this.scenenodes = [];//editor scene
-
+		this.mapscenenodes = [];
 		this.scriptcomponents = [];//javascript
 		var _this = this;
 
@@ -207,6 +203,8 @@ class Game {
 
 		this.scene = new THREE.Scene();
 		this.scene.name = "scene";
+		this.scene.uuid = 'B1E79603-A80E-4CE5-9C5E-34B223CEECF9';
+		this.scenenodes.push(this.scene);
 		//this.scene.background = new THREE.Color( 0xff0000 );
 		this.scene.background = new THREE.Color( 0xEEEEEE );
 		this.camera = new THREE.PerspectiveCamera( 75, 800/600, 0.1, 1000 );
@@ -753,12 +751,24 @@ class Game {
 //
 //===============================================
 	parentObj(object, uuid) {
+		console.log("ADDED");
+		//var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		//var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+		//var cube = new THREE.Mesh( geometry, material );
+		//this.scene.add(cube);
+		//this.scene.add(object);
+		//this.camera.position.z = 5;
+
 		for (var i = 0; i < this.scenenodes.length; i++) {
 			if (this.scenenodes[i].uuid == uuid) {
+				//console.log("added?");
 				this.scenenodes[i].add(object);
+				//console.log(this.scenenodes[i]);
+				//console.log("===?");
 				break;
 			}
 		}
+
 	}
 
 	parseObject(strobj) {
@@ -1017,6 +1027,10 @@ class Game {
             //console.log("tmpmap");
             //console.log(tmpmap);
             this.mapscenenodes.push(tmpmap);
+
+			console.log(tmpobj);
+
+
             tmpobj = null;
             geometry = null;
             objmesh = null;

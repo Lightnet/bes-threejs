@@ -7,3 +7,9 @@ public/js/example_threejs_ammo.js
 public/js/example_threejs_game.js
 public/js/example_threejs_cannon.js
 public/js/example_threejs_oimo.js
+public/assets/
+public/js/load-app.js
+public/js/threejs_game.js
+public/js/threejs_game_json.js
+public/js/threejs_play_json.js
+public/js/threejsbes6.js

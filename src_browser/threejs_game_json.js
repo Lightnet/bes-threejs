@@ -13,15 +13,16 @@
 	from the web browser.
 */
 
-class Example_threejs_game extends Threejsbes6 {
+class Threejs_game_json extends Threejsbes6 {
 	constructor(settings){
 		super(settings);
 	}
 
 	init(){
 		super.init();
-		console.log("test?");
-		this.setup_webgl_basics();
-		this.setup_hud_draw();
+		console.log("init game json scene load...");
+		this.camera.position.z = 5;
+		//this.setup_webgl_basics();
+		//this.setup_hud_draw();
 	}
 }

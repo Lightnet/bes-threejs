@@ -1,0 +1,42 @@
+{
+    "name": "threejsapp",
+    "description": "none",
+    "version": "0.0.1",
+    "tags": [],
+    "scripts": [],
+    "assets": [],
+    "entities": [
+        {
+            "uuid": "FA577F2E-B435-439D-B612-085E295A695C",
+            "name": "BoxGeometry",
+            "type": "Mesh",
+            "parent": "B1E79603-A80E-4CE5-9C5E-34B223CEECF9",
+            "children": [],
+            "geometrytype": "BoxGeometry",
+            "parameters": {
+                "width": 1,
+                "height": 1,
+                "depth": 1,
+                "widthSegments": 1,
+                "heightSegments": 1,
+                "depthSegments": 1
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "rotation": {
+                "_x": 0,
+                "_y": 0,
+                "_z": 0,
+                "_order": "XYZ"
+            },
+            "scale": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+            }
+        }
+    ]
+}

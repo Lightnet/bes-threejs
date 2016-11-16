@@ -13,14 +13,14 @@
 	from the web browser.
 */
 
-class Example_threejs_game extends Threejsbes6 {
+class Threejs_game extends Threejsbes6 {
 	constructor(settings){
 		super(settings);
 	}
 
 	init(){
 		super.init();
-		console.log("test?");
+		console.log("Threejs_game?");
 		this.setup_webgl_basics();
 		this.setup_hud_draw();
 	}

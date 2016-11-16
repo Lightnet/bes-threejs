@@ -9,6 +9,12 @@
 		<script type="text/javascript" src="/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/js/three.min.js"></script>
+		<script type="text/javascript" src="js/loaders/FBXLoader.js"></script>
+		<script type="text/javascript" src="js/loaders/collada/Animation.js"></script>
+		<script type="text/javascript" src="js/loaders/collada/AnimationHandler.js"></script>
+		<script type="text/javascript" src="js/loaders/collada/KeyFrameAnimation.js"></script>
+		<script type="text/javascript" src="js/loaders/ColladaLoader.js"></script>
+		<script type="text/javascript" src="js/loaders/OBJLoader.js"></script>
 		<script type="text/javascript" src="/js/controls/TrackballControls.js"></script>
 		<script type="text/javascript" src="/js/renderers/CSS3DRenderer.js"></script>
 		<script type="text/javascript" src='/js/shaders/CopyShader.js'></script>
@@ -18,12 +24,23 @@
 		<script type="text/javascript" src='/js/postprocessing/MaskPass.js'></script>
 		<script type="text/javascript" src='/js/postprocessing/ShaderPass.js'></script>
 		<script type="text/javascript" src="/js/threejsbes6.js"></script>
-		<script type="text/javascript" src="/js/example_threejs_game.js"></script>
+		<script type="text/javascript" src="/js/threejs_game_json.js"></script>
+		<script type="text/javascript" src="/js/load-app.js"></script>
+		<div id="scriptcomponents"></div>
 		<style>
 			html, body {
 				margin: 0px;
 				height: 100%;
 				overflow: hidden;
+			}
+
+			#blocker {
+				position: absolute;
+				/* background-color: rgba(255, 0, 0, 0.5); */
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
 			}
 
 			.three-div{
@@ -38,8 +55,9 @@
 	<body>
 		<div id="container"></div>
 		<div id="blocker"></div>
+
 		<script>
-			var game = new Example_threejs_game({onload:true,bupdateobjects:true});
+			_CLASSLOAD({_class:Threejs_game_json},{onload:false,bcanvasRatio:true,bfixedassetpath:false});
 		</script>
 	</body>
 </html>

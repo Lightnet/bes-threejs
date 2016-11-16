@@ -18,12 +18,21 @@
 		<script type="text/javascript" src='/js/postprocessing/MaskPass.js'></script>
 		<script type="text/javascript" src='/js/postprocessing/ShaderPass.js'></script>
 		<script type="text/javascript" src="/js/threejsbes6.js"></script>
-		<script type="text/javascript" src="/js/example_threejs_game.js"></script>
+		<script type="text/javascript" src="/js/threejs_game.js"></script>
 		<style>
 			html, body {
 				margin: 0px;
 				height: 100%;
 				overflow: hidden;
+			}
+
+			#blocker {
+				position: absolute;
+				/* background-color: rgba(255, 0, 0, 0.5); */
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
 			}
 
 			.three-div{
@@ -38,8 +47,9 @@
 	<body>
 		<div id="container"></div>
 		<div id="blocker"></div>
+
 		<script>
-			var game = new Example_threejs_game({onload:true,bupdateobjects:true});
+			var game = new Threejs_game({onload:true,bupdateobjects:true});
 		</script>
 	</body>
 </html>
