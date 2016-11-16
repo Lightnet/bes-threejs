@@ -95,67 +95,141 @@ class Example_threejs_ammo extends Game {
     }
 
 	createCannonScene() {
-			//console.log(this);
-            //var groundShape = new CANNON.Plane();
-            //var groundBody = new CANNON.Body({ mass: 0 });
-            //groundBody.addShape(groundShape);
-            //groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
-            //this.world.add(groundBody);
-            //var ground = this.world.add({name:"ground",size:[400, 40, 400], pos:[0,-20,0], config:config});
-            //this.addStaticBox( [400, 40, 400], [0,-20,0], [0,0,0], false);
-            var boxShape1 = new CANNON.Box(new CANNON.Vec3(200, 20, 200)); //half extend
-            var boxBody1 = new CANNON.Body({ mass: 0, position: new CANNON.Vec3(0, -20, 0) });
-            boxBody1.addShape(boxShape1);
-            this.world.add(boxBody1);
-            this.addStaticBox([400, 40, 400], [0, -20, 0], [0, 0, 0], false);
-            var boxShape2 = new CANNON.Box(new CANNON.Vec3(100, 15, 195)); //half extend
-            console.log(-Math.PI / 2);
-            var boxBody2 = new CANNON.Body({ mass: 0 });
-            boxBody2.addShape(boxShape2);
-            boxBody2.position = new CANNON.Vec3(130, 40, 0);
-            boxBody2.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), (30 * Math.PI / 180));
-            //boxBody2.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),(0.5235987756));
-            console.log(boxBody2.quaternion);
-            this.world.add(boxBody2);
-            //var geometry = new THREE.BoxGeometry( 200, 30, 390 );
-            //var material = new THREE.MeshBasicMaterial( { color: 0xcccccc } );
-            //var cube = this.cube = new THREE.Mesh( geometry, material );
-            //cube.quaternion.copy(boxBody2.quaternion);
-            //cube.position.copy(boxBody2.position);
-            //this.scene.add( cube );
-            this.addStaticBox([200, 30, 390], [130, 40, 0], [0, 0, 32], false);
-            var mass = 5, radius = 2;
-            var sphereShape = new CANNON.Sphere(radius); // Step 1
-            var sphereBody = new CANNON.Body({ mass: mass }); // Step 2
-            sphereBody.addShape(sphereShape);
-            //sphereBody.position.set(0,100,0);
-            //sphereBody.angularVelocity.set(0,10,0);
-            sphereBody.angularDamping = 0.5;
-            sphereBody.addEventListener("collide", function (e) { console.log("sphere collided"); });
-            this.bodies[0] = sphereBody;
-            var x = 150;
-            var z = -100 + Math.random() * 200;
-            var y = 100 + Math.random() * 1000;
-            sphereBody.position.set(x, y, z);
-            this.world.add(sphereBody); // Step 3
-            //console.log(sphereBody);
-            var buffgeoSphere = new THREE.BufferGeometry();
-            buffgeoSphere.fromGeometry(new THREE.SphereGeometry(2, 20, 10));
-            this.meshs[0] = new THREE.Mesh(buffgeoSphere, this.matSphere);
-            this.scene.add(this.meshs[0]);
-            //var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-            //var material = new THREE.MeshBasicMaterial( { color: 0xcccccc } );
-            //var cube = this.cube = new THREE.Mesh( geometry, material );
-            //this.scene.add( cube );
-            //this.meshs[0] = cube;
-        }
+		/*
+		// Position
+		body.position.setZero();
+		body.previousPosition.setZero();
+		body.interpolatedPosition.setZero();
+		body.initPosition.setZero();
 
+		// orientation
+		body.quaternion.set(0,0,0,1);
+		body.initQuaternion.set(0,0,0,1);
+		body.previousQuaternion.set(0,0,0,1);
+		body.interpolatedQuaternion.set(0,0,0,1);
+
+		// Velocity
+		body.velocity.setZero();
+		body.initVelocity.setZero();
+		body.angularVelocity.setZero();
+		body.initAngularVelocity.setZero();
+
+		// Force
+		body.force.setZero();
+		body.torque.setZero();
+
+		// Sleep state reset
+		body.sleepState = 0;
+		body.timeLastSleepy = 0;
+		body._wakeUpAfterNarrowphase = false;
+
+		*/
+
+
+		//console.log(this);
+        //var groundShape = new CANNON.Plane();
+        //var groundBody = new CANNON.Body({ mass: 0 });
+        //groundBody.addShape(groundShape);
+        //groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1,0,0),-Math.PI/2);
+        //this.world.add(groundBody);
+        //var ground = this.world.add({name:"ground",size:[400, 40, 400], pos:[0,-20,0], config:config});
+        //this.addStaticBox( [400, 40, 400], [0,-20,0], [0,0,0], false);
+        var boxShape1 = new CANNON.Box(new CANNON.Vec3(200, 20, 200)); //half extend
+        var boxBody1 = new CANNON.Body({ mass: 0, position: new CANNON.Vec3(0, -20, 0) });
+        boxBody1.addShape(boxShape1);
+        this.world.add(boxBody1);
+        this.addStaticBox([400, 40, 400], [0, -20, 0], [0, 0, 0], false);
+        var boxShape2 = new CANNON.Box(new CANNON.Vec3(100, 15, 195)); //half extend
+        //console.log(-Math.PI / 2);
+        var boxBody2 = new CANNON.Body({ mass: 0 });
+        boxBody2.addShape(boxShape2);
+        boxBody2.position = new CANNON.Vec3(130, 40, 0);
+        boxBody2.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), (30 * Math.PI / 180));
+        //boxBody2.quaternion.setFromAxisAngle(new CANNON.Vec3(0,0,1),(0.5235987756));
+        //console.log(boxBody2.quaternion);
+        this.world.add(boxBody2);
+        //var geometry = new THREE.BoxGeometry( 200, 30, 390 );
+        //var material = new THREE.MeshBasicMaterial( { color: 0xcccccc } );
+        //var cube = this.cube = new THREE.Mesh( geometry, material );
+        //cube.quaternion.copy(boxBody2.quaternion);
+        //cube.position.copy(boxBody2.position);
+        //this.scene.add( cube );
+        this.addStaticBox([200, 30, 390], [130, 40, 0], [0, 0, 32], false);
+
+
+        var mass = 5, radius = 2;
+        var sphereShape = new CANNON.Sphere(radius); // Step 1
+        var sphereBody = new CANNON.Body({ mass: mass }); // Step 2
+        sphereBody.addShape(sphereShape);
+        //sphereBody.position.set(0,100,0);
+        //sphereBody.angularVelocity.set(0,10,0);
+
+        //sphereBody.angularDamping = 0.5;//slow ball to stop
+        sphereBody.addEventListener("collide", function (e) { console.log("sphere collided"); });
+
+        var x = 150;
+        var z = -100 + Math.random() * 200;
+        var y = 100 + Math.random() * 1000;
+        sphereBody.position.set(x, y, z);
+		//console.log(sphereBody.position);
+		this.bodies[0] = sphereBody;
+		//console.log(this.bodies[0].position);
+        this.world.add(sphereBody); // Step 3
+        console.log(sphereBody);
+        var buffgeoSphere = new THREE.BufferGeometry();
+        buffgeoSphere.fromGeometry(new THREE.SphereGeometry(2, 20, 10));
+        this.meshs[0] = new THREE.Mesh(buffgeoSphere, this.matSphere);
+		this.meshs[0].position.set(x, y, z);
+        this.scene.add(this.meshs[0]);
+		//console.log(this.meshs[0]);
+		//console.log(this.meshs[0].position.x);
+        //var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        //var material = new THREE.MeshBasicMaterial( { color: 0xcccccc } );
+        //var cube = this.cube = new THREE.Mesh( geometry, material );
+        //this.scene.add( cube );
+        //this.meshs[0] = cube;
+    }
+
+	//render(){
+		//super.render();
+	//}
+
+	updateCannonPhysics(){
+		super.updateCannonPhysics();
+
+		for (var i = 0; i < this.bodies.length; i++) {
+			var mesh = this.meshs[i];
+			var body = this.bodies[i];
+			//console.log(body.sleeping);
+			//if(!body.sleeping){
+			//console.log(body.position.x);
+			//check if mesh and body is not null
+			if((body != null)&&(mesh != null)){
+				//console.log(mesh.position);
+				//console.log(body.position);
+				mesh.position.copy(body.position);
+				mesh.quaternion.copy(body.quaternion);
+
+				if (body.position.y < -100) {
+					var x = 150;
+					var z = -100 + Math.random() * 200;
+					var y = 100 + Math.random() * 1000;
+					body.velocity.setZero();
+					body.initVelocity.setZero();
+					body.angularVelocity.setZero();
+					body.initAngularVelocity.setZero();
+					body.position.set(x,y,z);
+					console.log("reset!");
+				}
+			}
+		}
+	}
 
 	init(){
 		this.bablephysics = true;
 		this.physicsIndex = 1;
 		super.init();
-		this.camera.position.set(0, 0, 10);
+		this.camera.position.set(0, 0, 300);
 		//console.log("test?");
 		this.materialType = 'MeshBasicMaterial';
 		this.matSphere = new THREE[this.materialType]({ map: this.basicTexture(0), name: 'sph' });

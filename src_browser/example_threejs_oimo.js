@@ -140,6 +140,37 @@ class Example_threejs_ammo extends Game {
         this.scene.add(this.meshs[0]);
     }
 
+	//render(){
+		//super.render();
+	//}
+
+	updateOimoPhysics() {
+		super.updateOimoPhysics();
+		if ((typeof this.world == 'undefined') || (this.world == null)) {
+			return;
+		}
+		//this.infos.innerHTML = this.world.performance.show();
+		for (var i = 0; i < this.bodies.length; i++) {
+			var mesh = this.meshs[i];
+			var body = this.bodies[i];
+			if (!body.sleeping) {
+				mesh.position.copy(body.getPosition());
+				//console.log(mesh.position);
+				mesh.quaternion.copy(body.getQuaternion());
+				//console.log(body.numContacts);
+				//if (body.numContacts > 0) {
+				//}
+				if (mesh.position.y < -100) {
+					var x = 150;
+					var z = -100 + Math.random() * 200;
+					var y = 100 + Math.random() * 1000;
+					body.resetPosition(x, y, z);
+					console.log("reset!");
+				}
+			}
+		}
+	}
+
 	init(){
 		this.bablephysics = true;
 		this.physicsIndex = 0;

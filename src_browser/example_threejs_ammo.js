@@ -185,6 +185,58 @@ class Example_threejs_ammo extends Game {
         //this.meshs[0] = cube;
     }
 
+	//render(){
+		//super.render();
+	//}
+
+	updateAmmoPhysics() {
+		super.updateAmmoPhysics();
+		if (typeof Ammo != undefined) {
+			/*
+			var i, dp = this.dp, num = dp.getNumManifolds(), manifold, num_contacts, j, pt;
+			for (i = 0; i < num; i++) {
+				manifold = dp.getManifoldByIndexInternal(i);
+				num_contacts = manifold.getNumContacts();
+				if (num_contacts === 0) {
+					continue;
+				}
+				for (j = 0; j < num_contacts; j++) {
+					pt = manifold.getContactPoint(j);
+				}
+			}
+			*/
+			var tbv30 = new Ammo.btVector3();
+			for (var ii = 0; ii < this.bodies.length; ii++) {
+				var mesh = this.meshs[ii];
+				var body = this.bodies[ii];
+				//console.log(body.sleeping);
+				if (body.getMotionState()) {
+					//get location or position
+					body.getMotionState().getWorldTransform(this.trans);
+					//console.log("world pos = " + [this.trans.getOrigin().x().toFixed(2), this.trans.getOrigin().y().toFixed(2), this.trans.getOrigin().z().toFixed(2)]);
+					if(mesh !=null){
+						//console.log(mesh);
+						mesh.position.set(this.trans.getOrigin().x().toFixed(2), this.trans.getOrigin().y().toFixed(2), this.trans.getOrigin().z().toFixed(2));
+						mesh.rotation.set(this.trans.getRotation().x().toFixed(2), this.trans.getRotation().y().toFixed(2), this.trans.getRotation().z().toFixed(2), this.trans.getRotation().w().toFixed(2));
+					}
+
+					if (this.trans.getOrigin().y().toFixed(2) < -100) {
+						var x = 150;
+						var z = -100 + Math.random() * 200;
+						var y = 100 + Math.random() * 1000;
+						body.setLinearVelocity(tbv30);
+						body.setAngularVelocity(tbv30);
+						var transform = body.getCenterOfMassTransform();
+						console.log(transform);
+						transform.setOrigin(new Ammo.btVector3(x, y, z));
+						console.log("reset!");
+					}
+				}
+			}
+			tbv30 = null;
+		}
+	}
+
 	init(){
 		this.bablephysics = true;
 		super.init();

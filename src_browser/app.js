@@ -41,6 +41,7 @@ class Game {
 		this.bablephysics = false;
 		this.physicsIndex = 2;
 		this.setPhysicsType = ['Oimo.js', 'Cannon.js', 'Ammo.js'];
+		this.timeSteptimeStep = 1 / 60;
 		this.world = null;
 		this.meshs = [];
 		this.bodies = [];
@@ -1687,6 +1688,9 @@ class Game {
 	}
 
 	updateCannonPhysics() {
+		if ((typeof this.world == 'undefined') || (this.world == null)) {
+			return;
+		}
 		if (typeof CANNON != undefined) {
 			//var timeStep = 1.0 / 60.0; // seconds
 			//this.world.step(timeStep);
@@ -1697,16 +1701,24 @@ class Game {
 			//var result = [];
 			//this.world.narrowphase.getContacts([bodyA], [bodyB], this.world, result, [], [], []);
 			//var overlaps = result.length > 0;
+			//console.log(this.bodies.length);
+			/*
 			for (var i = 0; i < this.bodies.length; i++) {
 				var mesh = this.meshs[i];
 				var body = this.bodies[i];
 				//console.log(body.sleeping);
 				//if(!body.sleeping){
-				//console.log(body.position);
-				mesh.position.copy(body.position);
-				//console.log(mesh.position);
-				mesh.quaternion.copy(body.quaternion);
+				//console.log(body.position.x);
+				//check if mesh and body is not null
+				if((body != null)&&(mesh != null)){
+					//console.log(mesh.position);
+					//console.log(body.position);
+					mesh.position.copy(body.position);
+
+					mesh.quaternion.copy(body.quaternion);
+				}
 			}
+			*/
 		}
 	}
 
@@ -1731,8 +1743,12 @@ class Game {
 	}
 
 	updateAmmoPhysics() {
+		if ((typeof this.world == 'undefined') || (this.world == null)) {
+			return;
+		}
 		if (typeof Ammo != undefined) {
 			this.world.stepSimulation(1 / 60, 10);
+			/*
 			var i, dp = this.dp, num = dp.getNumManifolds(), manifold, num_contacts, j, pt;
 			for (i = 0; i < num; i++) {
 				manifold = dp.getManifoldByIndexInternal(i);
@@ -1773,6 +1789,7 @@ class Game {
 				}
 			}
 			tbv30 = null;
+			*/
 		}
 	}
 
@@ -1802,6 +1819,7 @@ class Game {
 		}
 		this.world.step();
 		//this.infos.innerHTML = this.world.performance.show();
+		/*
 		for (var i = 0; i < this.bodies.length; i++) {
 			var mesh = this.meshs[i];
 			var body = this.bodies[i];
@@ -1820,6 +1838,7 @@ class Game {
 				}
 			}
 		}
+		*/
 	}
 
 	destroyOimoPhysics() {
@@ -1827,7 +1846,7 @@ class Game {
     }
 
 	updatePhysics() {
-		if (this.world == null) {
+		if ((typeof this.world == 'undefined') || (this.world == null)) {
 			return;
 		}
 		if (this.setPhysicsType[this.physicsIndex] == 'Oimo.js') {
