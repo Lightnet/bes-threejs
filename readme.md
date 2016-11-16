@@ -4,7 +4,21 @@ Created by: Lightnet
 
 License: cc (creative commons)
 
-Code Language: Babel es6
+There are multiples Licenses to build web game for ease build or design.
+
+Libs:
+ * webix.js (License: GPL v3)
+ * bootstrap.js
+ * three.js
+ * socket.io
+ * expressjs
+ * knockout.js
+ * ammo.js
+ * cannon.js
+ * oimo.js
+
+
+Code Language: Babel es6 > Javascript for nodejs and html javascript
 
 OS: Window 10 64bit Tested (window 32 bit)
 
@@ -30,3 +44,4 @@ Install Packages:
 Run CMD:
  * npm run dev (run server dev change on files)
  * npm run wbabel (run browser dev changes on files)
+ * npm start (compile/build javascript && run server)
