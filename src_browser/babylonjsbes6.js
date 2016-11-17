@@ -115,7 +115,7 @@ class Babylonjsbes6 {
 	create_hud(){
 		//http://doc.babylonjs.com/tutorials/Using_the_Canvas2D
 		//http://doc.babylonjs.com/overviews/Canvas2D_Home
-
+		console.log("init hud");
 		this.screencanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
 		    id: "ScreenCanvas",
 		    size: new BABYLON.Size(300, 100),
@@ -129,21 +129,6 @@ class Babylonjsbes6 {
 		        })
 		    ]
 		});
-		/*
-		this.screencanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
-		    id: "ScreenCanvas",
-		    size: new BABYLON.Size(300, 100),
-		    backgroundFill: "#4040408F",
-		    backgroundRoundRadius: 50,
-		    children: [
-		        new BABYLON.Text2D("Hello World!", {
-		            id: "text",
-		            marginAlignment: "h: center, v:center",
-		            fontName: "20pt Arial",
-		        })
-		    ]
-		});
-		*/
 	}
 
 	init_phsics(){
@@ -155,6 +140,9 @@ class Babylonjsbes6 {
 		var self = this;
 		this.canvas = document.getElementById('renderCanvas');
 		this.engine = new BABYLON.Engine(this.canvas, true);
+		//disable  manifest cache
+		this.engine.enableOfflineSupport = false;
+		//console.log(this.engine);
 		//https://doc.babylonjs.com/tutorials/how_to_use_assetsmanager
 		//this.engine.loadingUIText = "loading...";
 		//this.engine.displayLoadingUI();
