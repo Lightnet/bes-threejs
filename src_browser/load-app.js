@@ -34,7 +34,7 @@ function _CLASSLOAD(_OBJCLASS, args){
 	        };
 	    }
 	    script.src = url;
-		var scriptcomponents  = document.getElementById('scriptcomponents');
+		var scriptcomponents = document.getElementById('scriptcomponents');
 	    //document.getElementsByTagName("head")[0].appendChild(script);
 		scriptcomponents.appendChild(script);
 	}

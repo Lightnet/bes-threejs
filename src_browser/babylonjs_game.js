@@ -99,7 +99,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 		            new BABYLON.Text2D("Scene 1!", { fontName: "12pt Arial", marginAlignment: "h: center, v: center" })
 		        ]});
 		var button2Rect = new BABYLON.Rectangle2D(
-		    { parent: this.screencanvas, id: "button2", x: 100, y: 0, width: 100, height: 20, fill: "#4040C0FF",
+		    { parent: this.screencanvas, id: "button2", x: 100, y: 10, width: 100, height: 20, fill: "#4040C0FF",
 		        //roundRadius: 10,
 				//isVisible: false,
 		        children:
@@ -202,7 +202,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 			box.rotation.y = t*2;
 		};
 		this.engine.runRenderLoop(renderLoop);
-
 	}
 
 	init(){

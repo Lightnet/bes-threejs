@@ -59,7 +59,13 @@
 		<div id="blocker"></div>
 		-->
 		<script>
-			var game = new Threejsbes6({mode:"editor",bupdateobjects:true,bablephysics:false});
+			var threejsapi;
+			var config = {
+				mode:"editor",
+				bupdateobjects:true,
+				bablephysics:false
+			};
+			var game = new Threejsbes6(config);
 			//console.log(game);
 			//set up and listen window loads
 			//game.init();

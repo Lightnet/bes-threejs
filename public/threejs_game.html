@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
 	<head>
-		<title> threejs </title>
+		<title> threejs game </title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
@@ -25,23 +25,6 @@
 				height: 100%;
 				overflow: hidden;
 			}
-
-			#blocker {
-				position: absolute;
-				/* background-color: rgba(255, 0, 0, 0.5); */
-				top: 0px;
-				left: 0px;
-				width: 100%;
-				height: 100%;
-			}
-
-			.three-div{
-			    background: #BADA55;
-			    color: #E50000;
-			    font-family: Arial, Helvetica, Sans-serif;
-			    font-size: 2em;
-			    padding: 0.1em;
-			}
 		</style>
 	</head>
 	<body>
@@ -49,6 +32,7 @@
 		<div id="blocker"></div>
 
 		<script>
+			var threejsapi;
 			var game = new Threejs_game({onload:true,bupdateobjects:true});
 		</script>
 	</body>
