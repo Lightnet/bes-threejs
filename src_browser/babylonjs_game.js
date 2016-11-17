@@ -21,5 +21,13 @@ class Babylonjs_game extends Babylonjsbes6 {
 	init(){
 		super.init();
 		console.log("init babylonjs_game...");
+		this.create_hud();
+
+
+		//init oimo.js physics
+		this.init_phsics();
+
+		this.createscene_objects();
+		this.createscene_physics();
 	}
 }

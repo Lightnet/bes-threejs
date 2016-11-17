@@ -50,6 +50,7 @@ var plugin = require('./app/libs/plugin');
 //console.log(config);
 
 import express from 'express';
+//var favicon = require('serve-favicon');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -57,6 +58,19 @@ import path from 'path';
 
 //file for index.html
 app.use("/", express.static('./public'));
+//app.use(favicon(__dirname + '/public/favicon.ico'));
+var favicon = new Buffer('AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA/4QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEQAAAAAREAEAAAAAAAAQAQAAARAAABAAAAAREQAAAAAAAREREAAAAAARERERAAAAAREREREQAAABERERERAAAAEREREREAAAAREQAREQAAAAEQAAEQAAAQAAAAAAABABAAAAAAAAEAERAAAAABEQAAAAAAAAAAD//wAAj/EAAL/9AAC+fQAA/D8AAPgfAADwDwAA4AcAAOAHAADgBwAA4YcAAPPPAAC//QAAv/0AAI/xAAD//wAA', 'base64');
+app.get("/favicon.ico", function(req, res) {
+  console.log("icon?");
+  res.statusCode = 200;
+  res.setHeader('Content-Length', favicon.length);
+  res.setHeader('Content-Type', 'image/x-icon');
+  //res.setHeader("Cache-Control", "public, max-age=2592000");                // expiers after a month
+  res.setHeader("Cache-Control", "public, max-age=10");                // expiers after a month
+  //res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());
+  res.setHeader("Expires", new Date(Date.now() + 10).toUTCString());
+  res.end(favicon);
+ });
 
 import {Game} from './app/libs/threejsapi';
 

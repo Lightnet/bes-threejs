@@ -14,8 +14,10 @@
 */
 
 class Babylonjsbes6 {
+	//pass args params
 	constructor(settings){
 		var _this = this;
+		this.reload = false;//web browser editor reload url
 		if(settings != null){
 			//this need to be last else it variable are not assign
 			if (settings['onload'] == true) {
@@ -27,7 +29,25 @@ class Babylonjsbes6 {
 				console.log('init Babylonjs setup...');
 				this.init();
 			}
+
+
 		}
+	}
+
+	setup_network(){
+		var self = this;
+		this.socket = io();
+		this.socket.on('connect', function () {
+		    console.log('server connected');
+			if(this.reload){
+				location.reload();
+			}
+		});
+
+		this.socket.on('disconnect', function () {
+		    console.log('server disconnected');
+			this.reload = true;
+		});
 	}
 
 	//window load listen event
@@ -51,39 +71,25 @@ class Babylonjsbes6 {
 	    // attach the camera to the canvas
 	    camera.attachControl(this.canvas, false);
 		this.camera = camera;
-	    // create a basic light, aiming 0,1,0 - meaning, to the sky
-	    var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
-	    // create a built-in "sphere" shape; its constructor takes 5 params: name, width, depth, subdivisions, scene
-	    var sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene);
+	    // return the created scene
+	    return scene;
+	}
+	//create example scene
+	createscene_objects(){
+		// create a basic light, aiming 0,1,0 - meaning, to the sky
+	    var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), this.scene);
+		// create a built-in "sphere" shape; its constructor takes 5 params: name, width, depth, subdivisions, scene
+		var sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
 	    // move the sphere upward 1/2 of its height
 	    sphere.position.y = 1;
 		this.sphere = sphere;
 	    // create a built-in "ground" shape; its constructor takes the same 5 params as the sphere's one
-	    var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
+	    var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, this.scene);
 		this.ground = ground;
-	    // return the created scene
-	    return scene;
 	}
 
-	enableMeshesCollision(meshes) {
-  		meshes.forEach(function(mesh) {
-    		mesh.checkCollisions = true;
-  		});
-	}
-
-	init(){
-		console.log("init babylonjsbes6");
-		var self = this;
-		this.canvas = document.getElementById('renderCanvas');
-		this.engine = new BABYLON.Engine(this.canvas, true);
-
-		this.scene = this.createScene();
-
-		//init oimo.js physics
-		this.scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
-		console.log(this.sphere.position);
+	createscene_physics(){
 		this.sphere.position.y = 5;
-
 		this.sphere.physicsImpostor = new BABYLON.PhysicsImpostor(this.sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 0.9 }, this.scene);
 		this.sphere.material = new BABYLON.StandardMaterial("Mat", this.scene);
 
@@ -95,12 +101,72 @@ class Babylonjsbes6 {
 		//this.sphere.physicsImpostor.setDeltaPosition(new BABYLON.Vector3(0,5,0));
 
 		this.sphere.physicsImpostor.registerOnPhysicsCollide(this.ground.physicsImpostor, function(main, collided) {
-    		main.object.material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
-			//console.log(main.object.material);
-			//console.log(self.sphere);
+    		//main.object.material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
 			//console.log("hit");
 		});
+	}
 
+	enableMeshesCollision(meshes) {
+  		meshes.forEach(function(mesh) {
+    		mesh.checkCollisions = true;
+  		});
+	}
+
+	create_hud(){
+		//http://doc.babylonjs.com/tutorials/Using_the_Canvas2D
+		//http://doc.babylonjs.com/overviews/Canvas2D_Home
+
+		this.screencanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
+		    id: "ScreenCanvas",
+		    size: new BABYLON.Size(300, 100),
+		    backgroundFill: "#4040408F",
+		    //backgroundRoundRadius: 50,
+		    children: [
+		        new BABYLON.Text2D("Hello World!", {
+		            id: "text",
+		            marginAlignment: "h: center, v:center",
+		            fontName: "20pt Arial",
+		        })
+		    ]
+		});
+		/*
+		this.screencanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
+		    id: "ScreenCanvas",
+		    size: new BABYLON.Size(300, 100),
+		    backgroundFill: "#4040408F",
+		    backgroundRoundRadius: 50,
+		    children: [
+		        new BABYLON.Text2D("Hello World!", {
+		            id: "text",
+		            marginAlignment: "h: center, v:center",
+		            fontName: "20pt Arial",
+		        })
+		    ]
+		});
+		*/
+	}
+
+	init_phsics(){
+		this.scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
+	}
+
+	init(){
+		//console.log("init babylonjsbes6");
+		var self = this;
+		this.canvas = document.getElementById('renderCanvas');
+		this.engine = new BABYLON.Engine(this.canvas, true);
+		//https://doc.babylonjs.com/tutorials/how_to_use_assetsmanager
+		//this.engine.loadingUIText = "loading...";
+		//this.engine.displayLoadingUI();
+		this.scene = this.createScene();
+		//this.createscene_objects();
+		//init oimo.js physics
+		//this.init_phsics();
+		//this.createphsycis_test();
+		//https://doc.babylonjs.com/tutorials/how_to_use_assetsmanager
+		//this.create_hud();
+
+		this.setup_network();
 		//render the scene
 		this.engine.runRenderLoop(function() {
 		    self.scene.render();
@@ -109,5 +175,6 @@ class Babylonjsbes6 {
 		window.addEventListener('resize', function() {
     		self.engine.resize();
 		});
+		//this.engine.hideLoadingUI();
 	}
 }

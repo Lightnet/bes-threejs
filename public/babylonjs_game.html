@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title> threejs </title>
+		<link rel="icon" href="/favicon.ico">
 		<meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
@@ -30,11 +31,11 @@
 	</head>
 	<body>
 		<canvas id="renderCanvas"></canvas>
-		<div id="container"></div>
-		<div id="blocker"></div>
-
 		<script>
-			var game = new Babylonjs_game({onload:true});
+			var config = {
+				onload:true
+			};
+			var game = new Babylonjs_game(config);
 		</script>
 	</body>
 </html>
