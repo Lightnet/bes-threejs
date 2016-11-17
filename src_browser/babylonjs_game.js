@@ -21,7 +21,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 	//need to over this later that just a smaple test.
 	create_hud(){
 		//super.create_hud();
-
 		this.screencanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
 		    id: "ScreenCanvas",
 		    size: new BABYLON.Size(300, 100),
@@ -35,7 +34,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 		        })
 		    ]
 		});
-
 	}
 
 	loadscene_extbabylon(){
@@ -86,11 +84,39 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//{    "version" : 1,    "enableSceneOffline" : true,    "enableTexturesOffline" : true}
 	}
 
+	createscene_simple(){
+		//https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Babylon.js?utm_content=buffer38bb7&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
+		var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scene);
+
+		var box = BABYLON.Mesh.CreateBox("box", 2, this.scene);
+
+		var boxMaterial = new BABYLON.StandardMaterial("material", this.scene);
+		boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
+		box.material = boxMaterial;
+
+		var cylinder = BABYLON.Mesh.CreateCylinder("cylinder", 2, 2, 2, 12, 1, this.scene);
+		cylinder.position.x = 5;
+		cylinder.rotation.x = -0.2;
+		var cylinderMaterial = new BABYLON.StandardMaterial("material", this.scene);
+		cylinderMaterial.emissiveColor = new BABYLON.Color3(1, 0.58, 0);
+		cylinder.material = cylinderMaterial;
+
+		var t = 0;
+		var renderLoop = function () {
+		    //scene.render();
+		    t -= 0.01;
+		    // animation code goes here
+			box.rotation.y = t*2;
+		};
+		this.engine.runRenderLoop(renderLoop);
+		
+	}
+
 	init(){
 		super.init();
 		console.log("init babylonjs_game...");
 		this.create_hud();
-		this.appendscene_extbabylon();
+		//this.appendscene_extbabylon();
 		//this.loadscene_extbabylon();
 		//this.loadmesh_extbabylon();
 
@@ -99,5 +125,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 
 		//this.createscene_objects();
 		//this.createscene_physics();
+		this.createscene_simple();
 	}
 }
