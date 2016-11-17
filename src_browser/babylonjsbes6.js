@@ -66,6 +66,7 @@ class Babylonjsbes6 {
 	    var scene = new BABYLON.Scene(this.engine);
 	    // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
 	    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), scene);
+		console.log(camera);
 	    // target the camera to scene origin
 	    camera.setTarget(BABYLON.Vector3.Zero());
 	    // attach the camera to the canvas
