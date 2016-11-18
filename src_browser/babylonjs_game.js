@@ -171,10 +171,28 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//http://doc.babylonjs.com/classes/2.4/SceneLoader
 		//blender default when export
 		BABYLON.SceneLoader.ImportMesh("Cube", "/assets/", "cube.babylon", this.scene, function (newMeshes, particleSystems) {
-
 		});
-		//cube.babylon.manifest
-		//{    "version" : 1,    "enableSceneOffline" : true,    "enableTexturesOffline" : true}
+		console.log("mesh loading...");
+		/*
+		BABYLON.SceneLoader.ImportMesh("", "/assets/", ".babylon", this.scene, function (newMeshes, particleSystems) {
+			console.log("mesh loaded...");
+			console.log(newMeshes[0]);
+		},function (progress) {
+            // To do: give progress feedback to user
+			//console.log("progress");
+			console.log(progress);
+
+			var percent = (progress.loaded / progress.total) * 100;
+			console.log(percent + "%");
+
+
+			//console.log(progress);
+        },function (error) {
+            // To do: give progress feedback to user
+			console.log(error);
+			//console.log(progress);
+        });
+		*/
 	}
 
 	createscene_simple(){
@@ -204,26 +222,32 @@ class Babylonjs_game extends Babylonjsbes6 {
 		this.engine.runRenderLoop(renderLoop);
 	}
 
+	//load mesh animation
+	//http://www.html5gamedevs.com/topic/10758-stop-the-mesh-animation-autoanimate/
+	// scene.stopAnimation(newMeshes[0])
+	//
+	//
+
 	init(){
 		super.init();
 		console.log("init babylonjs_game...");
 		//this.create_hud2d3d();
-		this.create_hud2d();
+		//this.create_hud2d();
 		//this.appendscene_extbabylon();
-		this.loadscene_extbabylon();
+		//this.loadscene_extbabylon();
+		var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scene);
+		this.loadmesh_extbabylon();
 
-		//this.loadmesh_extbabylon();
-
-		this.camera.position.y = 10;
-		this.camera.position.z = -200;
+		//this.camera.position.y = 10;
+		//this.camera.position.z = -200;
+		this.camera.position.z = -5;
 		this.camera.setTarget(BABYLON.Vector3.Zero());
-
 
 		//init oimo.js physics
 		//this.init_phsics();
 
 		//this.createscene_objects();
 		//this.createscene_physics();
-		this.createscene_simple();
+		//this.createscene_simple();
 	}
 }
