@@ -128,6 +128,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 
 	loadscene_extbabylon(){
 		var self = this;
+
 		BABYLON.SceneLoader.Load("/assets/", "cube.babylon", this.engine, function (newScene) {
             // Wait for textures and shaders to be ready
             newScene.executeWhenReady(function () {
@@ -140,6 +141,7 @@ class Babylonjs_game extends Babylonjsbes6 {
                 // Once the scene is loaded, just register a render loop to render it
                 self.engine.runRenderLoop(function() {
                     newScene.render();
+					console.log("render");
                 });
             });
         }, function (progress) {
@@ -167,12 +169,45 @@ class Babylonjs_game extends Babylonjsbes6 {
         });
 	}
 
+	appendsceneanim_extbabylon(){
+		//http://doc.babylonjs.com/classes/2.4
+		//http://doc.babylonjs.com/classes/2.4/SceneLoader
+		//append
+		var self = this;
+		//BABYLON.SceneLoader.Append("/assets/", "cube.babylon", this.scene, function (newScene) {
+		BABYLON.SceneLoader.Append("/assets/", "arm_cube.babylon", this.scene, function (newScene) {
+            // Wait for textures and shaders to be ready
+            newScene.executeWhenReady(function () {
+				console.log("scene ready!");
+				console.log(self.scene);
+				//blender export all animation to single frame to babylon file.
+				//BABYLON.PlayAnimationAction(newScene.meshes[0], target, 0, 4, loop, condition)
+				var anims = newScene.beginAnimation(newScene.meshes[0], 0, 15, true, 0.5);//works
+				//console.log(anims);
+
+				//console.log(newScene.Animatables );//activete animations in the scene
+				//var anims = newScene.beginDirectAnimation(newScene.meshes[0], newScene.Animatables[0], 0, 5, true, 1);
+				//console.log(newScene.meshes[0].getAnimatables());
+				//var anims = newScene.getAnimatableByTarget(newScene.meshes[0]);//works when animation is playing
+				//console.log(anims);
+				//newScene.beginDirectAnimation(newScene.meshes[0], animations, from, to, loop, speedRatio, onAnimationEnd)
+
+				//BABYLON.PlayAnimationAction("", newScene.meshes[0], 0, 10, true, 0.5);
+            });
+        }, function (progress) {
+            // To do: give progress feedback to user
+			console.log("progress");
+			//console.log(progress);
+        });
+	}
+
 	loadmesh_extbabylon(){
+		console.log("mesh loading...");
 		//http://doc.babylonjs.com/classes/2.4/SceneLoader
 		//blender default when export
 		BABYLON.SceneLoader.ImportMesh("Cube", "/assets/", "cube.babylon", this.scene, function (newMeshes, particleSystems) {
 		});
-		console.log("mesh loading...");
+
 		/*
 		BABYLON.SceneLoader.ImportMesh("", "/assets/", ".babylon", this.scene, function (newMeshes, particleSystems) {
 			console.log("mesh loaded...");
@@ -195,23 +230,83 @@ class Babylonjs_game extends Babylonjsbes6 {
 		*/
 	}
 
+	loadmesh_extglTF(){
+		//http://doc.babylonjs.com/classes/2.4/SceneLoader
+		//blender default when export
+
+		//BABYLON.SceneLoader.ImportMesh("Cube", "/assets/", "cube.gltf", this.scene, function (newMeshes, particleSystems) {
+			//console.log("loading...");
+			//console.log(newMeshes);
+		//});
+
+		//BABYLON.SceneLoader.Append("/assets/", "cube.gltf", this.scene, function (newScene) {
+            // Wait for textures and shaders to be ready
+            //newScene.executeWhenReady(function () {
+				//console.log("scene ready!");
+				//console.log(self.scene);
+            //});
+        //}, function (progress) {
+            // To do: give progress feedback to user
+			//console.log("progress");
+			//console.log(progress);
+        //});
+
+
+		console.log("mesh loading...");
+
+		var self = this;//cube.babylon
+		//BABYLON.SceneLoader.Load("/assets/", "cube.babylon", this.engine, function (newScene) {
+		BABYLON.SceneLoader.Load("/assets/", "Duck.gltf", this.engine, function (newScene) {
+
+            // Wait for textures and shaders to be ready
+            newScene.executeWhenReady(function () {
+                // Attach camera to canvas inputs
+				var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,10), newScene);
+
+				camera.position.x = 0;
+				camera.position.y = 10;
+				camera.position.z = 20;
+				camera.setTarget(BABYLON.Vector3.Zero());
+
+				//var box = BABYLON.Mesh.CreateBox("box", 2, newScene);
+				//box.position.y = 3;
+                newScene.activeCamera.attachControl(self.canvas,false);
+				self.scene2 = newScene;
+				//self.create_hud2d(newScene);
+				console.log(newScene);
+                // Once the scene is loaded, just register a render loop to render it
+				console.log("init render?");
+                self.engine.runRenderLoop(function() {
+                    self.scene2.render();
+					//console.log("render?");
+                });
+            });
+        }, function (progress) {
+			console.log("progress");
+        });
+
+	}
+
 	createscene_simple(){
 		//https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/Building_up_a_basic_demo_with_Babylon.js?utm_content=buffer38bb7&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
 		var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scene);
 
 		var box = BABYLON.Mesh.CreateBox("box", 2, this.scene);
+		box.position.y = 5;
 
 		var boxMaterial = new BABYLON.StandardMaterial("material", this.scene);
 		boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
 		box.material = boxMaterial;
 
+		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scene);
+		/*
 		var cylinder = BABYLON.Mesh.CreateCylinder("cylinder", 2, 2, 2, 12, 1, this.scene);
 		cylinder.position.x = 5;
 		cylinder.rotation.x = -0.2;
 		var cylinderMaterial = new BABYLON.StandardMaterial("material", this.scene);
 		cylinderMaterial.emissiveColor = new BABYLON.Color3(1, 0.58, 0);
 		cylinder.material = cylinderMaterial;
-
+		*/
 		var t = 0;
 		var renderLoop = function () {
 		    //scene.render();
@@ -235,13 +330,26 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.create_hud2d();
 		//this.appendscene_extbabylon();
 		//this.loadscene_extbabylon();
-		var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scene);
-		this.loadmesh_extbabylon();
+		//var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scene);
+		//this.loadmesh_extbabylon();
+
+		BABYLON.GLTFFileLoader.MakeYUP = true; // false by default
+		BABYLON.GLTFFileLoader.HomogeneousCoordinates = true; // false by default
+
 
 		//this.camera.position.y = 10;
 		//this.camera.position.z = -200;
-		this.camera.position.z = -5;
-		this.camera.setTarget(BABYLON.Vector3.Zero());
+		//this.camera.position.x = 0;
+		//this.camera.position.y = 10;
+		//this.camera.position.z = 20;
+		//this.camera.position.z = -5;
+		//this.camera.setTarget(BABYLON.Vector3.Zero());
+
+		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scene);
+		//box.position.y = 0;
+
+		this.appendsceneanim_extbabylon();
+		//this.loadmesh_extglTF();
 
 		//init oimo.js physics
 		//this.init_phsics();
