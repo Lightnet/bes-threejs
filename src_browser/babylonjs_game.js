@@ -13,6 +13,40 @@
 	from the web browser.
 */
 
+class Stats{
+	constructor(args){
+		this.str = 0;
+		this.vit = 0;
+		this.dex = 0;
+		this.agi = 0;
+		this.int = 0;
+
+		this.wisdom = 0;
+		this.charisma  = 0;
+		this.luck = 0;
+
+		this.perception = 0;
+	}
+}
+
+class Condition{
+	constructor(args){
+		this.name = "";
+		this.params = [];
+	}
+}
+
+
+class Status {
+	constructor(args){
+		this.name = "";
+		this.id = "";
+		this.stats= new Stats();
+	}
+}
+
+
+
 class Babylonjs_game extends Babylonjsbes6 {
 	constructor(settings){
 		super(settings);
@@ -174,15 +208,18 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//http://doc.babylonjs.com/classes/2.4/SceneLoader
 		//append
 		var self = this;
+		//block_character.babylon
 		//BABYLON.SceneLoader.Append("/assets/", "cube.babylon", this.scene, function (newScene) {
-		BABYLON.SceneLoader.Append("/assets/", "arm_cube.babylon", this.scene, function (newScene) {
+		//BABYLON.SceneLoader.Append("/assets/", "arm_cube.babylon", this.scene, function (newScene) {
+		BABYLON.SceneLoader.Append("/assets/", "block_character.babylon", this.scene, function (newScene) {
+
             // Wait for textures and shaders to be ready
             newScene.executeWhenReady(function () {
 				console.log("scene ready!");
 				console.log(self.scene);
 				//blender export all animation to single frame to babylon file.
 				//BABYLON.PlayAnimationAction(newScene.meshes[0], target, 0, 4, loop, condition)
-				var anims = newScene.beginAnimation(newScene.meshes[0], 0, 15, true, 0.5);//works
+				var anims = newScene.beginAnimation(newScene.meshes[0], 0, 60, true, 0.5);//works
 				//console.log(anims);
 
 				//console.log(newScene.Animatables );//activete animations in the scene
@@ -205,7 +242,18 @@ class Babylonjs_game extends Babylonjsbes6 {
 		console.log("mesh loading...");
 		//http://doc.babylonjs.com/classes/2.4/SceneLoader
 		//blender default when export
-		BABYLON.SceneLoader.ImportMesh("Cube", "/assets/", "cube.babylon", this.scene, function (newMeshes, particleSystems) {
+		//var filepath = "cube.babylon";
+		//var filepath = "block_character.babylon";
+		var filepath = "block_character02.babylon";
+		var objectname = "Cube";
+		//var filepath = "arm_cube.babylon";
+		//var objectname = "Cube";
+		var self = this;
+
+		BABYLON.SceneLoader.ImportMesh(objectname, "/assets/", filepath, this.scene, function (newMeshes, particleSystems) {
+
+			console.log(newMeshes[0]);
+			self.scene.beginAnimation(newMeshes[0], 0, 15, true, 0.5);//works
 		});
 
 		/*
@@ -255,8 +303,8 @@ class Babylonjs_game extends Babylonjsbes6 {
 		console.log("mesh loading...");
 
 		var self = this;//cube.babylon
-		//BABYLON.SceneLoader.Load("/assets/", "cube.babylon", this.engine, function (newScene) {
-		BABYLON.SceneLoader.Load("/assets/", "Duck.gltf", this.engine, function (newScene) {
+		BABYLON.SceneLoader.Load("/assets/", "cube.babylon", this.engine, function (newScene) {
+		//BABYLON.SceneLoader.Load("/assets/", "Duck.gltf", this.engine, function (newScene) {
 
             // Wait for textures and shaders to be ready
             newScene.executeWhenReady(function () {
@@ -323,6 +371,62 @@ class Babylonjs_game extends Babylonjsbes6 {
 	//
 	//
 
+	loadmesh_blockcharacter(){
+		var filepath = "block_character02.babylon";
+		var objectname = "Cube";
+		//var filepath = "arm_cube.babylon";
+		//var objectname = "Cube";
+		var self = this;
+		BABYLON.SceneLoader.ImportMesh(objectname, "/assets/", filepath, this.scene, function (newMeshes, particleSystems) {
+			console.log(newMeshes[0]);
+			self.scene.beginAnimation(newMeshes[0], 0, 15, true, 0.5);//works
+		});
+	}
+
+
+	create2dhud(){
+		this.hudcanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
+		    id: "ScreenCanvas",
+		    //size: new BABYLON.Size(300, 100),
+		    //backgroundFill: "#4040408F",
+			enableInteraction: true//,
+		    //backgroundRoundRadius: 50,
+			//x:10,
+			//y:400,
+			/*
+		    children: [
+		        new BABYLON.Text2D("Hello World!", {
+		            id: "text",
+		            marginAlignment: "h: center, v:center",
+		            fontName: "20pt Arial",
+		        })
+		    ]
+			*/
+		});
+
+		// Create the "click me!" button
+		var buttonRect = new BABYLON.Rectangle2D(
+		    { parent: this.hudcanvas, id: "button", x: 10, y: 10, width: 100, height: 20, fill: "#40C040FF",
+		        //roundRadius: 10,
+		        children:
+		        [
+		            new BABYLON.Text2D("Action", { fontName: "12pt Arial", marginAlignment: "h: center, v: center" })
+		        ]});
+				buttonRect.pointerEventObservable.add(function (d, s) {
+					console.log("click1");
+				}, BABYLON.PrimitivePointerInfo.PointerUp);
+		var buttonRect2 = new BABYLON.Rectangle2D(
+		    { parent: this.hudcanvas, id: "button", x: 120, y: 10, width: 100, height: 20, fill: "#40C040FF",
+		        //roundRadius: 10,
+		        children:
+		        [
+		            new BABYLON.Text2D("Action2", { fontName: "12pt Arial", marginAlignment: "h: center, v: center" })
+		        ]});
+				buttonRect2.pointerEventObservable.add(function (d, s) {
+					console.log("click2");
+				}, BABYLON.PrimitivePointerInfo.PointerUp);
+	}
+
 	init(){
 		super.init();
 		console.log("init babylonjs_game...");
@@ -332,11 +436,8 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.loadscene_extbabylon();
 		//var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scene);
 		//this.loadmesh_extbabylon();
-
-		BABYLON.GLTFFileLoader.MakeYUP = true; // false by default
-		BABYLON.GLTFFileLoader.HomogeneousCoordinates = true; // false by default
-
-
+		//BABYLON.GLTFFileLoader.MakeYUP = true; // false by default
+		//BABYLON.GLTFFileLoader.HomogeneousCoordinates = true; // false by default
 		//this.camera.position.y = 10;
 		//this.camera.position.z = -200;
 		//this.camera.position.x = 0;
@@ -344,18 +445,20 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.camera.position.z = 20;
 		//this.camera.position.z = -5;
 		//this.camera.setTarget(BABYLON.Vector3.Zero());
-
-		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scene);
-		//box.position.y = 0;
-
-		this.appendsceneanim_extbabylon();
+		var box = BABYLON.Mesh.CreateBox("box", 2, this.scene);
+		box.position.y = 0;
+		//this.appendsceneanim_extbabylon();
 		//this.loadmesh_extglTF();
-
 		//init oimo.js physics
 		//this.init_phsics();
-
 		//this.createscene_objects();
 		//this.createscene_physics();
 		//this.createscene_simple();
+
+
+		//this.loadmesh_blockcharacter();
+		this.create2dhud();
+
+
 	}
 }

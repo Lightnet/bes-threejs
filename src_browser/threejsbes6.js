@@ -479,10 +479,16 @@ class Threejsbes6 {
 		this.effectComposer.addPass(copyPass);
 	}
 
+	update(){
+
+
+	}
+
 	render(){
 		requestAnimationFrame(()=>{this.render()});
 		//this.cube.rotation.x += 0.1;
 		//this.cube.rotation.y += 0.1;
+		this.update();
 		if(this.trackcamera !=null){
 			this.trackcamera.update();
 		}
