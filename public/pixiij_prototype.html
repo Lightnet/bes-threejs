@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <html>
 	<head>
-		<title> threejs game </title>
+		<title> threejs pixiijs game </title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
@@ -19,7 +19,6 @@
 		<script type="text/javascript" src='/js/postprocessing/MaskPass.js'></script>
 		<script type="text/javascript" src='/js/postprocessing/ShaderPass.js'></script>
 		<script type="text/javascript" src="/js/threejsbes6.js"></script>
-		<script type="text/javascript" src="/js/threejs_game.js"></script>
 		<script type="text/javascript" src="/js/pixi.min.js"></script>
 		<style>
 			html, body {
@@ -34,8 +33,44 @@
 		<div id="blocker"></div>
 
 		<script>
+
+			var renderer = PIXI.autoDetectRenderer(80, 60,{backgroundColor : 0x1099bb},false);
+			document.body.appendChild(renderer.view);
+
+			// create the root of the scene graph
+			var stage = new PIXI.Container();
+
+			var sprite = PIXI.Sprite.fromImage('/assets/bunny.png');
+
+			sprite.position.set(0,0);
+			sprite.interactive = true;
+			sprite.on('mousedown', onDown);
+			sprite.on('touchstart', onDown);
+
+			stage.addChild(sprite);
+
+			function onDown (eventData) {
+
+			    sprite.scale.x += 0.3;
+			    sprite.scale.y += 0.3;
+			}
+			// start animating
+			animate();
+
+			function animate() {
+
+			    requestAnimationFrame(animate);
+				//console.log("render?");
+
+			    // render the root container
+			    renderer.render(stage);
+			}
+
+
+			/*
 			var threejsapi;
 			var game = new Threejs_game({onload:true,bupdateobjects:true});
+			*/
 		</script>
 	</body>
 </html>

@@ -25,7 +25,8 @@ class Threejs_game extends Threejsbes6 {
 	constructor(settings){
 		super(settings);
 	}
-
+	//http://stackoverflow.com/questions/29421702/threejs-texture
+	//yourTexture.minFilter = THREE.LinearFilter
 	create_hud(){
 		this.hudCanvas = document.createElement('canvas');
 		var width = window.innerWidth;
@@ -76,16 +77,17 @@ class Threejs_game extends Threejsbes6 {
 		var width = window.innerWidth;
         var height = window.innerHeight;
         // Again, set dimensions to fit the screen.
-        this.hudCanvas.width = 512;
-        this.hudCanvas.height = 512;
+        this.hudCanvas.width = width;
+        this.hudCanvas.height = height;
         // Get 2D context and draw something supercool.
         this.hudBitmap = this.hudCanvas.getContext('2d');
         this.hudBitmap.font = "Normal 40px Arial";
         this.hudBitmap.textAlign = 'center';
         this.hudBitmap.fillStyle = "rgba(200,200,200,0.75)";
-        this.hudBitmap.fillText('Initializing...', 512 / 2, 512 / 2);
+        this.hudBitmap.fillText('Initializing...', width / 2, height / 2);
 
 		this.hudTexture = new THREE.Texture(this.hudCanvas);
+		this.hudTexture.minFilter = THREE.LinearFilter
 		//console.log(this.hudTexture);
         this.hudTexture.needsUpdate = true;
 		//this.hudTexture.addEventListener
@@ -126,6 +128,15 @@ class Threejs_game extends Threejsbes6 {
 		this.scene.add(sprite);
 	}
 
+	create_hud_sprite2d(){
+		this.hudCanvas = document.createElement('canvas');
+		//var material = THREE.SpriteCanvasMaterial({canvas })
+		//var sprite = new THREE.Sprite(material);
+
+		console.log(THREE);
+
+	}
+
 	update(){
 		super.update();
 		if(this.count == null){
@@ -146,6 +157,75 @@ class Threejs_game extends Threejsbes6 {
 		*/
 	}
 
+	createsimple2dtext(){
+		var c = document.createElement('canvas');
+		c.width = 64;
+		c.height = 64;
+	      //c.getContext('2d').font = '50px Arial';
+	      //c.getContext('2d').fillText('Hello, world!', 2, 50);
+
+		  var renderer = PIXI.autoDetectRenderer(64, 64,{backgroundColor : 0x1099bb,canvas:c});
+		  //var renderer = PIXI.autoDetectRenderer(64, 64,{backgroundColor : 0x1099bb, view:this.renderer.domElement},false);
+		  //document.body.appendChild(renderer.view);
+
+		  // create the root of the scene graph
+		  var stage = new PIXI.Container();
+
+		  var sprite = PIXI.Sprite.fromImage('/assets/bunny.png');
+
+		  sprite.position.set(0,0);
+		  sprite.interactive = true;
+		  sprite.on('mousedown', onDown);
+		  sprite.on('touchstart', onDown);
+
+		  stage.addChild(sprite);
+
+		  function onDown (eventData) {
+
+			  sprite.scale.x += 0.3;
+			  sprite.scale.y += 0.3;
+		  }
+		  // start animating
+		  animate();
+
+
+
+		  var tex = new THREE.Texture(renderer.view);
+	      //var tex = new THREE.Texture(c);
+	      tex.needsUpdate = true;
+	      var mat = new THREE.MeshBasicMaterial({map: tex});
+	      //mat.transparent = true;
+		  console.log(c.width + ":" + c.height);
+	      var titleQuad = new THREE.Mesh(
+			  //new THREE.PlaneGeometry(c.width, c.height),
+			  new THREE.PlaneGeometry(5, 5),
+			  mat
+	      );
+	      titleQuad.doubleSided = true;
+
+		  this.scene.add(titleQuad);
+
+
+		  function animate() {
+			  if(sprite !=null){
+				  sprite.scale.y += 0.1;
+				  if(sprite.scale.y > 2){
+					  sprite.scale.y = 1;
+					  console.log("?");
+				  }
+			  }
+			  if(tex !=null){
+				  tex.needsUpdate = true;
+				  //console.log("update?");
+			  }
+			  requestAnimationFrame(animate);
+			  //console.log("render?");
+			  // render the root container
+			  renderer.render(stage);
+		  }
+
+	}
+
 	init(){
 		super.init();
 		var self = this;
@@ -156,10 +236,21 @@ class Threejs_game extends Threejsbes6 {
 		//this.create_hud();
 		this.create_hud_sprite();
 
+		//this.create_hud_sprite2d();
+
+		//this.createsimple2dtext();
+
 		var geometry = new THREE.BoxGeometry( .1, .1, .1 );
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 		this.cube = new THREE.Mesh( geometry, material );
+		this.cube.position.y = 1;
 		this.scene.add( this.cube );
+
+		 this.cube.addEventListener('click', onGlobeClick);
+
+		 function onGlobeClick(event) {
+			 console.log("test?");
+		 }
 
 		//this.domEvents.addEventListener(this.cube, 'click', function(event){
     		//console.log('you clicked on the mesh')
@@ -173,14 +264,10 @@ class Threejs_game extends Threejsbes6 {
 			//this.rotation.y += 0.1;
 			//console.log("update?");
 		}
-		this.camera.position.z = 5;
+		//this.camera.position.z = 5;
+		this.camera.position.z = 2;
 		//this.objects.push(this.cube);//ray cast
-		this.setup_mouseraycast();
-
-
-
-
-
+		//this.setup_mouseraycast();
 
 
 
