@@ -259,6 +259,52 @@ class Threejs_game extends Threejsbes6 {
 		//group.add( object );
 		this.scenecss3d.add( object );
 
+
+
+
+
+		//var renderer = PIXI.autoDetectRenderer(800, 600,{backgroundColor : 0x1099bb},false);
+		var renderer = PIXI.autoDetectRenderer(800, 600,{transparent:true},false);
+		//document.body.appendChild(renderer.view);
+
+		// create the root of the scene graph
+		var stage = new PIXI.Container();
+
+		var sprite = PIXI.Sprite.fromImage('/assets/bunny.png');
+
+		sprite.position.set(0,0);
+		sprite.interactive = true;
+		sprite.on('mousedown', onDown);
+		sprite.on('touchstart', onDown);
+
+		stage.addChild(sprite);
+
+		function onDown (eventData) {
+
+			sprite.scale.x += 0.3;
+			sprite.scale.y += 0.3;
+		}
+		// start animating
+		animate();
+
+		function animate() {
+
+			requestAnimationFrame(animate);
+			//console.log("render?");
+
+			// render the root container
+			renderer.render(stage);
+		}
+
+
+		var object = new THREE.CSS3DObject( renderer.view );
+
+		object.position.set( 0, 0, 1 );
+		object.rotation.y = 0;
+		//var group = new THREE.Group();
+		//group.add( object );
+		this.scenecss3d.add( object );
+
 	}
 
 	SelectClick(){
@@ -300,7 +346,7 @@ class Threejs_game extends Threejsbes6 {
 		//this.camera.position.z = 5;
 		this.camera.position.z = 2;
 		//this.objects.push(this.cube);//ray cast
-		//this.setup_mouseraycast();
+		this.setup_mouseraycast();
 
 		this.setup_css3d_hud();
 
