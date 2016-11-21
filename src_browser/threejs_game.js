@@ -89,7 +89,7 @@ class Threejs_game extends Threejsbes6 {
         this.hudBitmap.fillText('Initializing...', width / 2, height / 2);
 
 		this.hudTexture = new THREE.Texture(this.hudCanvas);
-		this.hudTexture.minFilter = THREE.LinearFilter
+		this.hudTexture.minFilter = THREE.LinearFilter;
 		//console.log(this.hudTexture);
         this.hudTexture.needsUpdate = true;
 		//this.hudTexture.addEventListener
@@ -350,6 +350,8 @@ class Threejs_game extends Threejsbes6 {
 		//this.objects.push(this.cube);//ray cast
 		this.setup_mouseraycast();
 		this.setup_css3d_hud();
+
+		//this.showloadingscreen();
 
 		//function onWindowResize() {
 			//self.camera.aspect = window.innerWidth / window.innerHeight;

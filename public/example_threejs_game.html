@@ -9,14 +9,6 @@
 		<script type="text/javascript" src="/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/js/three.min.js"></script>
-		<script type="text/javascript" src="/js/controls/TrackballControls.js"></script>
-		<script type="text/javascript" src="/js/renderers/CSS3DRenderer.js"></script>
-		<script type="text/javascript" src='/js/shaders/CopyShader.js'></script>
-		<script type="text/javascript" src='/js/postprocessing/EffectComposer.js'></script>
-		<script type="text/javascript" src='/js/postprocessing/ClearPass.js'></script>
-		<script type="text/javascript" src='/js/postprocessing/RenderPass.js'></script>
-		<script type="text/javascript" src='/js/postprocessing/MaskPass.js'></script>
-		<script type="text/javascript" src='/js/postprocessing/ShaderPass.js'></script>
 		<script type="text/javascript" src="/js/threejsbes6.js"></script>
 		<script type="text/javascript" src="/js/example_threejs_game.js"></script>
 		<style>
@@ -25,21 +17,17 @@
 				height: 100%;
 				overflow: hidden;
 			}
-
-			.three-div{
-			    background: #BADA55;
-			    color: #E50000;
-			    font-family: Arial, Helvetica, Sans-serif;
-			    font-size: 2em;
-			    padding: 0.1em;
-			}
 		</style>
 	</head>
 	<body>
 		<div id="container"></div>
-		<div id="blocker"></div>
 		<script>
-			var game = new Example_threejs_game({onload:true});
+			var config = {
+				onload:true,
+				bupdateobjects:true
+			};
+
+			var game = new Example_threejs_game(config);
 		</script>
 	</body>
 </html>

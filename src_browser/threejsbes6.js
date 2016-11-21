@@ -50,10 +50,16 @@ class Threejsbes6 {
 		this.mappdata;
 		this.scriptcount = 0;
 		this.loader = new THREE.XHRLoader();
-		this.CLASSGAME;
+		//this.CLASSGAME;
 
 		this.scriptlist = [
 			'/js/libs/threex.domevents.js',
+			'js/loaders/FBXLoader.js',
+			'js/loaders/collada/Animation.js',
+			'js/loaders/collada/AnimationHandler.js',
+			'js/loaders/collada/KeyFrameAnimation.js',
+			'js/loaders/ColladaLoader.js',
+			'js/loaders/OBJLoader.js',
 			'/js/controls/TrackballControls.js',
 			'/js/renderers/CSS3DRenderer.js',
 			'/js/shaders/CopyShader.js',
@@ -68,6 +74,7 @@ class Threejsbes6 {
 
 		this.initloadingscreen();
 		this.showloadingscreen();
+		//this.loadingscreentext('test...');
 
 		if(settings != null){
 			if(settings['mode'] != null){
@@ -85,11 +92,11 @@ class Threejsbes6 {
 			if (settings['bablephysics'] != null) {
                 this.bablephysics = settings['bablephysics'];
             }
-			if (settings['_class'] != null) {
-                this.CLASSGAME = settings['_class'];
-            }else{
-				this.CLASSGAME = Threejsbes6;
-			}
+			//if (settings['_class'] != null) {
+                //this.CLASSGAME = settings['_class'];
+            //}else{
+				//this.CLASSGAME = Threejsbes6;
+			//}
 			//this need to be last else it variable are not assign
             if (settings['onload'] == true) {
                 this.addListener("load", window, function () {
@@ -101,7 +108,6 @@ class Threejsbes6 {
                 console.log('init threejs setup...');
                 //this.init();
 				this.loadlibraries();
-
             }
 
 			if(settings['load'] !=null ){
@@ -113,12 +119,18 @@ class Threejsbes6 {
 			}
 			console.log("Map: " + this.bmap + " url: "+ this.mapurl);
 		}
-
 		//this.hideloadingscreen();
 		//this.showloadingscreen();
 	}
 
 	initloadingscreen(){
+		var styleloadingscreen = document.createElement("style");
+		styleloadingscreen.innerHTML = '';
+		styleloadingscreen.innerHTML += '.loader {border: 16px solid #f3f3f3;border-top: 16px solid #3498db;border-radius: 50%;width: 120px;height: 120px;animation: spin 2s linear infinite;}';
+		styleloadingscreen.innerHTML += '\n@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg);}}';
+		styleloadingscreen.type = 'text/css';
+		document.getElementsByTagName('head')[0].appendChild(styleloadingscreen);
+
 		var divloadingscreen = document.createElement("div");
 		divloadingscreen.id = "loadingscreen";
 		divloadingscreen.style['background-color'] = '#dddddd';
@@ -127,13 +139,12 @@ class Threejsbes6 {
 		divloadingscreen.style.left = 0;
 		divloadingscreen.style.width = '100%';
 		divloadingscreen.style.height = '100%';
-		//divloadingscreen.style.display  = 'none';
-		//divloadingscreen.style.visibility = 'hidden';
-
-		divloadingscreen.innerHTML = "<div style='background-color: #dddddd;position: absolute;left: 0;height: 50%;width: 100%;top: 50%;vertical-align:middle;'><center>Loading...</center><div>";
-
-		//divloadingscreen.
+		divloadingscreen.innerHTML = "<div style='background-color: #dddddd;position: absolute;left: 0;height: 50%;width: 100%;top: 50%;'><center><div class='loader'></div></center> <center id='loadingscreentext'>Loading...</center></div>"
 		document.getElementsByTagName('body')[0].appendChild(divloadingscreen);
+	}
+
+	loadingscreentext(_TEXT="loading......"){
+		document.getElementById('loadingscreentext').innerHTML = _TEXT;
 	}
 
 	showloadingscreen(){
@@ -142,8 +153,6 @@ class Threejsbes6 {
 
 	hideloadingscreen(){
 		document.getElementById('loadingscreen').style.display = 'none';
-		//document.getElementById('loadingscreen').style.visibility = 'hidden';
-		//document.getElementById('loadingscreen').style.display = 'inline';
 	}
 
 	loadlibraries(){
@@ -441,6 +450,7 @@ class Threejsbes6 {
         this.hudBitmap.fillText('Initializing...', width / 2, height / 2);
 
 		this.hudTexture = new THREE.Texture(this.hudCanvas);
+		this.hudTexture.minFilter = THREE.LinearFilter;
         this.hudTexture.needsUpdate = true;
 		var material = new THREE.MeshBasicMaterial({ map: this.hudTexture });
         material.transparent = true;

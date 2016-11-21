@@ -16,6 +16,7 @@
 class Example_threejs_ammo extends Threejsbes6 {
 	constructor(settings){
 		super(settings);
+		this.scriptlist.push('/js/example_threejs_oimo.js');
 	}
 
 	basicTexture(n) {
@@ -183,5 +184,6 @@ class Example_threejs_ammo extends Threejsbes6 {
 
 		//this.setup_webgl_basics();
 		this.createOimoScene();
+		this.setup_trackcamera();
 	}
 }

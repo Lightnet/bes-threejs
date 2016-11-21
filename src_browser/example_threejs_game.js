@@ -16,6 +16,7 @@
 class Example_threejs_game extends Threejsbes6 {
 	constructor(settings){
 		super(settings);
+		//this.scriptlist.push('/js/...');
 	}
 
 	init(){
@@ -23,5 +24,6 @@ class Example_threejs_game extends Threejsbes6 {
 		console.log("test?");
 		this.setup_webgl_basics();
 		this.setup_hud_draw();
+		this.setup_trackcamera();
 	}
 }

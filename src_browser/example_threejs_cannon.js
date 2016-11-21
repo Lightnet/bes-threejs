@@ -16,6 +16,7 @@
 class Example_threejs_ammo extends Threejsbes6 {
 	constructor(settings){
 		super(settings);
+		this.scriptlist.push('/js/libs/cannon.min.js');
 	}
 
 	basicTexture(n) {
@@ -237,5 +238,6 @@ class Example_threejs_ammo extends Threejsbes6 {
 
 		//this.setup_webgl_basics();
 		this.createCannonScene();
+		this.setup_trackcamera();
 	}
 }
