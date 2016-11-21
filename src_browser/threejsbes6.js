@@ -251,9 +251,9 @@ class Threejsbes6 {
 		});
 	}
 
-	setup_css3d_editor(){
+	setup_css3d(){
 		var container = document.getElementById( 'container' );
-
+		/*
 		var Element = function ( id, x, y, z, ry ) {
 
 			var div = document.createElement( 'div' );
@@ -274,56 +274,9 @@ class Threejsbes6 {
 
 			return object;
 		};
+		*/
 
-		this.cameracss3d = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
-		//this.cameracss3d.position.set( 500, 350, 750 );
-		this.cameracss3d.position.set( 0, 0, 1024 );
-		this.scenecss3d = new THREE.Scene();
-		this.renderercss3d = new THREE.CSS3DRenderer();
-		this.renderercss3d.setSize( window.innerWidth, window.innerHeight );
-		this.renderercss3d.domElement.style.position = 'absolute';
-		this.renderercss3d.domElement.style.top = 0;
-		container.appendChild( this.renderercss3d.domElement );
 
-		//var group = new THREE.Group();
-		//group.add( new Element( '', 0, 0, 240, 0 ) );
-		//group.add( new Element( '', 240, 0, 0, Math.PI / 2 ) );
-		//group.add( new Element( '', 0, 0, - 240, Math.PI ) );
-		//group.add( new Element( '', - 240, 0, 0, - Math.PI / 2 ) );
-		//this.scenecss3d.add( group );
-
-		var controls = new THREE.TrackballControls( this.cameracss3d );
-		controls.rotateSpeed = 4;
-		controls.zoomSpeed = 0.01;
-		//console.log(controls);
-		//var blocker = document.getElementById( 'blocker' );
-		//blocker.style.display = 'none';
-
-		document.addEventListener( 'mousedown', function () {
-			//blocker.style.display = '';
-		});
-		document.addEventListener( 'mouseup', function () {
-			//blocker.style.display = 'none';
-		});
-		var self = this;
-		function animate() {
-			requestAnimationFrame( animate );
-			controls.update();
-			//console.log("update?");
-			self.renderercss3d.render( self.scenecss3d, self.cameracss3d );
-		}
-		animate();
-
-		function onWindowResize() {
-			self.cameracss3d.aspect = window.innerWidth / window.innerHeight;
-			self.cameracss3d.updateProjectionMatrix();
-			self.renderercss3d.setSize( window.innerWidth, window.innerHeight );
-		}
-		window.addEventListener( 'resize', onWindowResize, false );
-	}
-
-	setup_css3d(){
-		var container = document.getElementById( 'container' );
 		this.cameracss3d = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
 		//this.cameracss3d.position.set( 500, 350, 750 );
 		this.cameracss3d.position.set( 0, 0, 650 );
@@ -334,19 +287,14 @@ class Threejsbes6 {
 		this.renderercss3d.domElement.style.top = 0;
 		container.appendChild( this.renderercss3d.domElement );
 
-		var controls = new THREE.TrackballControls( this.cameracss3d );
-		controls.rotateSpeed = 4;
-		controls.zoomSpeed = 0.01;
-
 		var self = this;
-		function animate() {
-			requestAnimationFrame( animate );
-			controls.update();
+		//function animate() {
+			//requestAnimationFrame( animate );
+			//trackcontrolcss3d.update();
 			//console.log("update?");
-			self.renderercss3d.render( self.scenecss3d, self.cameracss3d );
-		}
-
-		animate();
+			//self.renderercss3d.render( self.scenecss3d, self.cameracss3d );
+		//}
+		//animate();
 
 		function onWindowResize() {
 			self.cameracss3d.aspect = window.innerWidth / window.innerHeight;
@@ -356,7 +304,15 @@ class Threejsbes6 {
 		window.addEventListener( 'resize', onWindowResize, false );
 	}
 
-	//scene , camera
+	//css3d
+	setup_trackcamera_css3d(){
+		var trackcontrolcss3d = new THREE.TrackballControls( this.cameracss3d );
+		trackcontrolcss3d.rotateSpeed = 4;
+		trackcontrolcss3d.zoomSpeed = 0.01;
+		this.trackcontrolcss3d = trackcontrolcss3d;
+	}
+
+	//webgl
 	setup_trackcamera(){
 		var controls = new THREE.TrackballControls( this.camera );
 		controls.rotateSpeed = 4;
@@ -397,24 +353,17 @@ class Threejsbes6 {
 		this.renderer.autoClear = false;
 		//this.renderer.shadowMap.enabled = true;
 		//this.renderer.shadowMap.type = THREE.PCFShadowMap; //THREE.BasicShadowMap;
-		if(this.mode == "css3dwebgl"){
-			webgldiv.appendChild(this.renderer.domElement);
-			var object = new THREE.CSS3DObject( webgldiv );
-			object.position.set( 0, 0, 0 );
-			object.rotation.y = 0;
-			var group = new THREE.Group();
-			group.add( object );
-			this.scenecss3d.add( group );
-		}
 
-		if(this.mode == "editor"){
+		if((this.mode == "editor")||(this.mode == "css3dwebgl")){
 			webgldiv.appendChild(this.renderer.domElement);
 			var object = new THREE.CSS3DObject( webgldiv );
 			object.position.set( 0, 0, 0 );
 			object.rotation.y = 0;
 			var group = new THREE.Group();
 			group.add( object );
-			this.setup_editor(group);
+			if(this.mode == "editor"){
+				this.setup_editor(group);
+			}
 			this.scenecss3d.add( group );
 		}
 		//this.setup_webgl_basics();
@@ -603,13 +552,16 @@ class Threejsbes6 {
 
 		var renderpass1 = new THREE.RenderPass(this.scene, this.camera);
 		renderpass1.renderToScreen = false;
-
-		var renderpass2 = new THREE.RenderPass(this.scenehud, this.camerahud);
-		renderpass2.clear = false;
+		if((this.scenehud !=null)&&(this.camerahud != null)){
+			var renderpass2 = new THREE.RenderPass(this.scenehud, this.camerahud);
+			renderpass2.clear = false;
+		}
 
 		this.effectComposer = new THREE.EffectComposer(this.renderer);
 		this.effectComposer.addPass(renderpass1);
-        this.effectComposer.addPass(renderpass2);
+		if((this.scenehud !=null)&&(this.camerahud != null)){
+        	this.effectComposer.addPass(renderpass2);
+		}
 
 		this.effectComposer.addPass(copyPass);
 	}
@@ -625,6 +577,10 @@ class Threejsbes6 {
 		this.update();
 		if(this.trackcamera !=null){
 			this.trackcamera.update();
+		}
+
+		if(this.trackcontrolcss3d !=null){
+			this.trackcontrolcss3d.update();
 		}
 
 		//custom update function check
@@ -648,10 +604,17 @@ class Threejsbes6 {
 		if (this.bablephysics == true) {
             this.updatePhysics();
         }
+
+		if(this.renderercss3d !=null){
+			this.renderercss3d.render( this.scenecss3d, this.cameracss3d );
+			//console.log("render?");
+		}
+
 		//this.renderer.render(this.scene, this.camera);
 		if(this.effectComposer !=null){
 			this.effectComposer.render();
 		}
+
 	}
 
 //===============================================
@@ -751,6 +714,8 @@ class Threejsbes6 {
 						threejsapi.parseObject(mappdata.entities[i]);
 					}
 					console.log('Finish loading!');
+
+					self.hideloadingscreen();
 
 					//self.loadScript("/assets/test1.js", function(){
 						//initialization code
@@ -2158,20 +2123,15 @@ class Threejsbes6 {
 //===============================================
 //
 //===============================================
-	init_simple(){
+	setup_render(){
 		this.setup_network();
 
-		//content render
-		if(this.mode == "editor"){
-			//this.setup_css3d();
-			this.setup_css3d_editor();
-		}
-
-		if(this.mode == "css3dwebgl"){
+		if((this.mode == "css3dwebgl")||(this.mode == "editor")){
+			//css3d render
 			this.setup_css3d();
 		}
 
-		//panel render
+		//webgl render
 		this.setup_webgl();
 		this.setup_hud();
 
@@ -2182,18 +2142,18 @@ class Threejsbes6 {
 		//render pass with two secnes
 		this.setup_renderpass();
 		this.render();
+		if(this.bmap == false){
+			this.hideloadingscreen();
+		}
 	}
 
 	init(){
-		this.init_simple();
-		//this.loadlibraries();
-		this.hideloadingscreen();
-
+		this.setup_render();
+		//this.hideloadingscreen();
 		if(this.bablephysics){
 			this.initPhysics();
 		}
-
-		console.log("game init");
+		//console.log("game init");
 	}
 }
 

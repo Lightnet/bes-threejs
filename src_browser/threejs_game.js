@@ -313,11 +313,27 @@ class Threejs_game extends Threejsbes6 {
 		console.log("click?");
 	}
 
+	loadmeshjson(){
+		var mesh = null;
+		var self = this;
+	    var loader = new THREE.JSONLoader();
+
+	    loader.load('/assets/cube.json', function(geometry) {
+	        mesh = new THREE.Mesh(geometry);
+			mesh.scale.set(0.1,0.1,0.1);
+	        self.scene.add(mesh);
+			console.log(mesh);
+	    });
+
+	}
+
 	init(){
 		super.init();
-
 		var self = this;
 		console.log("Class Threejs_game init");
+
+		//this.camera.position.z = 5;
+		this.camera.position.z = 2;
 
 		//this.domEvents = new THREEx.DomEvents(this.camera, this.renderer.domElement);
 		//this.domEvents = new THREEx.DomEvents(this.cameracss3d, this.renderercss3d.domElement);
@@ -338,21 +354,24 @@ class Threejs_game extends Threejsbes6 {
 		//this.domEvents.addEventListener(this.cube, 'click', function(event){
     		//console.log('you clicked on the mesh');
 		//}, false);
-
 		//custom update for threejs render call
 		this.cube.update = function (){
 			//this.rotation.x += 0.1;
 			//this.rotation.y += 0.1;
 			//console.log("update?");
 		}
-		//this.camera.position.z = 5;
-		this.camera.position.z = 2;
+
 		//this.objects.push(this.cube);//ray cast
-		this.setup_mouseraycast();
+		//this.setup_mouseraycast();
+
 		this.setup_css3d_hud();
+		this.loadmeshjson();
+		//css3d
+		//this.setup_trackcamera_css3d();
+		//webgl
+		this.setup_trackcamera();
 
 		//this.showloadingscreen();
-
 		//function onWindowResize() {
 			//self.camera.aspect = window.innerWidth / window.innerHeight;
 			//self.camera.updateProjectionMatrix();
