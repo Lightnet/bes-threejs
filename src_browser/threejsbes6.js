@@ -52,6 +52,18 @@ class Threejsbes6 {
 		this.loader = new THREE.XHRLoader();
 		this.CLASSGAME;
 
+		this.scriptlist = [
+			'/js/libs/threex.domevents.js',
+			'/js/controls/TrackballControls.js',
+			'/js/renderers/CSS3DRenderer.js',
+			'/js/shaders/CopyShader.js',
+			'/js/postprocessing/EffectComposer.js',
+			'/js/postprocessing/ClearPass.js',
+			'/js/postprocessing/RenderPass.js',
+			'/js/postprocessing/MaskPass.js',
+			'/js/postprocessing/ShaderPass.js'
+		];
+
 		var _this = this;
 
 		if(settings != null){
@@ -79,11 +91,14 @@ class Threejsbes6 {
             if (settings['onload'] == true) {
                 this.addListener("load", window, function () {
                     console.log('init window listen threejs setup... ');
-                    _this.init();
+                    //_this.init();
+					_this.loadlibraries();
                 });
             } else {
                 console.log('init threejs setup...');
-                this.init();
+                //this.init();
+				this.loadlibraries();
+
             }
 
 			if(settings['load'] !=null ){
@@ -95,6 +110,43 @@ class Threejsbes6 {
 			}
 			console.log("Map: " + this.bmap + " url: "+ this.mapurl);
 		}
+	}
+
+	loadlibraries(){
+		var scriptcount = 0;
+		var scriptlist = this.scriptlist;
+		var self = this;
+		for(var i = 0; i < scriptlist.length;i++){
+			//threejsapi.addScript(mappdata.scripts[i]);
+			this.loadjavascript(scriptlist[i], function(){
+				//initialization code
+				scriptcount++;
+				console.log("script: "+scriptcount + ":" + (scriptlist.length));
+				if(scriptcount == scriptlist.length){ //make sure the scripts are load else it can't used script components
+					console.log('Finish load javascript libs!');
+					self.init();
+				}
+			});
+		}
+	}
+
+	loadjavascript(url, callback){
+	    var script = document.createElement("script")
+	    script.type = "text/javascript";
+	    if (script.readyState){  //IE
+	        script.onreadystatechange = function(){
+	            if (script.readyState == "loaded" || script.readyState == "complete"){
+	                script.onreadystatechange = null;
+	                callback();
+	            }
+	        };
+	    } else {  //Others
+	        script.onload = function(){
+	            callback();
+	        };
+	    }
+	    script.src = url;
+		document.getElementsByTagName('head')[0].appendChild(script);
 	}
 
 	//script <div id="scriptcomponents"></div> list <script></script>
@@ -2089,9 +2141,12 @@ class Threejsbes6 {
 
 	init(){
 		this.init_simple();
+		//this.loadlibraries();
+
 		if(this.bablephysics){
 			this.initPhysics();
 		}
+
 		console.log("game init");
 	}
 }

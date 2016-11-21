@@ -24,6 +24,8 @@ function addListener(event, obj, fn) {
 class Threejs_game extends Threejsbes6 {
 	constructor(settings){
 		super(settings);
+		//add custom javascript add here.
+		this.scriptlist.push('/js/pixi.min.js');
 	}
 	//http://stackoverflow.com/questions/29421702/threejs-texture
 	//yourTexture.minFilter = THREE.LinearFilter
@@ -313,8 +315,10 @@ class Threejs_game extends Threejsbes6 {
 
 	init(){
 		super.init();
+
 		var self = this;
-		console.log("Threejs_game?");
+		console.log("Class Threejs_game init");
+
 		//this.domEvents = new THREEx.DomEvents(this.camera, this.renderer.domElement);
 		//this.domEvents = new THREEx.DomEvents(this.cameracss3d, this.renderercss3d.domElement);
 		//this.setup_webgl_basics();
@@ -335,8 +339,6 @@ class Threejs_game extends Threejsbes6 {
     		//console.log('you clicked on the mesh');
 		//}, false);
 
-
-
 		//custom update for threejs render call
 		this.cube.update = function (){
 			//this.rotation.x += 0.1;
@@ -347,11 +349,7 @@ class Threejs_game extends Threejsbes6 {
 		this.camera.position.z = 2;
 		//this.objects.push(this.cube);//ray cast
 		this.setup_mouseraycast();
-
 		this.setup_css3d_hud();
-
-
-
 
 		//function onWindowResize() {
 			//self.camera.aspect = window.innerWidth / window.innerHeight;
