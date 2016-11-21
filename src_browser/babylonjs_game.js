@@ -372,14 +372,19 @@ class Babylonjs_game extends Babylonjsbes6 {
 	//
 
 	loadmesh_blockcharacter(){
-		var filepath = "block_character02.babylon";
-		var objectname = "Cube";
+		//var filepath = "block_character02.babylon";
+		//var objectname = "Cube";
+		var filepath = "block_character03.babylon";
+		var objectname = "CubeBody";
+
+
 		//var filepath = "arm_cube.babylon";
 		//var objectname = "Cube";
 		var self = this;
 		BABYLON.SceneLoader.ImportMesh(objectname, "/assets/", filepath, this.scene, function (newMeshes, particleSystems) {
 			console.log(newMeshes[0]);
-			self.scene.beginAnimation(newMeshes[0], 0, 15, true, 0.5);//works
+			//self.scene.beginAnimation(newMeshes[0], 0, 15, true, 0.5);//works
+			self.scene.beginAnimation(newMeshes[0], 11, 20, true, 0.5);//works
 		});
 	}
 
@@ -445,8 +450,8 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.camera.position.z = 20;
 		//this.camera.position.z = -5;
 		//this.camera.setTarget(BABYLON.Vector3.Zero());
-		var box = BABYLON.Mesh.CreateBox("box", 2, this.scene);
-		box.position.y = 0;
+		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scene);
+		//box.position.y = 0;
 		//this.appendsceneanim_extbabylon();
 		//this.loadmesh_extglTF();
 		//init oimo.js physics
@@ -456,6 +461,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.createscene_simple();
 
 
+		this.loadmesh_blockcharacter();
 		//this.loadmesh_blockcharacter();
 		this.create2dhud();
 

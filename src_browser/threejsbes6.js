@@ -155,7 +155,7 @@ class Threejsbes6 {
 		});
 	}
 
-	setup_css3d(){
+	setup_css3d_editor(){
 		var container = document.getElementById( 'container' );
 
 		var Element = function ( id, x, y, z, ry ) {
@@ -226,6 +226,41 @@ class Threejsbes6 {
 		window.addEventListener( 'resize', onWindowResize, false );
 	}
 
+	setup_css3d(){
+		var container = document.getElementById( 'container' );
+		this.cameracss3d = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
+		//this.cameracss3d.position.set( 500, 350, 750 );
+		this.cameracss3d.position.set( 0, 0, 650 );
+		this.scenecss3d = new THREE.Scene();
+		this.renderercss3d = new THREE.CSS3DRenderer();
+		this.renderercss3d.setSize( window.innerWidth, window.innerHeight );
+		this.renderercss3d.domElement.style.position = 'absolute';
+		this.renderercss3d.domElement.style.top = 0;
+		container.appendChild( this.renderercss3d.domElement );
+
+		var controls = new THREE.TrackballControls( this.cameracss3d );
+		controls.rotateSpeed = 4;
+		controls.zoomSpeed = 0.01;
+
+		var self = this;
+		function animate() {
+			requestAnimationFrame( animate );
+			controls.update();
+			//console.log("update?");
+			self.renderercss3d.render( self.scenecss3d, self.cameracss3d );
+		}
+
+		animate();
+
+		function onWindowResize() {
+			self.cameracss3d.aspect = window.innerWidth / window.innerHeight;
+			self.cameracss3d.updateProjectionMatrix();
+			self.renderercss3d.setSize( window.innerWidth, window.innerHeight );
+		}
+		window.addEventListener( 'resize', onWindowResize, false );
+	}
+
+	//scene , camera
 	setup_trackcamera(){
 		var controls = new THREE.TrackballControls( this.camera );
 		controls.rotateSpeed = 4;
@@ -235,7 +270,7 @@ class Threejsbes6 {
 	}
 
 	setup_webgl(){
-		if(this.mode == "editor"){
+		if((this.mode == "editor")||(this.mode == "css3dwebgl")){
 			var webgldiv = document.createElement( 'div' );
 			webgldiv.style.width = '800px';
 			webgldiv.style.height = '600px';
@@ -250,41 +285,44 @@ class Threejsbes6 {
 		this.scene.background = new THREE.Color( 0xEEEEEE );
 		this.camera = new THREE.PerspectiveCamera( 75, 800/600, 0.1, 1000 );
 		//renderer = new THREE.WebGLRenderer( { alpha: true } ); // init like this
-		if(this.mode == "editor"){
+		if((this.mode == "editor")||(this.mode == "css3dwebgl")){
 			this.renderer = new THREE.WebGLRenderer({ alpha: true,antialias: true  });
 			this.renderer.domElement.style.position = 'absolute';
 			this.renderer.domElement.style.top = 0;
 			this.renderer.setSize( 800, 600 );
-			//this.renderer.setClearColor( 0xffffff, 0);
-			//this.renderer.setClearColor(0xEEEEEE);
 		}else{
 			this.canvas = document.getElementById("container");
 			this.renderer = new THREE.WebGLRenderer({ alpha: true,antialias: true  });
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
-			//this.renderer.setClearColor( 0xffffff, 0);
-			//this.renderer.setClearColor(0xEEEEEE);
 			this.canvas.appendChild(this.renderer.domElement);
 		}
-
+		//this.renderer.setClearColor( 0xffffff, 0);
+		//this.renderer.setClearColor(0xEEEEEE);
 		this.renderer.autoClear = false;
 		//this.renderer.shadowMap.enabled = true;
 		//this.renderer.shadowMap.type = THREE.PCFShadowMap; //THREE.BasicShadowMap;
-
-		if(this.mode == "editor"){
-			webgldiv.appendChild(this.renderer.domElement)
-
+		if(this.mode == "css3dwebgl"){
+			webgldiv.appendChild(this.renderer.domElement);
 			var object = new THREE.CSS3DObject( webgldiv );
 			object.position.set( 0, 0, 0 );
 			object.rotation.y = 0;
+			var group = new THREE.Group();
+			group.add( object );
+			this.scenecss3d.add( group );
+		}
 
+		if(this.mode == "editor"){
+			webgldiv.appendChild(this.renderer.domElement);
+			var object = new THREE.CSS3DObject( webgldiv );
+			object.position.set( 0, 0, 0 );
+			object.rotation.y = 0;
 			var group = new THREE.Group();
 			group.add( object );
 			this.setup_editor(group);
-
 			this.scenecss3d.add( group );
 		}
 		//this.setup_webgl_basics();
-		this.setup_trackcamera();
+		//this.setup_trackcamera();
 	}
 
 	//works mesh over lap scenes
@@ -480,7 +518,6 @@ class Threejsbes6 {
 	}
 
 	update(){
-
 
 	}
 
@@ -2008,6 +2045,7 @@ class Threejsbes6 {
 	}
 
 	initPhysics() {
+
         if (this.setPhysicsType[this.physicsIndex] == 'Oimo.js') {
             this.initOimoPhysics();
         }
@@ -2028,6 +2066,11 @@ class Threejsbes6 {
 
 		//content render
 		if(this.mode == "editor"){
+			//this.setup_css3d();
+			this.setup_css3d_editor();
+		}
+
+		if(this.mode == "css3dwebgl"){
 			this.setup_css3d();
 		}
 

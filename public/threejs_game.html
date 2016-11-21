@@ -35,7 +35,12 @@
 
 		<script>
 			var threejsapi;
-			var game = new Threejs_game({onload:true,bupdateobjects:true});
+			var config = {
+				onload:true,
+				bupdateobjects:true
+				,mode : "css3dwebgl" //HUD  UI
+			};
+			var game = new Threejs_game(config);
 		</script>
 	</body>
 </html>

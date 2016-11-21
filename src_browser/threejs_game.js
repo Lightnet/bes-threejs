@@ -107,9 +107,9 @@ class Threejs_game extends Threejsbes6 {
 
 		var sprite = new THREE.Sprite(material);
 
-		this.domEvents.addEventListener(sprite, 'click', function(event){
-    		console.log('you clicked on the sprite')
-		}, false);
+		//this.domEvents.addEventListener(sprite, 'click', function(event){
+    		//console.log('you clicked on the sprite')
+		//}, false);
 		//sprite.addEventListener
 		//sprite.addEventListener('click',function(){
 			//console.log("click?");
@@ -226,15 +226,55 @@ class Threejs_game extends Threejsbes6 {
 
 	}
 
+	setup_mouseraycast(){
+		document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		var self = this;
+		function onDocumentMouseMove( event ) {
+			event.preventDefault();
+			self.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			self.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+			self.raycaster.setFromCamera( self.mouse, self.camera );
+			var intersects = self.raycaster.intersectObjects( self.scene.children );
+
+			if ( intersects.length > 0 ) {
+				console.log(intersects[ 0 ].object);
+			}
+		}
+	}
+
+	setup_css3d_hud(){
+		//webgldiv.appendChild(this.renderer.domElement);
+
+		var _divcss3d = document.createElement('div');
+		_divcss3d.style.width = '100px';
+		_divcss3d.style.height = '100px';
+		_divcss3d.innerHTML = 'Plain text inside a div.<br>Assets? <button onclick="game.SelectClick()"> Click </button>';
+
+
+		var object = new THREE.CSS3DObject( _divcss3d );
+		object.position.set( -400, 0, 1 );
+		object.rotation.y = 0;
+		//var group = new THREE.Group();
+		//group.add( object );
+		this.scenecss3d.add( object );
+
+	}
+
+	SelectClick(){
+		console.log("click?");
+	}
+
 	init(){
 		super.init();
 		var self = this;
 		console.log("Threejs_game?");
-		this.domEvents   = new THREEx.DomEvents(this.camera, this.renderer.domElement)
+		//this.domEvents = new THREEx.DomEvents(this.camera, this.renderer.domElement);
+		//this.domEvents = new THREEx.DomEvents(this.cameracss3d, this.renderercss3d.domElement);
 		//this.setup_webgl_basics();
 		//this.setup_hud_draw();
 		//this.create_hud();
-		this.create_hud_sprite();
+		//this.create_hud_sprite();
 
 		//this.create_hud_sprite2d();
 
@@ -245,15 +285,8 @@ class Threejs_game extends Threejsbes6 {
 		this.cube = new THREE.Mesh( geometry, material );
 		this.cube.position.y = 1;
 		this.scene.add( this.cube );
-
-		 this.cube.addEventListener('click', onGlobeClick);
-
-		 function onGlobeClick(event) {
-			 console.log("test?");
-		 }
-
 		//this.domEvents.addEventListener(this.cube, 'click', function(event){
-    		//console.log('you clicked on the mesh')
+    		//console.log('you clicked on the mesh');
 		//}, false);
 
 
@@ -269,16 +302,16 @@ class Threejs_game extends Threejsbes6 {
 		//this.objects.push(this.cube);//ray cast
 		//this.setup_mouseraycast();
 
+		this.setup_css3d_hud();
 
 
 
 
-
-		function onWindowResize() {
-			self.camera.aspect = window.innerWidth / window.innerHeight;
-			self.camera.updateProjectionMatrix();
-			self.renderer.setSize( window.innerWidth, window.innerHeight );
-		}
-		window.addEventListener( 'resize', onWindowResize, false );
+		//function onWindowResize() {
+			//self.camera.aspect = window.innerWidth / window.innerHeight;
+			//self.camera.updateProjectionMatrix();
+			//self.renderer.setSize( window.innerWidth, window.innerHeight );
+		//}
+		//window.addEventListener( 'resize', onWindowResize, false );
 	}
 }
