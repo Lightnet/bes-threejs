@@ -66,6 +66,9 @@ class Threejsbes6 {
 
 		var _this = this;
 
+		this.initloadingscreen();
+		this.showloadingscreen();
+
 		if(settings != null){
 			if(settings['mode'] != null){
 				this.mode = settings['mode'];
@@ -110,6 +113,37 @@ class Threejsbes6 {
 			}
 			console.log("Map: " + this.bmap + " url: "+ this.mapurl);
 		}
+
+		//this.hideloadingscreen();
+		//this.showloadingscreen();
+	}
+
+	initloadingscreen(){
+		var divloadingscreen = document.createElement("div");
+		divloadingscreen.id = "loadingscreen";
+		divloadingscreen.style['background-color'] = '#dddddd';
+		divloadingscreen.style.position = 'absolute';
+		divloadingscreen.style.top = 0;
+		divloadingscreen.style.left = 0;
+		divloadingscreen.style.width = '100%';
+		divloadingscreen.style.height = '100%';
+		//divloadingscreen.style.display  = 'none';
+		//divloadingscreen.style.visibility = 'hidden';
+
+		divloadingscreen.innerHTML = "<div style='background-color: #dddddd;position: absolute;left: 0;height: 50%;width: 100%;top: 50%;vertical-align:middle;'><center>Loading...</center><div>";
+
+		//divloadingscreen.
+		document.getElementsByTagName('body')[0].appendChild(divloadingscreen);
+	}
+
+	showloadingscreen(){
+		document.getElementById('loadingscreen').style.display = 'block';
+	}
+
+	hideloadingscreen(){
+		document.getElementById('loadingscreen').style.display = 'none';
+		//document.getElementById('loadingscreen').style.visibility = 'hidden';
+		//document.getElementById('loadingscreen').style.display = 'inline';
 	}
 
 	loadlibraries(){
@@ -121,8 +155,9 @@ class Threejsbes6 {
 			this.loadjavascript(scriptlist[i], function(){
 				//initialization code
 				scriptcount++;
-				console.log("script: "+scriptcount + ":" + (scriptlist.length));
+				//console.log("script: "+scriptcount + ":" + (scriptlist.length));
 				if(scriptcount == scriptlist.length){ //make sure the scripts are load else it can't used script components
+					console.log("script: "+scriptcount + ":" + (scriptlist.length));
 					console.log('Finish load javascript libs!');
 					self.init();
 				}
@@ -131,7 +166,7 @@ class Threejsbes6 {
 	}
 
 	loadjavascript(url, callback){
-	    var script = document.createElement("script")
+	    var script = document.createElement("script");
 	    script.type = "text/javascript";
 	    if (script.readyState){  //IE
 	        script.onreadystatechange = function(){
@@ -2142,6 +2177,7 @@ class Threejsbes6 {
 	init(){
 		this.init_simple();
 		//this.loadlibraries();
+		this.hideloadingscreen();
 
 		if(this.bablephysics){
 			this.initPhysics();
