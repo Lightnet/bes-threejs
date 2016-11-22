@@ -93,6 +93,18 @@ class RPGStatus extends ObjectRPGID{
 		super();
 		this.stats= new RPGStats();
 
+		this.health = 5;
+		this.maxhealth = 5;
+
+		this.magic = 0;
+		this.magicmax = 0;
+
+		this.stamina = 100;
+		this.maxstamina = 100;
+
+		this.physc = 100;
+		this.maxphysc = 100;
+
 		this.conditions = [];
 		this.skills = [];
 		this.inventory = [];
@@ -551,16 +563,13 @@ class Babylonjs_game extends Babylonjsbes6 {
 
 	create2D_BattleHUD(){
 		var self = this;
-
-
 		//button
-		this.AddButton(this.hudcanvas,'button_escape','Escape',10,(22*0+10), this.actionescape);
-		//button
-		this.AddButton(this.hudcanvas,'button_item','Items',10,(22*1+10), this.openitem);
-		this.AddButton(this.hudcanvas,'button_skills','Skills',10,(22*2+10), this.openskills);
-		this.AddButton(this.hudcanvas,'button_move','Move',10,(22*3+10), this.openitem);
-		this.AddButton(this.hudcanvas,'button_attack','Attack',10,(22*4+10), this.actionattack);
-		this.AddButton(this.hudcanvas,'button_battle','Battle',10,(22*5+10), this.actionbattle);
+		this.AddButton(this.hudcanvas,'button_escape','Escape',10,(22*0+10), ()=>{self.actionescape();});
+		this.AddButton(this.hudcanvas,'button_item','Items',10,(22*1+10), ()=>{self.openitem();});
+		this.AddButton(this.hudcanvas,'button_skills','Skills',10,(22*2+10), ()=>{self.openskills();});
+		this.AddButton(this.hudcanvas,'button_move','Move',10,(22*3+10), ()=>{self.openitem();});
+		this.AddButton(this.hudcanvas,'button_attack','Attack',10,(22*4+10), ()=>{self.actionattack();});
+		this.AddButton(this.hudcanvas,'button_battle','Battle',10,(22*5+10), ()=>{self.actionbattle();});
 	}
 
 	AddButton(_scenecanvas, _id, _name, _x, _y, _callback, options){
@@ -583,30 +592,58 @@ class Babylonjs_game extends Babylonjsbes6 {
 	createbattle_prototype(){
 		var player = new RPGStatus({name:"player"});
 		this.parties.push(player);
-
 		var enemy = new RPGStatus({name:"enemy"});
 		this.enemies.push(enemy);
 	}
 
 	actionbattle(){
 		console.log("action battle ...");
+		console.log(this.parties[0]);
+		//check if party health is not zero for attack
+		if(this.parties[0].health > 0){
+			this.enemies[0].health = this.enemies[0].health - this.parties[0].attack;
+		}
+		if(this.enemies[0].health <= 0){
+		 	this.enemies[0].health = 0;
+		}
+		console.log("ENEMY HEALTH:" + this.enemies[0].health+ "/" + this.enemies[0].maxhealth);
+		//check if enemy health is not zero to attack if dead
+		if(this.enemies[0].health > 0){
+			this.parties[0].health = this.parties[0].health - this.parties[0].attack;
+		}
+		if(this.parties[0].health <= 0){
+		 	this.parties[0].health = 0;
+		}
+		console.log("PARTY HEALTH:" + this.parties[0].health + "/" + this.parties[0].maxhealth);
+		console.log(this.enemies[0]);
 	}
+
+	opponentAttack(){
+
+	}
+
+
 	setupbattle(){}
 	createbattle(){}
 	openitem(){
 		console.log("open item ...");
+		console.log(this.parties[0]);
 	}
 	openskills(){
 		console.log("open skills ...");
+		console.log(this.parties[0]);
 	}
 	actionattack(){
 		console.log("action attack ...");
+		console.log(this.parties[0]);
 	}
 	actionmove(){
 		console.log("action move ...");
+		console.log(this.parties[0]);
 	}
 	actionescape(){
 		console.log("action escape ...");
+		console.log(this.parties[0]);
 	}
 
 
