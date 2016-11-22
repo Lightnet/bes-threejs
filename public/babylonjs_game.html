@@ -32,10 +32,27 @@
 	<body>
 		<canvas id="renderCanvas"></canvas>
 		<script>
-			var config = {
-				onload:true
-			};
-			var game = new Babylonjs_game(config);
+			function addListener(event, obj, fn) {
+		        if (obj.addEventListener) {
+		            obj.addEventListener(event, fn, false); // modern browsers
+		        }
+		        else {
+		            obj.attachEvent("on" + event, fn); // older versions of IE
+		        }
+		    }
+
+			var game = new Babylonjs_game();
+
+			/*
+			addListener("load", window, function () {
+				console.log("manual game init");
+				var config = {
+					onload:false
+				};
+				var game = new Babylonjs_game(config);
+				game.init();
+			});
+			*/
 		</script>
 	</body>
 </html>

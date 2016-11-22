@@ -102,8 +102,8 @@ class RPGStatus extends ObjectRPGID{
 		this.stamina = 100;
 		this.maxstamina = 100;
 
-		this.physc = 100;
-		this.maxphysc = 100;
+		this.psyche = 100;
+		this.maxpsyche = 100;
 
 		this.conditions = [];
 		this.skills = [];
@@ -132,6 +132,9 @@ class RPGStatus extends ObjectRPGID{
 		this.readyaction = false;
 		this.finishaction = false;
 
+		this.mesh = null;
+		this.isdead = false;
+
 		if(args !=null){
 			if(args['attack'] !=null ){
 				this.attack = args['attack'];
@@ -148,9 +151,9 @@ class RPGStatus extends ObjectRPGID{
 //===============================================
 
 class Babylonjs_game extends Babylonjsbes6 {
-	constructor(settings){
-		super(settings);
+	constructor(args){
 
+		super(args);
 		this.characters = [];
 		this.dimensionstorage = [];
 
@@ -173,6 +176,10 @@ class Babylonjs_game extends Babylonjsbes6 {
 		this.scenename = "none";
 		this.scenes = [];
 		this.currentscene;
+
+		this.sceneassets;
+		//console.log(this.parties);
+		//console.log("init babylon game");
 	}
 
 	create_hud2d3d(){
@@ -500,7 +507,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 		var filepath = "block_character03.babylon";
 		var objectname = "CubeBody";
 
-
 		//var filepath = "arm_cube.babylon";
 		//var objectname = "Cube";
 		var self = this;
@@ -553,6 +559,9 @@ class Babylonjs_game extends Babylonjsbes6 {
 					console.log("click2");
 				}, BABYLON.PrimitivePointerInfo.PointerUp);
 	}
+//===============================================
+// HUD UI
+//===============================================
 
 	create2DHUD(){
 		this.hudcanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
@@ -587,10 +596,12 @@ class Babylonjs_game extends Babylonjsbes6 {
 	}
 
 //===============================================
-//
+// BATTLE
 //===============================================
 	createbattle_prototype(){
 		var player = new RPGStatus({name:"player"});
+		//console.log(this);
+		//console.log(this.parties);
 		this.parties.push(player);
 		var enemy = new RPGStatus({name:"enemy"});
 		this.enemies.push(enemy);
@@ -617,12 +628,9 @@ class Babylonjs_game extends Babylonjsbes6 {
 		console.log("PARTY HEALTH:" + this.parties[0].health + "/" + this.parties[0].maxhealth);
 		console.log(this.enemies[0]);
 	}
-
 	opponentAttack(){
-
+		console.log("opponentAttack ...");
 	}
-
-
 	setupbattle(){}
 	createbattle(){}
 	openitem(){
@@ -645,19 +653,123 @@ class Babylonjs_game extends Babylonjsbes6 {
 		console.log("action escape ...");
 		console.log(this.parties[0]);
 	}
+//===============================================
+//===============================================
+
+	loadbabylon_json(){
+		//var filepath = "block_character02.babylon";
+		//var objectname = "Cube";
+		var filepath = "block_character03.babylon";
+		var objectname = "CubeBody";
+
+		//var filepath = "arm_cube.babylon";
+		//var objectname = "Cube";
+		var self = this;
+		BABYLON.SceneLoader.ImportMesh(objectname, "/assets/", filepath, this.scene, function (newMeshes, particleSystems) {
+			console.log(newMeshes[0]);
+			//self.scene.beginAnimation(newMeshes[0], 0, 15, true, 0.5);//works
+			self.scene.beginAnimation(newMeshes[0], 11, 20, true, 0.5);//works
+		});
+	}
 
 
 //===============================================
 //
 //===============================================
+
+	//create scene assets for run background
+	createscene_assets(){
+		var self = this;
+		this.sceneassets = new BABYLON.Scene(this.engine);
+		var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), this.sceneassets);
+		//this.sceneassets.activeCamera.attachControl(self.canvas);
+		//self.engine.runRenderLoop(function() {
+			//self.sceneassets.render();
+		//});
+	}
+
+	//make scene active render
+	render_scene(_scene){
+		var self = this;
+		console.log(_scene);
+		console.log(self.engine);
+		self.engine.runRenderLoop(function() {
+			_scene.render();
+		});
+	}
+
+	stop_render(){
+		//clear out all function call loops array
+		this.engine.stopRenderLoop();
+	}
+
+	input_simple(){
+		var self = this;
+		var keys={letft:0,right:0,forward:0,back:0};
+		window.addEventListener("keydown", handleKeyDown, false);
+		window.addEventListener("keyup", handleKeyUp, false);
+		function handleKeyDown(evt){
+			if (evt.keyCode==65){//A
+				keys.left=1;
+				console.log("left");
+				self.render_scene(self.scene);
+			}
+			if (evt.keyCode==68){//D
+				keys.right=1;
+				self.render_scene(self.sceneassets);
+			}
+			if (evt.keyCode==87){//W
+				keys.forward=1;
+				self.stop_render();
+			}
+			if (evt.keyCode==83){//S
+				keys.back=1;
+			}
+		}
+		function handleKeyUp(evt){
+			if (evt.keyCode==65){
+				keys.left=0;
+			}
+			if (evt.keyCode==68){
+				keys.right=0;
+			}
+			if (evt.keyCode==87){
+				keys.forward=0;
+			}
+			if (evt.keyCode==83){
+				keys.back=0;
+			}
+		}
+		this.engine.runRenderLoop(function () {
+			if (keys.left==1){//move left
+				//console.log("left");
+			}
+			if (keys.right==1){//move right
+
+			}
+			if (keys.back==1){//move back
+
+			}
+			if (keys.forward==1){//move forward
+
+			}
+		});
+
+	}
+
 	init(){
 		super.init();
-		console.log("init babylonjs_game...");
+		var self = this;
+		console.log("init [babylonjs_game]");
 		this.create2DHUD();//init 2D Canvas
 		this.create2D_BattleHUD();
 		//this.create2dhud();
 		this.createbattle_prototype();
 
+		this.createscene_assets();
+		BABYLON.Tools.Log("blah");
+
+		this.input_simple();
 
 
 		//this.create_hud2d3d();

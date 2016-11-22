@@ -15,23 +15,33 @@
 
 class Babylonjsbes6 {
 	//pass args params
-	constructor(settings){
+	constructor(args){
 		var _this = this;
+		this.onload = true;
+		this.binit = true;
 		this.reload = false;//web browser editor reload url
-		if(settings != null){
+		if(args != null){
 			//this need to be last else it variable are not assign
-			if (settings['onload'] == true) {
-				this.addListener("load", window, function () {
-					console.log('init window listen Babylonjs setup... ');
-					_this.init();
-				});
-			} else {
+			if (args['onload'] != null) {
+				this.onload = args['onload'];
+				//console.log(args);
+			}
+		}
+
+		if (this.onload) {
+			this.addListener("load", window, function () {
+				console.log('init window listen Babylonjs setup... ');
+				_this.init();
+			});
+		}
+		/* does not work here since variable assign gets nulls
+		else {
+			if(this.binit){
 				console.log('init Babylonjs setup...');
 				this.init();
 			}
-
-
 		}
+		*/
 	}
 
 	setup_network(){
@@ -66,7 +76,7 @@ class Babylonjsbes6 {
 	    var scene = new BABYLON.Scene(this.engine);
 	    // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
 	    var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), scene);
-		console.log(camera);
+		//console.log(camera);
 	    // target the camera to scene origin
 	    camera.setTarget(BABYLON.Vector3.Zero());
 	    // attach the camera to the canvas
