@@ -13,7 +13,31 @@
 	from the web browser.
 */
 
-class Stats{
+//===============================================
+//
+//===============================================
+
+class ObjectRPGID{
+	constructor(args){
+		this.hashid = "";
+		this.id = "";
+		this.name = "";
+		this.description = "";
+		if(args !=null){
+			if(args['name'] !=null){
+				this.name = args['name'];
+			}
+			if(args['id'] !=null){
+				this.name = args['id'];
+			}
+			if(args['hashid'] !=null){
+				this.name = args['hashid'];
+			}
+		}
+	}
+}
+
+class RPGStats{
 	constructor(args){
 		this.str = 0;
 		this.vit = 0;
@@ -29,27 +53,114 @@ class Stats{
 	}
 }
 
-class Condition{
+class RPGCondition extends ObjectRPGID{
 	constructor(args){
-		this.name = "";
+		super();
 		this.params = [];
 	}
 }
 
-
-class Status {
+class RPGSkill extends ObjectRPGID{
 	constructor(args){
-		this.name = "";
-		this.id = "";
-		this.stats= new Stats();
+		super();
 	}
 }
 
+class RPGItem extends ObjectRPGID{
+	constructor(args){
+		super();
+	}
+}
 
+class RPGEquip extends RPGItem{
+	constructor(args){
+		super();
+		this.stats = new Stats();
+		this.params = [];
+	}
+}
+
+class RPGWeapon extends RPGEquip{
+	constructor(args){
+		super();
+		this.stats = new RPGStats();
+		this.params = [];
+	}
+}
+
+class RPGStatus extends ObjectRPGID{
+	constructor(args){
+		super();
+		this.stats= new RPGStats();
+
+		this.conditions = [];
+		this.skills = [];
+		this.inventory = [];
+		this.equipments = [];
+
+		this.speed = 1;
+		this.criticalhit = 1;
+
+		this.attack = 1;
+		this.defense = 0;
+
+		this.magicattack = 0;
+		this.magicdefense = 0;
+
+		this.totalattack = 1;
+		this.totaldefense = 0;
+
+		this.totalmagicattack = 0;
+		this.totalmagicdefense = 0;
+
+		this.queryaction = ""; //attack, skill
+		this.target = null;
+		this.targets = null;
+		this.targettype = "single";//single, multiples, selected, area
+		this.readyaction = false;
+		this.finishaction = false;
+
+		if(args !=null){
+			if(args['attack'] !=null ){
+				this.attack = args['attack'];
+			}
+			if(args['defense'] !=null ){
+				this.defense = args['defense'];
+			}
+		}
+	}
+}
+
+//===============================================
+//
+//===============================================
 
 class Babylonjs_game extends Babylonjsbes6 {
 	constructor(settings){
 		super(settings);
+
+		this.characters = [];
+		this.dimensionstorage = [];
+
+		this.companions = [];//those who join in your party that travel together
+		this.squads = [];
+
+		this.friends = [];//battle mode?
+		this.foes = [];//battle mode?
+
+		this.parties = []; //who in the party //battle mode?
+		this.enemies = []; //threat if player attack or in battle actions //battle mode?
+		this.npcs = []; //local villagers
+
+		this.scene_battle;
+		this.scene_dimension_homebase;
+		this.scene_global_map;
+		this.scene_world_map;
+		this.scene_local_map;
+
+		this.scenename = "none";
+		this.scenes = [];
+		this.currentscene;
 	}
 
 	create_hud2d3d(){
@@ -388,7 +499,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 		});
 	}
 
-
 	create2dhud(){
 		this.hudcanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
 		    id: "ScreenCanvas",
@@ -432,9 +542,87 @@ class Babylonjs_game extends Babylonjsbes6 {
 				}, BABYLON.PrimitivePointerInfo.PointerUp);
 	}
 
+	create2DHUD(){
+		this.hudcanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
+		    id: "ScreenCanvas",
+			enableInteraction: true//,
+		});
+	}
+
+	create2D_BattleHUD(){
+		var self = this;
+
+
+		//button
+		this.AddButton(this.hudcanvas,'button_escape','Escape',10,(22*0+10), this.actionescape);
+		//button
+		this.AddButton(this.hudcanvas,'button_item','Items',10,(22*1+10), this.openitem);
+		this.AddButton(this.hudcanvas,'button_skills','Skills',10,(22*2+10), this.openskills);
+		this.AddButton(this.hudcanvas,'button_move','Move',10,(22*3+10), this.openitem);
+		this.AddButton(this.hudcanvas,'button_attack','Attack',10,(22*4+10), this.actionattack);
+		this.AddButton(this.hudcanvas,'button_battle','Battle',10,(22*5+10), this.actionbattle);
+	}
+
+	AddButton(_scenecanvas, _id, _name, _x, _y, _callback, options){
+		var buttonRect = new BABYLON.Rectangle2D(
+	    { parent: _scenecanvas, id: _id, x: _x, y: _y, width: 100, height: 20, fill: "#40C040FF",
+	        children:
+	        [
+	            new BABYLON.Text2D(_name, { fontName: "12pt Arial", marginAlignment: "h: center, v: center" })
+	        ]});
+			buttonRect.pointerEventObservable.add(function (d, s) {
+				//console.log("click2");
+				_callback();
+			}, BABYLON.PrimitivePointerInfo.PointerUp);
+		return buttonRect;
+	}
+
+//===============================================
+//
+//===============================================
+	createbattle_prototype(){
+		var player = new RPGStatus({name:"player"});
+		this.parties.push(player);
+
+		var enemy = new RPGStatus({name:"enemy"});
+		this.enemies.push(enemy);
+	}
+
+	actionbattle(){
+		console.log("action battle ...");
+	}
+	setupbattle(){}
+	createbattle(){}
+	openitem(){
+		console.log("open item ...");
+	}
+	openskills(){
+		console.log("open skills ...");
+	}
+	actionattack(){
+		console.log("action attack ...");
+	}
+	actionmove(){
+		console.log("action move ...");
+	}
+	actionescape(){
+		console.log("action escape ...");
+	}
+
+
+//===============================================
+//
+//===============================================
 	init(){
 		super.init();
 		console.log("init babylonjs_game...");
+		this.create2DHUD();//init 2D Canvas
+		this.create2D_BattleHUD();
+		//this.create2dhud();
+		this.createbattle_prototype();
+
+
+
 		//this.create_hud2d3d();
 		//this.create_hud2d();
 		//this.appendscene_extbabylon();
@@ -459,12 +647,8 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.createscene_objects();
 		//this.createscene_physics();
 		//this.createscene_simple();
-
-
-		this.loadmesh_blockcharacter();
 		//this.loadmesh_blockcharacter();
-		this.create2dhud();
-
+		//this.loadmesh_blockcharacter();
 
 	}
 }

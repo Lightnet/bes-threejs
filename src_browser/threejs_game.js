@@ -356,31 +356,25 @@ class Threejs_game extends Threejsbes6 {
 			//for(var x=0;x<materials.length;x++) materials[x].skinning = true;
 			//console.log(geometry.animations);
 			mixer = new THREE.AnimationMixer(model);
-			action.idle = mixer.clipAction(geometry.animations[1]);
+			action.idle = mixer.clipAction(geometry.animations[0]);
 			//action.idle.setLoop(THREE.LoopRepeat);
 			//action.idle = mixer.clipAction(geometry.animations[3]);
+			//actions.idle.clampWhenFinished = true;
 			action.idle.setEffectiveWeight(1).play();
 			//action.idle.play();
-
-			//actions.idle = mixer.clipAction(geometry.animations[0]);
-			//actions.idle = mixer.clipAction(geometry.animations[3]);
-    		//actions.idle.setLoop(THREE.LoopRepeat);
-    		//actions.idle.clampWhenFinished = true;
-    		//actions.idle.play();
-
-			self.scene.add(model);
-			var clock  = new THREE.Clock();
-
-			function update(){
-				var delta = clock.getDelta();
-  				//var theta = clock.getElapsedTime();
-				requestAnimationFrame( update );
+			model.update = function(){
+				var delta = self.clock.getDelta();
 				if ( mixer ) { mixer.update( delta ); }
-				//console.log('update?');
 			}
-
-			update();
-
+			self.scene.add(model);
+			//var clock  = new THREE.Clock();
+			//function update(){
+				//var delta = clock.getDelta();
+				//requestAnimationFrame( update );
+				//if ( mixer ) { mixer.update( delta ); }
+				//console.log('update?');
+			//}
+			//update();
 	    });
 
 	}
@@ -389,6 +383,7 @@ class Threejs_game extends Threejsbes6 {
 		super.init();
 		var self = this;
 		console.log("Class Threejs_game init");
+		this.clock  = new THREE.Clock();
 
 		//this.camera.position.z = 5;
 		this.camera.position.z = 2;
