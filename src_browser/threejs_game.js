@@ -314,15 +314,73 @@ class Threejs_game extends Threejsbes6 {
 	}
 
 	loadmeshjson(){
-		var mesh = null;
+		//http://yomotsu.net/blog/2015/10/31/three-r73-anim.html
+		var model = null;
+		var mixer;
 		var self = this;
 	    var loader = new THREE.JSONLoader();
 
-	    loader.load('/assets/cube.json', function(geometry) {
-	        mesh = new THREE.Mesh(geometry);
-			mesh.scale.set(0.1,0.1,0.1);
-	        self.scene.add(mesh);
-			console.log(mesh);
+		//var filepath = '/assets/cube.json';
+		//var filepath = '/assets/block_character03.json';
+		var filepath = '/assets/arm_cube.json';
+		//var filepath = '/assets/miku.min.json';
+		//var filepath = '/assets/monster.js';
+		var action = {};
+
+
+	    loader.load(filepath, function(geometry, materials ) {
+	        //model = new THREE.Mesh(geometry);//does not work need skin
+			//model = new THREE.SkinnedMesh( geometry, new THREE.MeshFaceMaterial( materials ) , false );
+			//model = new THREE.SkinnedMesh( geometry,materials,true);
+			console.log(materials);
+
+			if(materials !=null){
+				materials.forEach( function ( material ) {
+	    			material.skinning = true;
+	  			} );
+				model = new THREE.SkinnedMesh(
+					geometry
+					,new THREE.MeshFaceMaterial(materials)
+				);
+			}else{
+				model = new THREE.SkinnedMesh(geometry);
+				model.material.skinning = true;
+			}
+
+			//model = new THREE.SkinnedMesh(geometry);
+			//console.log(model);
+
+			//model.scale.set(1,1,1);
+			model.scale.set(0.1,0.1,0.1);
+			//console.log(materials);
+			//for(var x=0;x<materials.length;x++) materials[x].skinning = true;
+			//console.log(geometry.animations);
+			mixer = new THREE.AnimationMixer(model);
+			action.idle = mixer.clipAction(geometry.animations[1]);
+			//action.idle.setLoop(THREE.LoopRepeat);
+			//action.idle = mixer.clipAction(geometry.animations[3]);
+			action.idle.setEffectiveWeight(1).play();
+			//action.idle.play();
+
+			//actions.idle = mixer.clipAction(geometry.animations[0]);
+			//actions.idle = mixer.clipAction(geometry.animations[3]);
+    		//actions.idle.setLoop(THREE.LoopRepeat);
+    		//actions.idle.clampWhenFinished = true;
+    		//actions.idle.play();
+
+			self.scene.add(model);
+			var clock  = new THREE.Clock();
+
+			function update(){
+				var delta = clock.getDelta();
+  				//var theta = clock.getElapsedTime();
+				requestAnimationFrame( update );
+				if ( mixer ) { mixer.update( delta ); }
+				//console.log('update?');
+			}
+
+			update();
+
 	    });
 
 	}
