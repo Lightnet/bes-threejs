@@ -151,6 +151,7 @@ class RPGStatus extends ObjectRPGID{
 //===============================================
 
 class Babylonjs_game extends Babylonjsbes6 {
+
 	constructor(args){
 
 		super(args);
@@ -173,11 +174,13 @@ class Babylonjs_game extends Babylonjsbes6 {
 		this.scene_world_map;
 		this.scene_local_map;
 
-		this.scenename = "none";
-		this.scenes = [];
-		this.currentscene;
+		//this.scenename = "default";
+		//this.scenes = [];
+		//this.currentscene;
 
 		this.sceneassets;
+		this.assetsManager;
+		this.config_assets;
 		//console.log(this.parties);
 		//console.log("init babylon game");
 	}
@@ -275,18 +278,18 @@ class Babylonjs_game extends Babylonjsbes6 {
 		    //button2Rect.levelVisible = !button2Rect.levelVisible;
 			console.log("click");
 			//remove function call from loop scene?
-			self.engine.runRenderLoop(function() {
-				self.scene.render();
-			});
+			//self.engine.runRenderLoop(function() {
+				//self.scene.render();
+			//});
 		}, BABYLON.PrimitivePointerInfo.PointerUp);
 
 		button2Rect.pointerEventObservable.add(function (d, s) {
 			console.log("click");
 			//remove function call from loop scene?
-			self.engine.runRenderLoop(function() {
+			//self.engine.runRenderLoop(function() {
 				//newScene.render();
-				self.scene2.render();
-			});
+				//self.scene2.render();
+			//});
 		}, BABYLON.PrimitivePointerInfo.PointerUp);
 	}
 
@@ -303,10 +306,10 @@ class Babylonjs_game extends Babylonjsbes6 {
 				//self.scene.add(newScene);
 				//console.log(newScene);
                 // Once the scene is loaded, just register a render loop to render it
-                self.engine.runRenderLoop(function() {
-                    newScene.render();
-					console.log("render");
-                });
+                //self.engine.runRenderLoop(function() {
+                    //newScene.render();
+					//console.log("render");
+                //});
             });
         }, function (progress) {
             // To do: give progress feedback to user
@@ -485,6 +488,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 		cylinderMaterial.emissiveColor = new BABYLON.Color3(1, 0.58, 0);
 		cylinder.material = cylinderMaterial;
 		*/
+		/*
 		var t = 0;
 		var renderLoop = function () {
 		    //scene.render();
@@ -493,6 +497,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 			box.rotation.y = t*2;
 		};
 		this.engine.runRenderLoop(renderLoop);
+		*/
 	}
 
 	//load mesh animation
@@ -568,6 +573,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 		    id: "ScreenCanvas",
 			enableInteraction: true//,
 		});
+		//console.log(this.hudcanvas);
 	}
 
 	create2D_BattleHUD(){
@@ -596,15 +602,67 @@ class Babylonjs_game extends Babylonjsbes6 {
 	}
 
 //===============================================
-// BATTLE
+// BATTLE // MODELS
 //===============================================
+
+	getmesh(_name){
+		var model = null;
+
+		for(var i = 0; i < this.assetsManager._scene.meshes.length;i++){
+			if(this.assetsManager._scene.meshes[i] !=null){
+				if(this.assetsManager._scene.meshes[i].name == _name){
+					console.log(this.assetsManager._scene.meshes[i]);
+					model = this.assetsManager._scene.meshes[i].clone(_name,null,true);
+					//remove assets since it been clone
+					this.assetsManager._scene.removeMesh(model);
+					//model = this.assetsManager._scene.meshes[i].clone();
+					//model = this.assetsManager._scene.meshes[i].createInstance("i" + _name);
+					break;
+				}
+			}
+		}
+
+		/*
+		for(var i = 0; i < this.assetsManager._tasks.length;i++){
+			if(this.assetsManager._tasks[i].loadedMeshes[0] != null){
+				//console.log(this.assetsManager._tasks[i].loadedMeshes[0]);
+				if(this.assetsManager._tasks[i].meshesNames == _name){
+					model = this.assetsManager._tasks[i].loadedMeshes[0].clone(_name,null,true);
+					//console.log("found model!");
+					break;
+				}
+			}
+		}
+		*/
+		return model; //null or object
+	}
+
 	createbattle_prototype(){
 		var player = new RPGStatus({name:"player"});
+		console.log(this.assetsManager);
+		var model = this.getmesh("CubeBody");
+		console.log(model);
+		if(model !=null){
+			console.log("model");
+			console.log(model);
+			//set scene to be update...
+			model._scene = this.scenes[this.scenename];
+			model.isVisible = true;
+			this.scenes[this.scenename].addMesh(model);
+			//this.scenes[this.scenename].addMesh(model);
+			//this.scenes['sceneassets'].removeMesh(model);
+			//model.position = new BABYLON.Vector3(10, 0, 0);
+			model.position.x = 5;
+			//console.log(model.position);
+		}
+		//console.log(this.scene);
 		//console.log(this);
 		//console.log(this.parties);
 		this.parties.push(player);
 		var enemy = new RPGStatus({name:"enemy"});
 		this.enemies.push(enemy);
+		//this.scenename = "sceneassets";
+		//this.scenes['sceneassets'];
 	}
 
 	actionbattle(){
@@ -682,10 +740,49 @@ class Babylonjs_game extends Babylonjsbes6 {
 		var self = this;
 		this.sceneassets = new BABYLON.Scene(this.engine);
 		var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5,-10), this.sceneassets);
+		camera.attachControl(this.canvas, false);
+
+		var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.sceneassets);
+
+		this.scenes['sceneassets'] = this.sceneassets;
+
 		//this.sceneassets.activeCamera.attachControl(self.canvas);
 		//self.engine.runRenderLoop(function() {
 			//self.sceneassets.render();
 		//});
+		//this.engine.displayLoadingUI();
+		this.assetsManager = new BABYLON.AssetsManager(this.sceneassets);
+		//this.assetsManager = new BABYLON.AssetsManager(this.scenes[this.scenename]);
+
+		var filepath = "block_character03.babylon";
+		var objectname = "CubeBody";
+
+		var meshTask = this.assetsManager.addMeshTask("cubebody task", objectname, "assets/", filepath);
+		meshTask.onSuccess = function (task) {
+    		task.loadedMeshes[0].position = BABYLON.Vector3.Zero();
+			task.loadedMeshes[0].isVisible = false;
+
+			//console.log(task.loadedMeshes[0]);
+		}
+
+		filepath = "arm_cube.babylon";
+		objectname = "Cube";
+
+		var meshTask2 = this.assetsManager.addMeshTask("cube task", objectname, "assets/", filepath);
+		meshTask2.onSuccess = function (task) {
+    		task.loadedMeshes[0].position = BABYLON.Vector3.Zero();
+			task.loadedMeshes[0].isVisible = false;
+		}
+
+		this.assetsManager.onFinish = function(tasks) {
+			console.log('assets loaded!');
+			//self.engine.hideLoadingUI();
+		    //self.engine.runRenderLoop(function() {
+		        //self.sceneassets.render();
+		    //});
+			self.setup_game();
+		};
+		this.assetsManager.load();
 	}
 
 	//make scene active render
@@ -693,8 +790,10 @@ class Babylonjs_game extends Babylonjsbes6 {
 		var self = this;
 		console.log(_scene);
 		console.log(self.engine);
+		//note it will keep adding more array in engine loop
 		self.engine.runRenderLoop(function() {
 			_scene.render();
+			//console.log(_scene._renderId);
 		});
 	}
 
@@ -712,18 +811,22 @@ class Babylonjs_game extends Babylonjsbes6 {
 			if (evt.keyCode==65){//A
 				keys.left=1;
 				console.log("left");
-				self.render_scene(self.scene);
+				//self.render_scene(self.scene);
+				self.scenename = "default";
 			}
 			if (evt.keyCode==68){//D
 				keys.right=1;
-				self.render_scene(self.sceneassets);
+				//self.render_scene(self.sceneassets);
+				self.scenename = "sceneassets";
 			}
 			if (evt.keyCode==87){//W
 				keys.forward=1;
-				self.stop_render();
+				//self.stop_render();
+				//self.engine.hideLoadingUI();
 			}
 			if (evt.keyCode==83){//S
 				keys.back=1;
+				//self.engine.displayLoadingUI();
 			}
 		}
 		function handleKeyUp(evt){
@@ -740,6 +843,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 				keys.back=0;
 			}
 		}
+		/*
 		this.engine.runRenderLoop(function () {
 			if (keys.left==1){//move left
 				//console.log("left");
@@ -754,24 +858,24 @@ class Babylonjs_game extends Babylonjsbes6 {
 
 			}
 		});
+		*/
 
 	}
 
 	init(){
 		super.init();
-		var self = this;
+		//console.log(this.engine);
+		//BABYLON.Tools.Log("blah");
+		//this.engine.displayLoadingUI();
+		//var self = this;
 		console.log("init [babylonjs_game]");
-		this.create2DHUD();//init 2D Canvas
-		this.create2D_BattleHUD();
-		//this.create2dhud();
-		this.createbattle_prototype();
-
+		//setup files load?
+		//init 2D Canvas setup HUD and UIs?
+		this.create2DHUD();
+		//load assets
 		this.createscene_assets();
-		BABYLON.Tools.Log("blah");
 
-		this.input_simple();
-
-
+		//this.engine.displayLoadingUI();
 		//this.create_hud2d3d();
 		//this.create_hud2d();
 		//this.appendscene_extbabylon();
@@ -798,6 +902,41 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.createscene_simple();
 		//this.loadmesh_blockcharacter();
 		//this.loadmesh_blockcharacter();
+	}
 
+
+	setup_game(){
+		console.log(this.engine);
+		//console.log(this.engine.scenes);
+		//for(var i = 0; i < this.engine.scenes.length;i++){
+			//console.log(this.engine.scenes[i].getNodeByID('ScreenCanvas'));
+			//console.log(this.engine.scenes[i].getNodeByName('ScreenCanvas'));
+			//console.log(this.engine.scenes[i].meshes);
+		//}
+		var self = this;
+		console.log("setup game!");
+
+		this.create2D_BattleHUD();
+		//this.create2dhud();
+		this.createbattle_prototype();
+		this.input_simple();
+//===============================================
+// simple scene
+//===============================================
+		var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scenes[this.scenename]);
+
+		var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
+		var boxMaterial = new BABYLON.StandardMaterial("material", this.scenes[this.scenename]);
+		boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
+		box.material = boxMaterial;
+		box.position.y = 0;
+		box.position.x = -3;
+
+		this.camera.setTarget(BABYLON.Vector3.Zero());
+
+
+		var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
+		box.position.y = 10;
+		box.position.x = -3;
 	}
 }

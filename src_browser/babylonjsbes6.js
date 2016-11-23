@@ -20,6 +20,10 @@ class Babylonjsbes6 {
 		this.onload = true;
 		this.binit = true;
 		this.reload = false;//web browser editor reload url
+
+		this.scenename = "default"; //default name
+		this.scenes = []; //manage scene
+
 		if(args != null){
 			//this need to be last else it variable are not assign
 			if (args['onload'] != null) {
@@ -85,6 +89,8 @@ class Babylonjsbes6 {
 	    // return the created scene
 	    return scene;
 	}
+
+
 	//create example scene
 	createscene_objects(){
 		// create a basic light, aiming 0,1,0 - meaning, to the sky
@@ -142,8 +148,20 @@ class Babylonjsbes6 {
 		});
 	}
 
+	//init oimo.js physics
 	init_phsics(){
 		this.scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
+	}
+
+	//start render scene set array
+	start_scenerender(){
+		var self = this;
+		this.engine.runRenderLoop(function() {
+			if(self.scenes[self.scenename] !=null){
+				self.scenes[self.scenename].render();
+				//self.scenes[this.scenename].renderloop();
+			}
+		});
 	}
 
 	init(){
@@ -155,9 +173,14 @@ class Babylonjsbes6 {
 		this.engine.enableOfflineSupport = false;
 		//console.log(this.engine);
 		//https://doc.babylonjs.com/tutorials/how_to_use_assetsmanager
-		//this.engine.loadingUIText = "loading...";
+		this.engine.loadingUIText = "loading...";
 		//this.engine.displayLoadingUI();
 		this.scene = this.createScene();
+		this.scenes[this.scenename] = this.scene;
+		//this.scenes[this.scenename].looprender=function(){
+			//this.render();
+		//}
+
 		//this.createscene_objects();
 		//init oimo.js physics
 		//this.init_phsics();
@@ -165,11 +188,16 @@ class Babylonjsbes6 {
 		//https://doc.babylonjs.com/tutorials/how_to_use_assetsmanager
 		//this.create_hud();
 
-		this.setup_network();
+		//this.setup_network();
 		//render the scene
+		this.start_scenerender();
+
+		/*
 		this.engine.runRenderLoop(function() {
+			var name = "scene";
 		    self.scene.render();
 		});
+		*/
 		//add listen event for window to load
 		window.addEventListener('resize', function() {
     		self.engine.resize();
