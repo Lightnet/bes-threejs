@@ -1,0 +1,36 @@
+<html>
+	<body>
+		<h1>Thoughts</h1>
+
+			<form>
+				<input><button>Add</button>
+			</form>
+
+			<ul></ul>
+		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="/gun.js"></script>
+		<script>
+				var peers = ['http://localhost/gun'];
+				var gun = Gun(peers).get('thoughts');
+				$('form').on('submit', function(event){
+					event.preventDefault();
+					var _text = $('input').val();
+					gun.set( {text:_text} );
+					$('input').val("");
+				});
+				gun.on().map(function(thought, id){
+					var li = $('#' + id).get(0) || $('<li>').attr('id', id).appendTo('ul');
+					if(thought){
+						//console.log(thought);
+						$(li).text(thought['text']);
+					} else {
+						$(li).hide();
+					}
+				});
+				$('body').on('dblclick', 'li', function(event){
+					console.log("id:"+this.id);
+					gun.path(this.id).put(null);
+				});
+		</script>
+	</body>
+</html>

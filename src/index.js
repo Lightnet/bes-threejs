@@ -43,10 +43,6 @@ else
 
 //var plugin = require(__dirname + '/app/lib/plugin');
 var plugin = require('./app/libs/plugin');
-//console.log(plugin());
-//console.log(plugin);
-//plugin.AddPlugin();
-
 //console.log(config);
 
 import express from 'express';
@@ -72,10 +68,50 @@ app.get("/favicon.ico", function(req, res) {
   res.end(favicon);
  });
 
+ // Imports the `Gun` library
+ const Gun = require('gun');
+ // Imported for side effects, adds level adapters.
+ require('gun-level');
+ // Import the two libraries
+ const levelup = require('levelup');
+ const leveldown = require('leveldown');
+ // Create a new level instance which saves
+ // to the `data/` folder.
+ const levelDB = levelup('data', {
+     db: leveldown,
+ });
+ // create a new gun instance
+ //https://github.com/amark/gun/issues/139
+ var gun = new Gun({
+	 level: levelDB,
+	 file:false, //disable data.json save file
+ 	//init: true,
+ });
+
+// Read `thoughts`, saving it to a variable.
+ var thoughts = gun.get('thoughts');
+
+// Update the value on `thoughts`.
+thoughts.put({
+    hello: 'world',
+})
+
+http.on('request', gun.wsp.server);
+ /*
+   Handle incoming gun traffic
+   from clients (that's where the
+   real-time goodness comes from).
+ */
+gun.wsp(http);
+
+console.log("gundb init!");
+
 import {Game} from './app/libs/threejsapi';
 
 var threejsgame = new Game();
 //threejsgame.init();
+
+console.log("threejs init!");
 
 //socket.io
 io.on('connection', function (socket) {

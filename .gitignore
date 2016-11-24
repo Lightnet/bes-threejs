@@ -16,3 +16,6 @@ public/js/threejsbes6.js
 public/js/babylonjs_game.js
 public/js/babylonjsbes6.js
 public/tests/
+npm-debug.log
+data/
+public/js/gundb.js
