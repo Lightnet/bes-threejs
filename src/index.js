@@ -49,7 +49,7 @@ import express from 'express';
 //var favicon = require('serve-favicon');
 var app = express();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+//var io = require('socket.io')(http);
 import path from 'path';
 
 //file for index.html
@@ -97,14 +97,27 @@ thoughts.put({
 })
 
 http.on('request', gun.wsp.server);
- /*
-   Handle incoming gun traffic
-   from clients (that's where the
-   real-time goodness comes from).
- */
+   //Handle incoming gun traffic
+   //from clients (that's where the
+   //real-time goodness comes from).
 gun.wsp(http);
+console.log("Gundb init!");
 
-console.log("gundb init!");
+var io = require('socket.io')(http);
+
+io.use(function(socket, next){
+	console.log(socket.handshake);
+  //if (socket.handshake.query && socket.handshake.query.token){
+	  //console.log((socket.handshake);
+    //jwt.verify(socket.handshake.query.token, 'SECRET_KEY', function(err, decoded) {
+      //if(err) return next(new Error('Authentication error'));
+      //socket.decoded = decoded;
+      //next();
+    //});
+  //}
+  //next(new Error('Authentication error'));
+  next();
+});
 
 import {Game} from './app/libs/threejsapi';
 
@@ -116,10 +129,10 @@ console.log("threejs init!");
 //socket.io
 io.on('connection', function (socket) {
 	console.log("client connect.");
-	threejsgame.connect(io,socket);
+	//threejsgame.connect(io,socket);
 	socket.on('disconnect', function (data) {
 		console.log('client disconnect');
-		threejsgame.disconnect(io,socket);
+		//threejsgame.disconnect(io,socket);
 	});
 });
 

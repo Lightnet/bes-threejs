@@ -21,8 +21,8 @@ class ObjectRPGID{
 	constructor(args){
 		this.hashid = "";
 		this.id = "";
-		this.name = "";
-		this.description = "";
+		this.name = "none";
+		this.description = "none";
 		if(args !=null){
 			if(args['name'] !=null){
 				this.name = args['name'];
@@ -90,7 +90,7 @@ class RPGWeapon extends RPGEquip{
 
 class RPGStatus extends ObjectRPGID{
 	constructor(args){
-		super();
+		super(args);
 		this.stats= new RPGStats();
 
 		this.health = 5;
@@ -155,6 +155,12 @@ class Babylonjs_game extends Babylonjsbes6 {
 	constructor(args){
 
 		super(args);
+
+		this.materials = [];
+		this.textures = [];
+		this.meshes = [];
+
+
 		this.characters = [];
 		this.dimensionstorage = [];
 
@@ -610,8 +616,9 @@ class Babylonjs_game extends Babylonjsbes6 {
 
 		for(var i = 0; i < this.assetsManager._scene.meshes.length;i++){
 			if(this.assetsManager._scene.meshes[i] !=null){
+				//console.log(this.assetsManager._scene.meshes[i].uniqueId);
 				if(this.assetsManager._scene.meshes[i].name == _name){
-					console.log(this.assetsManager._scene.meshes[i]);
+					//console.log(this.assetsManager._scene.meshes[i]);
 					model = this.assetsManager._scene.meshes[i].clone(_name,null,true);
 					//remove assets since it been clone
 					this.assetsManager._scene.removeMesh(model);
@@ -638,32 +645,94 @@ class Babylonjs_game extends Babylonjsbes6 {
 	}
 
 	createbattle_prototype(){
+		var self = this;
 		var player = new RPGStatus({name:"player"});
 		console.log(this.assetsManager);
 		var model = this.getmesh("CubeBody");
 		console.log(model);
 		if(model !=null){
-			console.log("model");
-			console.log(model);
+
+			model.rpgstatus = player;
+			player.mesh = model;
+
+			//console.log("model");
+			//console.log(model);
 			//set scene to be update...
 			model._scene = this.scenes[this.scenename];
 			model.isVisible = true;
 			this.scenes[this.scenename].addMesh(model);
-			//this.scenes[this.scenename].addMesh(model);
-			//this.scenes['sceneassets'].removeMesh(model);
-			//model.position = new BABYLON.Vector3(10, 0, 0);
-			model.position.x = 5;
-			//console.log(model.position);
+			model.position.x = 3;
+			model.rotation.y = Math.PI/2; //90
+			var i = 0;
+			var node_ui = new BABYLON.Vector2(0,100);
+			new BABYLON.Group2D({
+            parent: this.hudcanvas, id: "GroupTag #" + i, width: 80, height: 40, trackNode: model, origin: BABYLON.Vector2(0,10),
+	            children: [
+	                new BABYLON.Rectangle2D({ id: "firstRect", width: 80, height: 26, x: 0, y: 0, origin: BABYLON.Vector2.Zero(), border: "#FFFFFFFF", fill: "#808080FF", children: [
+	                        new BABYLON.Text2D(player.name, { marginAlignment: "h: center, v:center", fontName: "bold 12px Arial" })
+	                    ]
+	                })
+	            ]
+        	});
+			//console.log(model);
+			//console.log(player);
 		}
 		//console.log(this.scene);
 		//console.log(this);
 		//console.log(this.parties);
 		this.parties.push(player);
 		var enemy = new RPGStatus({name:"enemy"});
+
+
+		var model2 = this.getmesh("CubeBody");
+
+		if(model2 !=null){
+
+			model2.rpgstatus = enemy;
+			enemy.mesh = model2;
+
+			console.log("model");
+			console.log(model2);
+			//set scene to be update...
+			model2._scene = this.scenes[this.scenename];
+			model2.isVisible = true;
+			this.scenes[this.scenename].addMesh(model2);
+			model2.position.x = -3;
+			model2.rotation.y = Math.PI/2 * -1; //-90
+			//var nametext2D = new BABYLON.Text2D(enemy.name, { marginAlignment: "h: center, v:center", fontName: "bold 12px Arial" });
+			//console.log(player);
+		}
+
 		this.enemies.push(enemy);
+		var count = 0;
+		self.engine.runRenderLoop(function() {
+			count++;
+			if(count > 100){
+				count = 0;
+			}
+			//nametext2D.text = "test" + count;
+
+			//console.log("render");
+		});
 		//this.scenename = "sceneassets";
 		//this.scenes['sceneassets'];
 	}
+
+	drawstatusbars(_2DCanvas,_model,status){
+		var i = 0;
+		var node_ui = new BABYLON.Vector2(0,100);
+		new BABYLON.Group2D({
+		parent: _2DCanvas, id: "GroupTag #" + model.uniqueId, width: 80, height: 40, trackNode: _model, origin: BABYLON.Vector2(0,10),
+			children: [
+				new BABYLON.Rectangle2D({ id: "firstRect", width: 80, height: 26, x: 0, y: 0, origin: BABYLON.Vector2.Zero(), border: "#FFFFFFFF", fill: "#808080FF", children: [
+						new BABYLON.Text2D(_status.name, { marginAlignment: "h: center, v:center", fontName: "bold 12px Arial" })
+					]
+				})
+			]
+		});
+	}
+
+
 
 	actionbattle(){
 		console.log("action battle ...");
@@ -781,6 +850,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 		        //self.sceneassets.render();
 		    //});
 			self.setup_game();
+			this.engine.hideLoadingUI();
 		};
 		this.assetsManager.load();
 	}
@@ -916,6 +986,16 @@ class Babylonjs_game extends Babylonjsbes6 {
 		var self = this;
 		console.log("setup game!");
 
+		//var skyMaterial = new BABYLON.SkyMaterial("skyMaterial", this.scene);
+		//skyMaterial.backFaceCulling = false;
+		var skybox = BABYLON.Mesh.CreateBox("skyBox", 1000.0, this.scene);
+		//var skybox = BABYLON.Mesh.CreateBox("skyBox", 100, this.scene);
+		//skybox.material = skyMaterial;
+
+		this.engine.hideLoadingUI();
+
+
+
 		this.create2D_BattleHUD();
 		//this.create2dhud();
 		this.createbattle_prototype();
@@ -929,14 +1009,17 @@ class Babylonjs_game extends Babylonjsbes6 {
 		var boxMaterial = new BABYLON.StandardMaterial("material", this.scenes[this.scenename]);
 		boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
 		box.material = boxMaterial;
-		box.position.y = 0;
+		box.position.y = 10;
 		box.position.x = -3;
 
 		this.camera.setTarget(BABYLON.Vector3.Zero());
 
 
-		var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
-		box.position.y = 10;
-		box.position.x = -3;
+		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
+		//box.position.y = 10;
+		//box.position.x = -3;
+
+		// Let's try our built-in 'ground' shape.  Params: name, width, depth, subdivisions, scene
+    	var ground = BABYLON.Mesh.CreateGround("ground1", 20, 20, 2, this.scene);
 	}
 }
