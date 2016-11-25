@@ -663,17 +663,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 			this.scenes[this.scenename].addMesh(model);
 			model.position.x = 3;
 			model.rotation.y = Math.PI/2; //90
-			var i = 0;
-			var node_ui = new BABYLON.Vector2(0,100);
-			new BABYLON.Group2D({
-            parent: this.hudcanvas, id: "GroupTag #" + i, width: 80, height: 40, trackNode: model, origin: BABYLON.Vector2(0,10),
-	            children: [
-	                new BABYLON.Rectangle2D({ id: "firstRect", width: 80, height: 26, x: 0, y: 0, origin: BABYLON.Vector2.Zero(), border: "#FFFFFFFF", fill: "#808080FF", children: [
-	                        new BABYLON.Text2D(player.name, { marginAlignment: "h: center, v:center", fontName: "bold 12px Arial" })
-	                    ]
-	                })
-	            ]
-        	});
+			this.drawstatusbars_0(this.hudcanvas,model,player);
 			//console.log(model);
 			//console.log(player);
 		}
@@ -682,17 +672,13 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//console.log(this.parties);
 		this.parties.push(player);
 		var enemy = new RPGStatus({name:"enemy"});
-
-
 		var model2 = this.getmesh("CubeBody");
-
 		if(model2 !=null){
-
 			model2.rpgstatus = enemy;
 			enemy.mesh = model2;
 
-			console.log("model");
-			console.log(model2);
+			//console.log("model");
+			//console.log(model2);
 			//set scene to be update...
 			model2._scene = this.scenes[this.scenename];
 			model2.isVisible = true;
@@ -700,29 +686,125 @@ class Babylonjs_game extends Babylonjsbes6 {
 			model2.position.x = -3;
 			model2.rotation.y = Math.PI/2 * -1; //-90
 			//var nametext2D = new BABYLON.Text2D(enemy.name, { marginAlignment: "h: center, v:center", fontName: "bold 12px Arial" });
+			this.drawstatusbars_0(this.hudcanvas,model2,enemy);
 			//console.log(player);
+
+			//http://www.babylonjs-playground.com/#3HQSB#4
+			//http://www.html5gamedevs.com/topic/20674-how-would-you-handle-healthbars-with-babylon/#comment-117513
+
+			var healthBarMaterial = new BABYLON.StandardMaterial("hb1mat", this.scene);
+			healthBarMaterial.diffuseColor = BABYLON.Color3.Green();
+			healthBarMaterial.backFaceCulling = false;
+
+			var healthBarContainerMaterial = new BABYLON.StandardMaterial("hb2mat", this.scene);
+			healthBarContainerMaterial.diffuseColor = BABYLON.Color3.Blue();
+			healthBarContainerMaterial.backFaceCulling = false;
+
+			var dynamicTexture = new BABYLON.DynamicTexture("dt1", 512, this.scene, true);
+			dynamicTexture.hasAlpha = true;
+
+			var healthBarTextMaterial = new BABYLON.StandardMaterial("hb3mat", this.scene);
+			healthBarTextMaterial.diffuseTexture = dynamicTexture;
+			healthBarTextMaterial.backFaceCulling = false;
+			healthBarTextMaterial.diffuseColor = BABYLON.Color3.Green();
+
+			var healthBarContainer = BABYLON.MeshBuilder.CreatePlane("hb2", { width: 2, height: .5, subdivisions: 4 }, this.scene);
+    		var healthBar = BABYLON.MeshBuilder.CreatePlane("hb1", {width:2, height:.5, subdivisions:4}, this.scene);
+
+			var healthBarText = BABYLON.MeshBuilder.CreatePlane("hb3", { width: 2, height: 2, subdivisions: 4 }, this.scene);
+			healthBarText.material = healthBarMaterial;
+
+			healthBarContainer.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+
+			healthBar.renderingGroupId = 1;
+			healthBarText.renderingGroupId = 1;
+			healthBarContainer.renderingGroupId = 1;
+
+			healthBar.position = new BABYLON.Vector3(0, 0, -.01);			// Move in front of container slightly.  Without this there is flickering.
+			healthBarContainer.position = new BABYLON.Vector3(0, 3, 0);     // Position above player.
+			healthBarText.position = new BABYLON.Vector3(1.5, -.4, 0);
+
+			healthBar.parent = healthBarContainer;
+			healthBarContainer.parent = model2;
+			healthBarText.parent = healthBarContainer;
+
+			healthBar.material = healthBarMaterial;
+			healthBarContainer.material = healthBarContainerMaterial;
+			healthBarText.material = healthBarTextMaterial;
+
+			var alive = true;
+			var alpha = 3;
+			var healthPercentage = 100;
+
+			var count = 0;
+			self.engine.runRenderLoop(function() {
+				count++;
+				if(count > 100){
+					count = 0;
+				}
+				//nametext2D.text = "test" + count;
+				//console.log("render");
+
+				if (alive) {
+
+					healthBar.scaling.x = healthPercentage / 100;
+					healthBar.position.x =  (1 - (healthPercentage / 100)) * -1;
+
+					if (healthBar.scaling.x < 0) {
+						//alive = false;
+						healthPercentage = 100;
+						alpha = 3;
+						healthBarTextMaterial.diffuseColor = BABYLON.Color3.Green();
+						healthBarMaterial.diffuseColor = BABYLON.Color3.Green();
+					}
+					else if (healthBar.scaling.x < .5) {
+						healthBarMaterial.diffuseColor = BABYLON.Color3.Yellow();
+						healthBarTextMaterial.diffuseColor = BABYLON.Color3.Yellow();
+					}
+					else if (healthBar.scaling.x < .3) {
+						healthBarMaterial.diffuseColor = BABYLON.Color3.Red();
+						healthBarTextMaterial.diffuseColor = BABYLON.Color3.Red();
+					}
+
+					//
+					// Display Health Percentage.
+					// - Only update display if whole number.
+					//
+					if (Math.round(healthPercentage) == healthPercentage) {
+						var textureContext = dynamicTexture.getContext();
+						var size = dynamicTexture.getSize();
+						var text = healthPercentage + "%";
+
+						textureContext.clearRect(0, 0, size.width, size.height);
+
+						textureContext.font = "bold 120px Calibri";
+						var textSize = textureContext.measureText(text);
+						textureContext.fillStyle = "white";
+						textureContext.fillText(text,(size.width - textSize.width) / 2,(size.height - 120) / 2);
+
+						dynamicTexture.update();
+					}
+
+					healthPercentage -= .5;
+
+					alpha += 0.01;
+
+
+
+				}
+			});
 		}
 
 		this.enemies.push(enemy);
-		var count = 0;
-		self.engine.runRenderLoop(function() {
-			count++;
-			if(count > 100){
-				count = 0;
-			}
-			//nametext2D.text = "test" + count;
 
-			//console.log("render");
-		});
 		//this.scenename = "sceneassets";
 		//this.scenes['sceneassets'];
 	}
 
-	drawstatusbars(_2DCanvas,_model,status){
-		var i = 0;
-		var node_ui = new BABYLON.Vector2(0,100);
+	drawstatusbars_0(_2DCanvas,_model,_status){
+		//console.log(_model.uniqueId);
 		new BABYLON.Group2D({
-		parent: _2DCanvas, id: "GroupTag #" + model.uniqueId, width: 80, height: 40, trackNode: _model, origin: BABYLON.Vector2(0,10),
+		parent: _2DCanvas, id: "GroupTag #" + _model.uniqueId, width: 80, height: 40, trackNode: _model, origin: BABYLON.Vector2(0,0),
 			children: [
 				new BABYLON.Rectangle2D({ id: "firstRect", width: 80, height: 26, x: 0, y: 0, origin: BABYLON.Vector2.Zero(), border: "#FFFFFFFF", fill: "#808080FF", children: [
 						new BABYLON.Text2D(_status.name, { marginAlignment: "h: center, v:center", fontName: "bold 12px Arial" })
@@ -993,7 +1075,9 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//skybox.material = skyMaterial;
 
 		this.engine.hideLoadingUI();
-
+		//this.scene.debugLayer.show();
+		this.scene.debugLayer.show(false);
+		//this.scene.debugLayer.hide();
 
 
 		this.create2D_BattleHUD();
