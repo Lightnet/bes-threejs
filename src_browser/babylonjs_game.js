@@ -179,7 +179,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 
 	createscene_assets(){
 		var self = this;
-		/*
+
 		this.assetsManager = new BABYLON.AssetsManager(this.scene);
 
 		var filepath = "block_character03.babylon";
@@ -190,8 +190,9 @@ class Babylonjs_game extends Babylonjsbes6 {
     		//task.loadedMeshes[0].position = BABYLON.Vector3.Zero();
 			task.loadedMeshes[0].position = new BABYLON.Vector3(0,2,3);
 			//console.log(task.loadedMeshes[0].position);
-			//task.loadedMeshes[0].isVisible = false;
+			task.loadedMeshes[0].isVisible = false;
 			self.meshes.push(task.loadedMeshes[0]);
+			self.models.push({mesh:task.loadedMeshes[0],skeleton:null});
 		}
 
 		filepath = "arm_cube.babylon";
@@ -202,6 +203,7 @@ class Babylonjs_game extends Babylonjsbes6 {
     		//task.loadedMeshes[0].position = BABYLON.Vector3.Zero();
 			task.loadedMeshes[0].isVisible = false;
 			self.meshes.push(task.loadedMeshes[0]);
+			self.models.push({mesh:task.loadedMeshes[0],skeleton:null});
 		}
 
 		this.assetsManager.onFinish = function(tasks) {
@@ -210,16 +212,14 @@ class Babylonjs_game extends Babylonjsbes6 {
 			self.engine.hideLoadingUI();
 		};
 		this.assetsManager.load();
-		*/
 
+
+		/*
 		//self.setup_game();
-
 		var filepath = "block_character03.babylon";
 		var objectname = "CubeBody";
-
 		//var filepath = "arm_cube.babylon";
 		//var objectname = "Cube";
-
 		BABYLON.SceneLoader.ImportMesh(objectname, "/assets/", filepath, this.scene, function (newMeshes, particleSystems, skeletons) {
 			console.log(newMeshes[0]);
 			newMeshes[0].isVisible = false;
@@ -229,6 +229,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 			self.models.push({mesh:newMeshes[0],skeleton:skeletons[0]});
 			self.setup_game();
 		});
+		*/
 
 	}
 
@@ -241,7 +242,8 @@ class Babylonjs_game extends Babylonjsbes6 {
 				model = this.models[i].mesh.clone("mesh"+mid);
 				var mid = uuid();//random id generator
 				model.position = new BABYLON.Vector3(0, 0, 3);
-				model.skeleton = this.models[i].skeleton.clone("skeleton"+mid);
+				model.skeleton = this.models[i].mesh.skeleton.clone("skeleton"+mid);
+				//model.skeleton = this.models[i].skeleton.clone("skeleton"+mid);
 				//this.scene.beginAnimation(model.skeleton, 40, 60, true, 0.5); //works /// works
 				break;
 			}
@@ -404,7 +406,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 		});
 	}
 
-
 	create2DHUD(){
 		this.hudcanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
 		    id: "ScreenCanvas",
@@ -417,54 +418,62 @@ class Babylonjs_game extends Babylonjsbes6 {
 		console.log("action battle ...");
 		console.log(this.parties[0]);
 		//check if party health is not zero for attack
-		if(this.parties[0].health > 0){
-			this.enemies[0].health = this.enemies[0].health - this.parties[0].attack;
-		}
-		if(this.enemies[0].health <= 0){
-		 	this.enemies[0].health = 0;
-		}
-		console.log("ENEMY HEALTH:" + this.enemies[0].health+ "/" + this.enemies[0].maxhealth);
-		//check if enemy health is not zero to attack if dead
-		if(this.enemies[0].health > 0){
-			this.parties[0].health = this.parties[0].health - this.parties[0].attack;
-		}
-		if(this.parties[0].health <= 0){
-		 	this.parties[0].health = 0;
-		}
-		console.log("PARTY HEALTH:" + this.parties[0].health + "/" + this.parties[0].maxhealth);
-		console.log(this.enemies[0]);
+
+		this.opponentAttack(this.parties[0],this.enemies[0]);
+		this.opponentAttack(this.enemies[0],this.parties[0]);
 
 	}
-	opponentAttack(){
+
+	opponentAttack(_Attack,_defender){
 		console.log("opponentAttack ...");
+		if(_Attack.health > 0){
+			_defender.health = _defender.health - _Attack.attack;
+		}
+		if(_defender.health <= 0){
+		 	_defender.health = 0;
+		}
 	}
-	setupbattle(){}
-	createbattle(){}
+
+	setupbattle(){
+
+	}
+
+	createbattle(){
+
+	}
+
 	openitem(){
 		console.log("open item ...");
 		console.log(this.parties[0]);
 	}
+
 	openskills(){
 		console.log("open skills ...");
 		console.log(this.parties[0]);
 	}
+
 	actionattack(){
 		var self = this;
 		console.log("action player attack ...");
 		console.log(  this.parties[0].mesh.uniqueId   );
-		self.scene.beginAnimation(this.parties[0].mesh.skeleton, 40, 60, true, 0.5); //works /// works
+		self.scene.beginAnimation(this.parties[0].mesh.skeleton, 40, 60, false, 0.5); //works /// works
+		this.opponentAttack(this.parties[0],this.enemies[0]);
+		//this.opponentAttack(this.enemies[0],this.parties[0]);
 	}
 
 	actionenemyattack(){
 		var self = this;
 		console.log("action enemy attack ...");
-		self.scene.beginAnimation(this.enemies[0].mesh.skeleton, 40, 60, true, 0.5); //works /// works
+		self.scene.beginAnimation(this.enemies[0].mesh.skeleton, 40, 60, false, 0.5); //works /// works
+		//this.opponentAttack(this.parties[0],this.enemies[0]);
+		this.opponentAttack(this.enemies[0],this.parties[0]);
 	}
 
 	actionmove(){
 		console.log("action move ...");
 		console.log(this.parties[0]);
 	}
+
 	actionescape(){
 		console.log("action escape ...");
 		console.log(this.parties[0]);
@@ -497,7 +506,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 			}, BABYLON.PrimitivePointerInfo.PointerUp);
 		return buttonRect;
 	}
-
 
 
 	init(){
