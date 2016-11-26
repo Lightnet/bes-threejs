@@ -10,14 +10,14 @@
 		<script type="text/javascript" src="/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="/js/libs/oimo.min.js"></script>
-		<script type="text/javascript" src="/js/babylon.max.js"></script>
-		<!--
 		<script type="text/javascript" src="/js/babylon.js"></script>
+		<!--
 		<script type="text/javascript" src="/js/babylon.min.js"></script>
+		<script type="text/javascript" src="/js/babylon.max.js"></script>
 		<script type="text/javascript" src="/js/loaders/babylon.glTFFileLoader.js"></script>
 		-->
 		<script type="text/javascript" src="/js/babylonjsbes6.js"></script>
-		<script type="text/javascript" src="/js/babylonjs_game.js"></script>
+		<script type="text/javascript" src="/js/babylonjs_prototype.js"></script>
 		<style>
 			html, body {
 				overflow: hidden;
@@ -38,13 +38,13 @@
 		<script>
 			/*
 			function addListener(event, obj, fn) {
-		        if (obj.addEventListener) {
-		            obj.addEventListener(event, fn, false); // modern browsers
-		        }
-		        else {
-		            obj.attachEvent("on" + event, fn); // older versions of IE
-		        }
-		    }
+				if (obj.addEventListener) {
+					obj.addEventListener(event, fn, false); // modern browsers
+				}
+				else {
+					obj.attachEvent("on" + event, fn); // older versions of IE
+				}
+			}
 			addListener("load", window, function () {
 				console.log("manual game init");
 				var config = {
