@@ -640,38 +640,75 @@ class Babylonjs_game extends Babylonjsbes6 {
 		var self = this;
 
 		var camera = new BABYLON.ArcRotateCamera("arcCamera1",0,0,10,BABYLON.Vector3.Zero(),this.scene);
-        camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
-        camera.attachControl(this.canvas,false);
-        camera.setPosition(new BABYLON.Vector3(0,5,5));
+    camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
+    camera.attachControl(this.canvas,false);
+    camera.setPosition(new BABYLON.Vector3(0,5,5));
 		this.scene.activeCamera.attachControl(self.canvas);
 		this.scene.activeCamera = camera;
+    console.log(camera);
+    this.thirdcamera = camera;
 
-		var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
-		var boxMaterial = new BABYLON.StandardMaterial("material", this.scenes[this.scenename]);
-		boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
-		box.material = boxMaterial;
-		console.log(box);
-		this.controllerid = box.uniqueId;
+		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
+		//var boxMaterial = new BABYLON.StandardMaterial("material", this.scenes[this.scenename]);
+		//boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
+		//box.material = boxMaterial;
+		//console.log(box);
+    var model = this.getmesh("CubeBody");
+    model.isVisible = true;
+
+		this.controllerid = model.uniqueId;
     var movestep = .05;
-		box.update=function(){
+		model.update=function(){
 
 			if(self.controllerid == this.uniqueId){
 				if(self.keys.left){
-					self.moveVector.z = movestep;
-					self.box.moveWithCollisions(self.moveVector);
+					//self.moveVector.z = movestep;
+
+				}
+        if(self.keys.right){
+					//self.moveVector.z = -movestep;
+					//self.box.moveWithCollisions(self.moveVector);
 				}
 
-				if(self.keys.right){
-					self.moveVector.z = -movestep;
-					self.box.moveWithCollisions(self.moveVector);
+				if(self.keys.forward){
+					//self.moveVector.z = -movestep;
+					//self.box.moveWithCollisions(self.moveVector);
+          //var forward = self.scene.activeCamera.getTarget().subtract(self.scene.activeCamera.position).normalize();//works but required object mesh or object 3d
+          var forward = self.scene.activeCamera.getFrontPosition(1).subtract(self.scene.activeCamera.position).normalize(); //forward camera
+          forward.y=0;
+          //console.log(forward);
+					self.model.moveWithCollisions(forward);
+          //self.model.rotation.y = self.scene.activeCamera.rotation.y;
+          //console.log(self.scene.activeCamera.rotation.y);
+          //forward.x = forward.x * (-1);
+          //forward.z = forward.z * (-1);
+          var targetlook = camera.getFrontPosition(100);
+          targetlook.y = 0;
+          self.model.lookAt(targetlook);
+          forward = null;
 				}
+
+        if(self.keys.back){
+          var forward = self.scene.activeCamera.getFrontPosition(1).subtract(self.scene.activeCamera.position).normalize(); //forward camera
+          forward.y = 0;
+          forward.x = forward.x * (-1);
+          forward.z = forward.z * (-1);
+          //console.log(self.model);
+          //self.model.rotation.y = self.scene.activeCamera.rotation.y;
+
+          self.model.moveWithCollisions(forward);
+          var targetlook = camera.getFrontPosition(100);
+          targetlook.y = 0;
+          self.model.lookAt(targetlook);
+          forward = null;
+        }
 			}
 		}
 
-    console.log(box);
-		this.box = box;
-
-    camera.setTarget(box);
+    console.log(model);
+		this.model = model;
+    //sphere.position = camera.getFrontPosition(12); //Sphere has 12 unit front the camera.
+    camera.setTarget(model);
 	}
 
 	create_input(){
@@ -699,13 +736,14 @@ class Babylonjs_game extends Babylonjsbes6 {
 			}
 			if (evt.keyCode==87){//W
 				self.keys.forward=1;
-				console.log("up");
+				//console.log("up");
 				//self.stop_render();
 				//self.engine.hideLoadingUI();
 			}
 			if (evt.keyCode==83){//S
 				self.keys.back=1;
-				console.log("down");
+				//console.log("down");
+        //console.log(self.thirdcamera);
 				//self.engine.displayLoadingUI();
 			}
 		}
