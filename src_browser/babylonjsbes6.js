@@ -158,8 +158,11 @@ class Babylonjsbes6 {
 		var self = this;
 		this.engine.runRenderLoop(function() {
 			if(self.scenes[self.scenename] !=null){
-				self.scenes[self.scenename].render();
-				//self.scenes[this.scenename].renderloop();
+				if(typeof self.scenes[this.scenename].renderloop === 'function'){
+					self.scenes[this.scenename].renderloop(); //custom function call
+				}else{
+					self.scenes[self.scenename].render();
+				}
 			}
 		});
 	}

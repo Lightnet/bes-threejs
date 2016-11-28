@@ -19,3 +19,4 @@ public/tests/
 npm-debug.log
 data/
 public/js/gundb.js
+*.blend1

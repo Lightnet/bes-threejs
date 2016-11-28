@@ -130,7 +130,6 @@ class RPGStatus extends ObjectRPGID{
 
 		this.mesh = null;
 		this.isdead = false;
-
 		this.targets = [];
 
 		//this.isfinishanimation = false;
@@ -187,6 +186,11 @@ class Babylonjs_game extends Babylonjsbes6 {
 		this.sceneassets;
 		this.assetsManager;
 		this.config_assets;
+		//controls
+		this.controllerid = 0;
+		this.keys={letft:0,right:0,forward:0,back:0};
+		this.moveVector = new BABYLON.Vector3(0, 0, 0);
+
 	}
 
 	createscene_assets(){
@@ -632,6 +636,145 @@ class Babylonjs_game extends Babylonjsbes6 {
 		return buttonRect;
 	}
 
+	create_movement(){
+		var self = this;
+
+		var camera = new BABYLON.ArcRotateCamera("arcCamera1",0,0,10,BABYLON.Vector3.Zero(),this.scene);
+        camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
+        camera.attachControl(this.canvas,false);
+        camera.setPosition(new BABYLON.Vector3(0,5,5));
+		this.scene.activeCamera.attachControl(self.canvas);
+		this.scene.activeCamera = camera;
+
+		var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
+		var boxMaterial = new BABYLON.StandardMaterial("material", this.scenes[this.scenename]);
+		boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
+		box.material = boxMaterial;
+		console.log(box);
+		this.controllerid = box.uniqueId;
+    var movestep = .05;
+		box.update=function(){
+
+			if(self.controllerid == this.uniqueId){
+				if(self.keys.left){
+					self.moveVector.z = movestep;
+					self.box.moveWithCollisions(self.moveVector);
+				}
+
+				if(self.keys.right){
+					self.moveVector.z = -movestep;
+					self.box.moveWithCollisions(self.moveVector);
+				}
+			}
+		}
+
+    console.log(box);
+		this.box = box;
+
+    camera.setTarget(box);
+	}
+
+	create_input(){
+    var self = this;
+
+		//this.keys={letft:0,right:0,forward:0,back:0};
+		window.addEventListener("keydown", handleKeyDown, false);
+		window.addEventListener("keyup", handleKeyUp, false);
+		function handleKeyDown(evt){
+      if (evt.keyCode==65){//A
+				self.keys.left=1;
+				//console.log("left");
+				//self.render_scene(self.scene);
+				//self.scenename = "default";
+				//self.moveVector.z = movestep;
+				//self.box.moveWithCollisions(self.moveVector);
+			}
+			if (evt.keyCode==68){//D
+        self.keys.right=1;
+				//console.log("right");
+				//self.moveVector.z = -movestep;
+				//self.box.moveWithCollisions(self.moveVector);
+				//self.render_scene(self.sceneassets);
+				//self.scenename = "sceneassets";
+			}
+			if (evt.keyCode==87){//W
+				self.keys.forward=1;
+				console.log("up");
+				//self.stop_render();
+				//self.engine.hideLoadingUI();
+			}
+			if (evt.keyCode==83){//S
+				self.keys.back=1;
+				console.log("down");
+				//self.engine.displayLoadingUI();
+			}
+		}
+
+		function handleKeyUp(evt){
+			if (evt.keyCode==65){
+				self.keys.left=0;
+			}
+			if (evt.keyCode==68){
+				self.keys.right=0;
+			}
+			if (evt.keyCode==87){
+				self.keys.forward=0;
+			}
+			if (evt.keyCode==83){
+				self.keys.back=0;
+			}
+		}
+	}
+
+	PickObject(){
+		//When pointer down event is raised
+	    this.scene.onPointerDown = function (evt, pickResult) {
+	        // if the click hits the ground object, we change the impact position
+	        if (pickResult.hit) {
+	            //impact.position.x = pickResult.pickedPoint.x;
+	            //impact.position.y = pickResult.pickedPoint.y;
+				//console.log("HIT"+pickResult.pickedPoint);
+	        }
+	    };
+
+	}
+
+	simple_scene(){
+		//===============================================
+		// simple scene
+		//===============================================
+		var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scenes[this.scenename]);
+
+		var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
+		var boxMaterial = new BABYLON.StandardMaterial("material", this.scenes[this.scenename]);
+		boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
+		box.material = boxMaterial;
+		box.position.y = 10;
+		box.position.x = -3;
+
+		this.camera.setTarget(BABYLON.Vector3.Zero());
+		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
+		//box.position.y = 10;
+		//box.position.x = -3;
+		// Let's try our built-in 'ground' shape.  Params: name, width, depth, subdivisions, scene
+    	var ground = BABYLON.Mesh.CreateGround("ground1", 20, 20, 2, this.scene);
+	}
+
+	//override function...
+	start_scenerender(){
+		var self = this;
+		this.engine.runRenderLoop(function() {
+			if(self.scenes[self.scenename] !=null){
+				self.scenes[self.scenename].render();
+				for(var i =0; i < self.scenes[self.scenename].meshes.length;i++){
+					if(typeof self.scenes[self.scenename].meshes[i].update === 'function'){
+						self.scenes[self.scenename].meshes[i].update();
+					}
+				}
+			}
+		});
+	}
+
 
 	init(){
 		super.init();
@@ -645,33 +788,18 @@ class Babylonjs_game extends Babylonjsbes6 {
 		console.log(this.engine);
 		console.log(BABYLON);
 
-		this.create2DHUD();
-		this.create2D_BattleHUD();
-
+		//this.create2DHUD();
+		//this.create2D_BattleHUD();
 		//BABYLON.DebugLayer().show();
 		//this.scene.debugLayer.show(false);
 		//this.scene.debugLayer.show(true);
-		this.createbattle_prototype();
+		//this.createbattle_prototype();
+		this.create_input();
+		this.create_movement();
+		this.PickObject();
 
-//===============================================
-// simple scene
-//===============================================
-		var light = new BABYLON.PointLight("light", new BABYLON.Vector3(10, 10, 0), this.scenes[this.scenename]);
+		this.simple_scene();
 
-		var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
-		var boxMaterial = new BABYLON.StandardMaterial("material", this.scenes[this.scenename]);
-		boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
-		box.material = boxMaterial;
-		box.position.y = 10;
-		box.position.x = -3;
-
-		this.camera.setTarget(BABYLON.Vector3.Zero());
-
-		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
-		//box.position.y = 10;
-		//box.position.x = -3;
-
-		// Let's try our built-in 'ground' shape.  Params: name, width, depth, subdivisions, scene
-    	var ground = BABYLON.Mesh.CreateGround("ground1", 20, 20, 2, this.scene);
+		console.log(this.scene);
 	}
 }
