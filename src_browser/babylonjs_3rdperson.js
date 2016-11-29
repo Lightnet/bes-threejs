@@ -1,3 +1,5 @@
+
+
 window.addEventListener('DOMContentLoaded', function() {
     // your code here
     // get the canvas DOM element
@@ -8,6 +10,15 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // createScene function that creates and return the scene
     var createScene = function(){
+        // Converts from degrees to radians.
+        Math.radians = function(degrees) {
+          return degrees * Math.PI / 180;
+        };
+
+        // Converts from radians to degrees.
+        Math.degrees = function(radians) {
+          return radians * 180 / Math.PI;
+        };
         var keys={letft:0,right:0,forward:0,back:0};
         var diffAngle;
         var pickResult;
@@ -28,6 +39,10 @@ window.addEventListener('DOMContentLoaded', function() {
         // create a basic light, aiming 0,1,0 - meaning, to the sky
         //var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
 
+        var light0 = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(1, 10, 1), scene);
+        light0.diffuse = new BABYLON.Color3(0.1, 0, 0);
+        //light0.specular = new BABYLON.Color3(0.1, 0.1, 0.1);
+
         var camera = new BABYLON.ArcRotateCamera("arcCamera1",0,0,10,BABYLON.Vector3.Zero(),scene);
         //camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
         camera.attachControl(canvas,false);
@@ -45,32 +60,135 @@ window.addEventListener('DOMContentLoaded', function() {
         camera.setTarget(model);
         model.scaling.z = 1.5;
 
+        console.log(model);
+
+        function rotateVector(vect, quat) {
+            var matr = new BABYLON.Matrix();
+            quat.toRotationMatrix(matr);
+            var rotatedvect = BABYLON.Vector3.TransformCoordinates(vect, matr);
+            return rotatedvect;
+        }
+
+        var rotateVector = function(vec, ang)
+        {
+            ang = -ang * (Math.PI/180);
+            var cos = Math.cos(ang);
+            var sin = Math.sin(ang);
+            return new Array(Math.round(10000*(vec[0] * cos - vec[1] * sin))/10000, Math.round(10000*(vec[0] * sin + vec[1] * cos))/10000);
+        };
+
+        var FaceRotation = 0;
+
         model.update=function(){
             //if(controllerid == uniqueId){
-
-                if(diffAngle !=null){
-                    model.rotation.y = diffAngle;
-                }
-                if(keys.left){
+                //vector forward direction
+                //var forward = camera.getFrontPosition(1).subtract(camera.position).normalize(); //does not work
+                var target = model.position.clone();
+                var forward = target.subtract(camera.position).normalize();
+                forward.y = 0;
+                //get rotation dir
+                var diffAngle = Math.atan2(-forward.x,-forward.z);
+                if(keys.left){// just a bug
+                    model.rotation.y = diffAngle - (Math.PI/2);
+                    var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, -Math.degrees(Math.PI/2));
+                    var v3 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
+                    model.moveWithCollisions(v3);
+                    v3 = null;
 				}
-                if(keys.right){
+                if(keys.right){// just a bug
+                    var currentAngle = diffAngle + (Math.PI/2);
+                    model.rotation.y = currentAngle;
+
+                    console.log( Math.degrees(currentAngle));
+                    var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, Math.degrees(Math.PI/2));
+                    var v3 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
+                    model.moveWithCollisions(v3);
+                    v3 = null;
 				}
 				if(keys.forward){
-                    dirvec = forwardvec.normalize().scale(0.1);
-                    //console.log(dirvec);
-                    model.moveWithCollisions(dirvec);
+                    console.log(Math.degrees(  diffAngle ));
+                    var currentAngle = diffAngle;
+                    model.rotation.y = currentAngle;
+                    model.moveWithCollisions(forward);
 				}
-
                 if(keys.back){
-                    dirvec.x = (-forwardvec.x);
-                    dirvec.z = (-forwardvec.z);
-                    dirvec.normalize().scale(1);//reduce speed direct
-                    //wconsole.log(dirvec);
-                    model.moveWithCollisions(dirvec);
+                    model.rotation.y = diffAngle  + (Math.PI) ;
+                    model.moveWithCollisions(new BABYLON.Vector3(-forward.x,0,-forward.z));
                 }
+                diffAngle = null;
+                forward = null;
 			//}
-
 		}
+
+        /*
+        model.update=function(){
+            //if(controllerid == uniqueId){
+                //vector forward direction
+                var forward = camera.getFrontPosition(1).subtract(camera.position);
+                forward.y = 0;
+                //get rotation dir
+                var diffAngle = Math.atan2(-forward.x,-forward.z);
+                if(keys.left){
+                    model.rotation.y = diffAngle - (Math.PI/2);
+                    console.log(Math.degrees(  diffAngle - (Math.PI/2)  ));
+                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, diffAngle  + (Math.PI/2));
+                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
+                    //model.moveWithCollisions(v2);
+				}
+                if(keys.right){
+                    var currentAngle = diffAngle + (Math.PI/2);
+                    model.rotation.y = currentAngle;
+                    console.log(Math.degrees(  currentAngle ));
+                    var vec = rotateVector(currentAngle);
+                    //console.log(vec);
+                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, diffAngle  - (Math.PI/2));
+                    //console.log(diffAngle  - (Math.PI/2));
+                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
+                    //model.moveWithCollisions(v2);
+				}
+				if(keys.forward){
+                    var currentAngle = diffAngle;
+                    model.rotation.y = currentAngle;
+                    //console.log(Math.degrees(  currentAngle  ));
+                    currentAngle = Math.degrees(  currentAngle  );
+                    //console.log(currentAngle);
+                    if(currentAngle < 0){
+                        currentAngle = currentAngle + 360
+                    }
+                    //console.log(currentAngle);
+
+                    //var vec2 = rotateVector([forward.x,forward.z], currentAngle);
+                    //console.log(vec2);
+                    //model.moveWithCollisions(new BABYLON.Vector3(vec2[0],0,vec2[1]));
+                    //model.position.x += vec2[0];
+                    //model.position.z += vec2[1];
+
+                    model.position.x += forward.x;
+                    model.position.z += forward.z;
+                    console.log(model.position);
+
+
+                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, 90 );
+                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix).normalize();
+                    //console.log(v2);
+                    //model.moveWithCollisions(v2);
+                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, diffAngle + (Math.PI * -1));
+                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
+                    //model.moveWithCollisions(v2);
+				}
+                if(keys.back){
+                    model.rotation.y = diffAngle  + (Math.PI) ;
+                    console.log(Math.degrees(  diffAngle  ));
+                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, diffAngle - (Math.PI * -1));
+                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
+                    //model.moveWithCollisions(v2);
+                }
+                diffAngle = null;
+                forward = null;
+			//}
+		}
+        */
+
 
         engine.runRenderLoop(function(){
             if(model !=null){
@@ -130,7 +248,7 @@ window.addEventListener('DOMContentLoaded', function() {
 			}
 		}
         // create a built-in "ground" shape; its constructor takes the same 5 params as the sphere's one
-        var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
+        var ground = BABYLON.Mesh.CreateGround('ground1', 100, 100, 2, scene);
         // return the created scene
         return scene;
     }

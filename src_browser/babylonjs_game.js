@@ -1,3 +1,16 @@
+
+
+// Converts from degrees to radians.
+Math.radians = function(degrees) {
+  return degrees * Math.PI / 180;
+};
+
+// Converts from radians to degrees.
+Math.degrees = function(radians) {
+  return radians * 180 / Math.PI;
+};
+
+
 //RFC Type 4 (random) schema
 var uuid = function() {
     var buf = new Uint32Array(4);
@@ -640,85 +653,99 @@ class Babylonjs_game extends Babylonjsbes6 {
 		var self = this;
 
 		var camera = new BABYLON.ArcRotateCamera("arcCamera1",0,0,10,BABYLON.Vector3.Zero(),this.scene);
-    camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
-    camera.attachControl(this.canvas,false);
-    camera.setPosition(new BABYLON.Vector3(0,5,5));
+        camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
+        camera.attachControl(this.canvas,false);
+        camera.setPosition(new BABYLON.Vector3(0,5,5));
 		this.scene.activeCamera.attachControl(self.canvas);
 		this.scene.activeCamera = camera;
-    console.log(camera);
-    this.thirdcamera = camera;
+        console.log(camera);
+        this.thirdcamera = camera;
 
 		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
 		//var boxMaterial = new BABYLON.StandardMaterial("material", this.scenes[this.scenename]);
 		//boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
 		//box.material = boxMaterial;
 		//console.log(box);
-    var model = this.getmesh("CubeBody");
-    model.isVisible = true;
+        var model = this.getmesh("CubeBody");
+        model.isVisible = true;
 
 		this.controllerid = model.uniqueId;
-    var movestep = .05;
+        var movestep = .05;
+
+        console.log(model);
+		this.model = model;
+        //sphere.position = camera.getFrontPosition(12); //Sphere has 12 unit front the camera.
+        camera.setTarget(model);
+
+
 		model.update=function(){
 
-			if(self.controllerid == this.uniqueId){
-				if(self.keys.left){
+            if(self.controllerid == this.uniqueId){
+                if(self.keys.left){
 					//self.moveVector.z = movestep;
-
 				}
-        if(self.keys.right){
+                if(self.keys.right){
 					//self.moveVector.z = -movestep;
 					//self.box.moveWithCollisions(self.moveVector);
 				}
+
+                //var dir = self.scene.activeCamera.getFrontPosition(10).subtract(self.model.position);
+                var dir = camera.getFrontPosition(10).subtract(camera.position).normalize();
+                //console.log(dir.negate());
+                dir.y = 0;
+                //dir = dir.negate();
+                var rot = Math.atan2(dir.x, dir.z);
+                //rot.y = 0;
+                //self.model.rotation.y = rot + Math.PI;
 
 				if(self.keys.forward){
 					//self.moveVector.z = -movestep;
 					//self.box.moveWithCollisions(self.moveVector);
-          //var forward = self.scene.activeCamera.getTarget().subtract(self.scene.activeCamera.position).normalize();//works but required object mesh or object 3d
-          var forward = self.scene.activeCamera.getFrontPosition(1).subtract(self.scene.activeCamera.position).normalize(); //forward camera
-          forward.y=0;
-          //console.log(forward);
-					self.model.moveWithCollisions(forward);
-          //self.model.rotation.y = self.scene.activeCamera.rotation.y;
-          //console.log(self.scene.activeCamera.rotation.y);
-          //forward.x = forward.x * (-1);
-          //forward.z = forward.z * (-1);
-          var targetlook = camera.getFrontPosition(100);
-          targetlook.y = 0;
-          self.model.lookAt(targetlook);
-          forward = null;
+                    //var forward = self.scene.activeCamera.getTarget().subtract(self.scene.activeCamera.position).normalize();//works but required object mesh or object 3d
+                    var forward = self.scene.activeCamera.getFrontPosition(1).subtract(self.scene.activeCamera.position).normalize(); //forward camera
+                    forward.y=0;
+                    //console.log(forward);
+					self.model.moveWithCollisions(dir);
+                    //self.model.rotation.y = self.scene.activeCamera.rotation.y;
+                    //console.log(self.scene.activeCamera.rotation.y);
+                    //forward.x = forward.x * (-1);
+                    //forward.z = forward.z * (-1);
+                    //var targetlook = camera.getFrontPosition(100);
+                    //targetlook.y = 0;
+                    //self.model.lookAt(targetlook);
+                    //var dir = self.scene.activeCamera.getFrontPosition(10).subtract(self.scene.activeCamera.position).normalize();
+                    //var dir = self.scene.activeCamera.getFrontPosition(10).subtract(self.scene.activeCamera.position);
+                    forward = null;
 				}
 
-        if(self.keys.back){
-          var forward = self.scene.activeCamera.getFrontPosition(1).subtract(self.scene.activeCamera.position).normalize(); //forward camera
-          forward.y = 0;
-          forward.x = forward.x * (-1);
-          forward.z = forward.z * (-1);
-          //console.log(self.model);
-          //self.model.rotation.y = self.scene.activeCamera.rotation.y;
-
-          self.model.moveWithCollisions(forward);
-          var targetlook = camera.getFrontPosition(100);
-          targetlook.y = 0;
-          self.model.lookAt(targetlook);
-          forward = null;
-        }
+                if(self.keys.back){
+                    var forward = self.scene.activeCamera.getFrontPosition(1).subtract(self.scene.activeCamera.position).normalize(); //forward camera
+                    forward.y = 0;
+                    forward.x = forward.x * (-1);
+                    forward.z = forward.z * (-1);
+                    //console.log(self.model);
+                    //self.model.rotation.y = self.scene.activeCamera.rotation.y;
+                    self.model.moveWithCollisions(forward);
+                    /*
+                    console.log(camera);
+                    var targetlook = camera.getFrontPosition(100);
+                    targetlook.y = 0;
+                    self.model.lookAt(targetlook);
+                    */
+                    forward = null;
+                }
 			}
 		}
-
-    console.log(model);
-		this.model = model;
-    //sphere.position = camera.getFrontPosition(12); //Sphere has 12 unit front the camera.
-    camera.setTarget(model);
 	}
 
 	create_input(){
-    var self = this;
+        var self = this;
 
 		//this.keys={letft:0,right:0,forward:0,back:0};
 		window.addEventListener("keydown", handleKeyDown, false);
 		window.addEventListener("keyup", handleKeyUp, false);
 		function handleKeyDown(evt){
-      if (evt.keyCode==65){//A
+            if (evt.keyCode==65){//A
 				self.keys.left=1;
 				//console.log("left");
 				//self.render_scene(self.scene);
@@ -727,7 +754,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 				//self.box.moveWithCollisions(self.moveVector);
 			}
 			if (evt.keyCode==68){//D
-        self.keys.right=1;
+                self.keys.right=1;
 				//console.log("right");
 				//self.moveVector.z = -movestep;
 				//self.box.moveWithCollisions(self.moveVector);
