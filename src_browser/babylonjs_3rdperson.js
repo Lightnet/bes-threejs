@@ -24,10 +24,12 @@ window.addEventListener('DOMContentLoaded', function() {
         var pickResult;
         var manState = 'idle';
         var pickResultPos = new BABYLON.Vector3(0,0,0);
-        var dirvec = new BABYLON.Vector3(0,0,0);
-        var dirveckback = new BABYLON.Vector3(0,0,0);
-        var forwardvec = new BABYLON.Vector3(0,0,0);
+        var joydir = new BABYLON.Vector3(0,0,0);
         var pickResultPosClicked = new BABYLON.Vector3(0,0,100);
+
+        var leftstickmove = false;
+
+
         // create a basic BJS Scene object
         var scene = new BABYLON.Scene(engine);
         // create a FreeCamera, and set its position to (x:0, y:5, z:-10)
@@ -45,12 +47,18 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var camera = new BABYLON.ArcRotateCamera("arcCamera1",0,0,10,BABYLON.Vector3.Zero(),scene);
         //camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
-        camera.attachControl(canvas,false);
+        //camera.attachControl(canvas,false);//default?
+        //camera.attachControl(canvas,true);
+        //console.log(camera);
         camera.setPosition(new BABYLON.Vector3(0,5,5));
 
+        var box = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+        box.position.x = -5;
+
+        var box = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+        box.position.x = 5;
 
 
-        //var model = BABYLON.Mesh.CreateBox("box", 1.0, scene);
         var model = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, scene);
         model.rotation.x = -Math.PI / 2;
         model.bakeCurrentTransformIntoVertices();
@@ -60,161 +68,160 @@ window.addEventListener('DOMContentLoaded', function() {
         camera.setTarget(model);
         model.scaling.z = 1.5;
 
-        console.log(model);
-
-        function rotateVector(vect, quat) {
-            var matr = new BABYLON.Matrix();
-            quat.toRotationMatrix(matr);
-            var rotatedvect = BABYLON.Vector3.TransformCoordinates(vect, matr);
-            return rotatedvect;
-        }
-
-        var rotateVector = function(vec, ang)
-        {
-            ang = -ang * (Math.PI/180);
-            var cos = Math.cos(ang);
-            var sin = Math.sin(ang);
-            return new Array(Math.round(10000*(vec[0] * cos - vec[1] * sin))/10000, Math.round(10000*(vec[0] * sin + vec[1] * cos))/10000);
-        };
-
-        var FaceRotation = 0;
-
+        //console.log(model);
         model.update=function(){
             //if(controllerid == uniqueId){
                 //vector forward direction
-                //var forward = camera.getFrontPosition(1).subtract(camera.position).normalize(); //does not work
+                //this breaks
+                //var forward = camera.getFrontPosition(1).subtract(camera.position).normalize(); //does not work bug
+                //this works
                 var target = model.position.clone();
                 var forward = target.subtract(camera.position).normalize();
+                var needMove = false;
                 forward.y = 0;
                 //get rotation dir
-                var diffAngle = Math.atan2(-forward.x,-forward.z);
-                if(keys.left){// just a bug
-                    model.rotation.y = diffAngle - (Math.PI/2);
-                    var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, -Math.degrees(Math.PI/2));
-                    var v3 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
-                    model.moveWithCollisions(v3);
-                    v3 = null;
+                //var diffAngle = Math.atan2(-forward.x,-forward.z);
+                var diffAngle = Math.atan2(forward.x,forward.z);
+                if(keys.left){
+                    model.rotation.y = diffAngle + (Math.PI/2);
+                    needMove = true;
 				}
-                if(keys.right){// just a bug
-                    var currentAngle = diffAngle + (Math.PI/2);
+                if(keys.right){
+                    var currentAngle = diffAngle - (Math.PI/2);
                     model.rotation.y = currentAngle;
-
-                    console.log( Math.degrees(currentAngle));
-                    var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, Math.degrees(Math.PI/2));
-                    var v3 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
-                    model.moveWithCollisions(v3);
-                    v3 = null;
+                    needMove = true;
 				}
 				if(keys.forward){
                     console.log(Math.degrees(  diffAngle ));
-                    var currentAngle = diffAngle;
-                    model.rotation.y = currentAngle;
-                    model.moveWithCollisions(forward);
+                    var currentAngle = diffAngle ;
+                    model.rotation.y = currentAngle + (Math.PI);
+                    needMove = true;
 				}
                 if(keys.back){
-                    model.rotation.y = diffAngle  + (Math.PI) ;
-                    model.moveWithCollisions(new BABYLON.Vector3(-forward.x,0,-forward.z));
+                    model.rotation.y = diffAngle;
+                    needMove = true;
+                }
+
+                //gamepad
+                if(leftstickmove){
+                    var joyangle = Math.atan2(joydir.x,-joydir.z);
+                    model.rotation.y = diffAngle + joyangle + Math.PI;
+                    var rot = diffAngle + joyangle;
+                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 0.5), BABYLON.Matrix.RotationY(rot));
+                    model.position.addInPlace(v2);
+                }
+
+                if (needMove) {
+                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -0.5), BABYLON.Matrix.RotationY(model.rotation.y));
+                    model.position.addInPlace(v2);
+                    //model.moveWithCollisions(v2);
+                    v2 = null;
                 }
                 diffAngle = null;
                 forward = null;
 			//}
 		}
 
-        /*
-        model.update=function(){
-            //if(controllerid == uniqueId){
-                //vector forward direction
-                var forward = camera.getFrontPosition(1).subtract(camera.position);
-                forward.y = 0;
-                //get rotation dir
-                var diffAngle = Math.atan2(-forward.x,-forward.z);
-                if(keys.left){
-                    model.rotation.y = diffAngle - (Math.PI/2);
-                    console.log(Math.degrees(  diffAngle - (Math.PI/2)  ));
-                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, diffAngle  + (Math.PI/2));
-                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
-                    //model.moveWithCollisions(v2);
-				}
-                if(keys.right){
-                    var currentAngle = diffAngle + (Math.PI/2);
-                    model.rotation.y = currentAngle;
-                    console.log(Math.degrees(  currentAngle ));
-                    var vec = rotateVector(currentAngle);
-                    //console.log(vec);
-                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, diffAngle  - (Math.PI/2));
-                    //console.log(diffAngle  - (Math.PI/2));
-                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
-                    //model.moveWithCollisions(v2);
-				}
-				if(keys.forward){
-                    var currentAngle = diffAngle;
-                    model.rotation.y = currentAngle;
-                    //console.log(Math.degrees(  currentAngle  ));
-                    currentAngle = Math.degrees(  currentAngle  );
-                    //console.log(currentAngle);
-                    if(currentAngle < 0){
-                        currentAngle = currentAngle + 360
-                    }
-                    //console.log(currentAngle);
-
-                    //var vec2 = rotateVector([forward.x,forward.z], currentAngle);
-                    //console.log(vec2);
-                    //model.moveWithCollisions(new BABYLON.Vector3(vec2[0],0,vec2[1]));
-                    //model.position.x += vec2[0];
-                    //model.position.z += vec2[1];
-
-                    model.position.x += forward.x;
-                    model.position.z += forward.z;
-                    console.log(model.position);
+        var gamepadConnected = function (gamepad) {
+            console.log(gamepad);
+            //console.log(gamepad.gamepad);
+            if(typeof gamepad.onlefttriggerchanged === 'function'){
+                gamepad.onlefttriggerchanged(function (values) {
+                    console.log(values);
+                });
+            }else{
+                console.log("left trigger function doesn't exist");
+            }
+            if(typeof gamepad.onrighttriggerchanged === 'function'){
+                gamepad.onrighttriggerchanged(function (values) {
+                    console.log(values);
+                });
+            }else{
+                console.log("right trigger function doesn't exist");
+            }
 
 
-                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, 90 );
-                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix).normalize();
-                    //console.log(v2);
-                    //model.moveWithCollisions(v2);
-                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, diffAngle + (Math.PI * -1));
-                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
-                    //model.moveWithCollisions(v2);
-				}
-                if(keys.back){
-                    model.rotation.y = diffAngle  + (Math.PI) ;
-                    console.log(Math.degrees(  diffAngle  ));
-                    //var matrix = BABYLON.Matrix.RotationAxis(BABYLON.Axis.Y, diffAngle - (Math.PI * -1));
-                    //var v2 = BABYLON.Vector3.TransformCoordinates(forward, matrix);
-                    //model.moveWithCollisions(v2);
+            gamepad.onleftstickchanged(function (values) {
+    			if (values.y < 0){//sphere.chooseDirection(0, 1);
                 }
-                diffAngle = null;
-                forward = null;
-			//}
-		}
-        */
+    			if (values.y > 0){//sphere.chooseDirection(1, 1);
+                }
+                if (values.x < 0){//sphere.chooseDirection(2, 1);
+                }
+    			if (values.x > 0){//sphere.chooseDirection(3, 1);
+                }
+                leftstickmove = false;
+    			if (values.y < 0.1 && values.y > -0.1) {
+    				//sphere.chooseDirection(0, 0);
+    				//sphere.chooseDirection(1, 0);
+    			}else{
+                    //console.log("x: ",values.x, " y: " , values.y );
+                    joydir.z = values.y;
+                    leftstickmove = true;
+                }
+    			if (values.x < 0.1 && values.x > -0.1) {
+    				//sphere.chooseDirection(2, 0);
+    				//sphere.chooseDirection(3, 0);
+                    //console.log("x: ",values.x, " y: " , values.y );
+    			}else{
+                    //console.log("x: ",values.x, " y: " , values.y );
+                    joydir.x = values.x;
+                    leftstickmove = true;
+                }
+                //console.log("x: ",values.x, " y: " , values.y );
+    		});
 
+            gamepad.onrightstickchanged(function (values) {
+    			if (values.y < 0){//sphere.chooseDirection(0, 1);
+                }
+    			if (values.y > 0){//sphere.chooseDirection(1, 1);
+                }
+    			if (values.x < 0){//sphere.chooseDirection(2, 1);
+                }
+    			if (values.x > 0){//sphere.chooseDirection(3, 1);
+                }
+
+    			if (values.y < 0.1 && values.y > -0.1) {
+    				//sphere.chooseDirection(0, 0);
+    				//sphere.chooseDirection(1, 0);
+    			}else{
+                    //console.log("x: ",values.x, " y: " , values.y );
+                }
+    			if (values.x < 0.1 && values.x > -0.1) {
+    				//sphere.chooseDirection(2, 0);
+    				//sphere.chooseDirection(3, 0);
+                    //console.log("x: ",values.x, " y: " , values.y );
+    			}else{
+                    //console.log("x: ",values.x, " y: " , values.y );
+                }
+                //console.log("x: ",values.x, " y: " , values.y );
+    		});
+
+    		gamepad.onbuttondown(function (buttonIndex) {
+    			//alert(buttonIndex);
+                //console.log(buttonIndex);
+    		});
+
+    		gamepad.onbuttonup(function (buttonIndex) {
+
+    		});
+
+    	};
+
+        var gamepads = new BABYLON.Gamepads(gamepadConnected);
+
+    	// for google chrome start the monitoring if navigator.getGamepads() has a gamepad at index 0 for example
+    	// this is because chrome doesn't seem to support the gamepadconnected/gamepaddisconnected events perfectly yet,
+    	// it only detects the gamepad if you plug it in again but not if it is already connected
+    	if(navigator.getGamepads()[0]){
+    		gamepads._startMonitoringGamepads();
+    	}
 
         engine.runRenderLoop(function(){
             if(model !=null){
                 model.update();
             }
         });
-
-        function mousemovef(){
-        	pickResult = scene.pick(scene.pointerX, scene.pointerY);
-        	if (pickResult.hit) {
-        			if (manState != 'moving'){
-        				pickResultPos.x = pickResult.pickedPoint.x;
-        				pickResultPos.z = pickResult.pickedPoint.z;
-        				var diffX = pickResultPos.x - model.position.x;
-        				var diffZ = pickResultPos.z - model.position.z;
-        				diffAngle = Math.atan2(-diffX,-diffZ);
-                        forwardvec.x = (diffX);
-                        forwardvec.z = (diffZ);
-        			} // if not moving
-        	}// if result
-        }//mousemovef()
-
-        window.addEventListener("mousemove", function() {
-	           mousemovef();
-        });
-
 
         window.addEventListener("keydown", handleKeyDown, false);
 		window.addEventListener("keyup", handleKeyUp, false);
