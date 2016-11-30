@@ -22,3 +22,4 @@ public/js/gundb.js
 *.blend1
 public/js/babylonjs_3rdperson.js
 public/js/babylonjs_prototype.js
+public/js/babylonjs_TPV_2DCanvas.js
