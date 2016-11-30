@@ -27,13 +27,15 @@
 			socket.on('disconnect', function () {
 				console.log('server disconnected');
 			});
-		
+
+
 			var peers = ['http://localhost/gun'];
 			var gun = Gun(peers);
+
 			// Create an interface for the `greetings`
 			// key, storing it in a variable.
 			var greetings = gun.get('greetings');
-			
+
 		</script>
 	</body>
 </html>

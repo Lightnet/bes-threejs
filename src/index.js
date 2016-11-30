@@ -105,8 +105,9 @@ console.log("Gundb init!");
 
 var io = require('socket.io')(http);
 
+/*
 io.use(function(socket, next){
-	console.log(socket.handshake);
+	//console.log(socket.handshake);
   //if (socket.handshake.query && socket.handshake.query.token){
 	  //console.log((socket.handshake);
     //jwt.verify(socket.handshake.query.token, 'SECRET_KEY', function(err, decoded) {
@@ -118,15 +119,25 @@ io.use(function(socket, next){
   //next(new Error('Authentication error'));
   next();
 });
+*/
+
+// Create periodical which ends a message to the client every 5 seconds
+//var interval = setInterval(function() {
+	//client.send('This is a message from the server!  ' + new Date().getTime());
+//},5000);
 
 import {Game} from './app/libs/threejsapi';
 
 var threejsgame = new Game();
 //threejsgame.init();
-
-console.log("threejs init!");
-
+//console.log("threejs init!");
 //socket.io
+//io.use(function(packet, next){
+    //console.log(packet);
+    //if (packet.doge === true) return next();
+    //next(new Error('Not a doge error'));
+//});
+
 io.on('connection', function (socket) {
 	console.log("client connect.");
 	//threejsgame.connect(io,socket);

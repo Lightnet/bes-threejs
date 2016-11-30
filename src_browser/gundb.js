@@ -2,6 +2,7 @@
 // just yet...
 var peers = ['http://localhost/gun'];
 var gun = Gun(peers);
+
 // Create an interface for the `greetings`
 // key, storing it in a variable.
 var greetings = gun.get('greetings');
@@ -19,8 +20,6 @@ greetings.val(function(value){//works
 greetings.path('hello').val(function(value){//works
     console.log(value);
 }); // outputs the user object at 'greetings'
-
-
 
 var autosave = gun.get('autosave');
 autosave.put({setting:{savemap:false,autoload:false}});

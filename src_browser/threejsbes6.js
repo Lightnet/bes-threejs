@@ -276,10 +276,9 @@ class Threejsbes6 {
 		};
 		*/
 
-
 		this.cameracss3d = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
 		//this.cameracss3d.position.set( 500, 350, 750 );
-		this.cameracss3d.position.set( 0, 0, 650 );
+		this.cameracss3d.position.set( 0, 0, 1024 );
 		this.scenecss3d = new THREE.Scene();
 		this.renderercss3d = new THREE.CSS3DRenderer();
 		this.renderercss3d.setSize( window.innerWidth, window.innerHeight );
