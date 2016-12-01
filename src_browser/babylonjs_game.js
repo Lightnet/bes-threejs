@@ -204,6 +204,12 @@ class Babylonjs_game extends Babylonjsbes6 {
 		this.keys={letft:0,right:0,forward:0,back:0};
 		this.moveVector = new BABYLON.Vector3(0, 0, 0);
 
+        this.leftstickmove = false;
+        this.joyleftdir = new BABYLON.Vector3(0,0,0);
+        this.joylefttrigger = 0;
+        this.joyrightdir = new BABYLON.Vector3(0,0,0);
+        this.joyrighttrigger = 0;
+
 	}
 
 	createscene_assets(){
@@ -508,16 +514,133 @@ class Babylonjs_game extends Babylonjsbes6 {
             parent: screencanvas_group2d, id: "R2DStamina", x: 92, y: -96, width: 124, height: 20, fill: "#FF9800FF"
         });
 
+        // RIGHT TOP
+        var screencanvas_group2d_RT = new BABYLON.Group2D({
+            parent:this.screencanvas,
+            id:"screencanvas_group2d_RT",
+            marginAlignment: "h: right, v: top"
+            //scale:0.6 //limited since backgroundRoundRadius effect render
+            //scale:1 //limited since backgroundRoundRadius effect render
+        });
+
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d_RT, id: "R2DStamina", x: -36, y: -42, width: 32, height: 32, fill: "#263238FF"
+        });
+
+        // LEFT BOTTOM
+        var screencanvas_group2d_LB = new BABYLON.Group2D({
+            parent:this.screencanvas,
+            id:"screencanvas_group2d_LB",
+            marginAlignment: "h: left, v: bottom"
+            //scale:0.6 //limited since backgroundRoundRadius effect render
+            //scale:1 //limited since backgroundRoundRadius effect render
+        });
+
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d_LB, id: "R2DStamina", x: 8, y: 8, width: 48, height: 32, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Chat:", {fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        // RIGHT BOTTOM
+        var screencanvas_group2d_RB = new BABYLON.Group2D({
+            parent:this.screencanvas,
+            id:"screencanvas_group2d_RB",
+            marginAlignment: "h: right, v: bottom"
+            //scale:0.6 //limited since backgroundRoundRadius effect render
+            //scale:1 //limited since backgroundRoundRadius effect render
+        });
+
+        var R2DEditor = new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d_RB, id: "R2DEditor", x: -36+(64*1)*-1, y: 4, width: 52, height: 32, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Editor", {fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        R2DEditor.pointerEventObservable.add(function (d, s) {
+            //button2Rect.levelVisible = !button2Rect.levelVisible;
+            console.log("R2DEditor clicked!");
+        }, BABYLON.PrimitivePointerInfo.PointerUp);
+
+        var R2DSettings = new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d_RB, id: "R2DSettings", x: -36+(64*2)*-1, y: 4, width: 52, height: 32, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Settings", {fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        R2DSettings.pointerEventObservable.add(function (d, s) {
+            //button2Rect.levelVisible = !button2Rect.levelVisible;
+            console.log("R2DSettings clicked!");
+        }, BABYLON.PrimitivePointerInfo.PointerUp);
+
+        var R2DMap = new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d_RB, id: "R2DMap", x: -36+(64*3)*-1, y: 4, width: 52, height: 32, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Map", {fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        R2DMap.pointerEventObservable.add(function (d, s) {
+            //button2Rect.levelVisible = !button2Rect.levelVisible;
+            console.log("R2DMap clicked!");
+        }, BABYLON.PrimitivePointerInfo.PointerUp);
+
+        var R2DSkills = new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d_RB, id: "R2DSkills", x: -36+(64*4)*-1, y: 4, width: 52, height: 32, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Skills", { fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        R2DSkills.pointerEventObservable.add(function (d, s) {
+            //button2Rect.levelVisible = !button2Rect.levelVisible;
+            console.log("R2DSkills clicked!");
+        }, BABYLON.PrimitivePointerInfo.PointerUp);
+
+        var R2DItems = new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d_RB, id: "R2DItems", x: -36+(64*5)*-1, y: 4, width: 52, height: 32, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Items", { fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        R2DItems.pointerEventObservable.add(function (d, s) {
+            //button2Rect.levelVisible = !button2Rect.levelVisible;
+            console.log("R2DItems clicked!");
+        }, BABYLON.PrimitivePointerInfo.PointerUp);
+
+        var R2DHome = new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d_RB, id: "R2DHome", x: -36+(64*6)*-1, y: 4, width: 52, height: 32, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Home", { fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        R2DHome.pointerEventObservable.add(function (d, s) {
+            //button2Rect.levelVisible = !button2Rect.levelVisible;
+            console.log("R2DHome clicked!");
+        }, BABYLON.PrimitivePointerInfo.PointerUp);
+
+
+
 	}
 
 	actionbattle(){
 		console.log("action battle ...");
 		console.log(this.parties[0]);
 		//check if party health is not zero for attack
-
 		//this.opponentAttack(this.parties[0],this.enemies[0]);
 		//this.opponentAttack(this.enemies[0],this.parties[0]);
-
 		this.checkcharacter_turns();
 	}
 
@@ -718,7 +841,7 @@ class Babylonjs_game extends Babylonjsbes6 {
         camera.setPosition(new BABYLON.Vector3(0,5,5));
 		this.scene.activeCamera.attachControl(self.canvas);
 		this.scene.activeCamera = camera;
-        console.log(camera);
+        //console.log(camera);
         this.thirdcamera = camera;
 
 		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
@@ -726,75 +849,88 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//boxMaterial.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
 		//box.material = boxMaterial;
 		//console.log(box);
-        var model = this.getmesh("CubeBody");
+        //var model = this.getmesh("CubeBody");
+        var model = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
         model.isVisible = true;
 
 		this.controllerid = model.uniqueId;
         var movestep = .05;
 
-        console.log(model);
-		this.model = model;
+        //console.log(model);
+
+        model.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move:true, restitution: 0, mass:1, friction:10});
+        model.position.y =4;
+        model.showBoundingBox = true;
         //sphere.position = camera.getFrontPosition(12); //Sphere has 12 unit front the camera.
         camera.setTarget(model);
+        this.model = model;
 
+        var keys = self.keys;
+        //var leftstickmove = self.leftstickmove;
 
-		model.update=function(){
-
-            if(self.controllerid == this.uniqueId){
-                if(self.keys.left){
-					//self.moveVector.z = movestep;
+        model.update=function(){
+            //console.log(leftstickmove);
+            //if(controllerid == uniqueId){
+                //vector forward direction
+                //this breaks
+                //var forward = camera.getFrontPosition(1).subtract(camera.position).normalize(); //does not work bug
+                //this works
+                var target = model.position.clone();
+                var forward = target.subtract(camera.position).normalize();
+                var needMove = false;
+                forward.y = 0;
+                //get rotation dir
+                //var diffAngle = Math.atan2(-forward.x,-forward.z);
+                var diffAngle = Math.atan2(forward.x,forward.z);
+                var currentAngle = 0;
+                if(keys.left){
+                    currentAngle = diffAngle + (Math.PI/2);
+                    //model.rotation.y = currentAngle;
+                    needMove = true;
 				}
-                if(self.keys.right){
-					//self.moveVector.z = -movestep;
-					//self.box.moveWithCollisions(self.moveVector);
+                if(keys.right){
+                    currentAngle = diffAngle - (Math.PI/2);
+                    //model.rotation.y = currentAngle;
+                    needMove = true;
 				}
-
-                //var dir = self.scene.activeCamera.getFrontPosition(10).subtract(self.model.position);
-                var dir = camera.getFrontPosition(10).subtract(camera.position).normalize();
-                //console.log(dir.negate());
-                dir.y = 0;
-                //dir = dir.negate();
-                var rot = Math.atan2(dir.x, dir.z);
-                //rot.y = 0;
-                //self.model.rotation.y = rot + Math.PI;
-
-				if(self.keys.forward){
-					//self.moveVector.z = -movestep;
-					//self.box.moveWithCollisions(self.moveVector);
-                    //var forward = self.scene.activeCamera.getTarget().subtract(self.scene.activeCamera.position).normalize();//works but required object mesh or object 3d
-                    var forward = self.scene.activeCamera.getFrontPosition(1).subtract(self.scene.activeCamera.position).normalize(); //forward camera
-                    forward.y=0;
-                    //console.log(forward);
-					self.model.moveWithCollisions(dir);
-                    //self.model.rotation.y = self.scene.activeCamera.rotation.y;
-                    //console.log(self.scene.activeCamera.rotation.y);
-                    //forward.x = forward.x * (-1);
-                    //forward.z = forward.z * (-1);
-                    //var targetlook = camera.getFrontPosition(100);
-                    //targetlook.y = 0;
-                    //self.model.lookAt(targetlook);
-                    //var dir = self.scene.activeCamera.getFrontPosition(10).subtract(self.scene.activeCamera.position).normalize();
-                    //var dir = self.scene.activeCamera.getFrontPosition(10).subtract(self.scene.activeCamera.position);
-                    forward = null;
+				if(keys.forward){
+                    //console.log(Math.degrees(  diffAngle ));
+                    currentAngle = diffAngle + (Math.PI);;
+                    //model.rotation.y = currentAngle;
+                    needMove = true;
 				}
-
-                if(self.keys.back){
-                    var forward = self.scene.activeCamera.getFrontPosition(1).subtract(self.scene.activeCamera.position).normalize(); //forward camera
-                    forward.y = 0;
-                    forward.x = forward.x * (-1);
-                    forward.z = forward.z * (-1);
-                    //console.log(self.model);
-                    //self.model.rotation.y = self.scene.activeCamera.rotation.y;
-                    self.model.moveWithCollisions(forward);
-                    /*
-                    console.log(camera);
-                    var targetlook = camera.getFrontPosition(100);
-                    targetlook.y = 0;
-                    self.model.lookAt(targetlook);
-                    */
-                    forward = null;
+                if(keys.back){
+                    currentAngle = diffAngle ;
+                    //model.rotation.y = diffAngle;
+                    needMove = true;
                 }
-			}
+
+                //gamepad
+                if(self.leftstickmove){
+                    var joyangle = Math.atan2(self.joyleftdir.x,-self.joyleftdir.z);
+                    model.rotation.y = diffAngle + joyangle + Math.PI;
+                    var rot = diffAngle + joyangle;
+                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 10), BABYLON.Matrix.RotationY(rot));
+                    //model.position.addInPlace(v2);
+                    model.physicsImpostor.setLinearVelocity(v2);
+                }
+
+                if (needMove) {
+                    model.rotate(BABYLON.Axis.Y, 1);
+                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), BABYLON.Matrix.RotationY(currentAngle));
+                    model.physicsImpostor.setLinearVelocity(v2);
+                    //console.log(model.physicsImpostor);
+                    v2 = null;
+                }
+
+                if (needMove == false) {
+                    model.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+                }
+
+                diffAngle = null;
+                currentAngle = null;
+                forward = null;
+			//}
 		}
 	}
 
@@ -851,6 +987,104 @@ class Babylonjs_game extends Babylonjsbes6 {
 		}
 	}
 
+    create_gamepadinput(){
+        var self = this;
+        var gamepadConnected = function (gamepad) {
+            console.log(gamepad);
+            //console.log(gamepad.gamepad);
+            if(typeof gamepad.onlefttriggerchanged === 'function'){
+                gamepad.onlefttriggerchanged(function (values) {
+                    console.log(values);
+                });
+            }else{
+                console.log("left trigger function doesn't exist");
+            }
+            if(typeof gamepad.onrighttriggerchanged === 'function'){
+                gamepad.onrighttriggerchanged(function (values) {
+                    console.log(values);
+                });
+            }else{
+                console.log("right trigger function doesn't exist");
+            }
+
+
+            gamepad.onleftstickchanged(function (values) {
+    			if (values.y < 0){//sphere.chooseDirection(0, 1);
+                }
+    			if (values.y > 0){//sphere.chooseDirection(1, 1);
+                }
+                if (values.x < 0){//sphere.chooseDirection(2, 1);
+                }
+    			if (values.x > 0){//sphere.chooseDirection(3, 1);
+                }
+                self.leftstickmove = false;
+    			if (values.y < 0.1 && values.y > -0.1) {
+    				//sphere.chooseDirection(0, 0);
+    				//sphere.chooseDirection(1, 0);
+    			}else{
+                    //console.log("x: ",values.x, " y: " , values.y );
+                    self.joyleftdir.z = values.y;
+                    self.leftstickmove = true;
+                }
+    			if (values.x < 0.1 && values.x > -0.1) {
+    				//sphere.chooseDirection(2, 0);
+    				//sphere.chooseDirection(3, 0);
+                    //console.log("x: ",values.x, " y: " , values.y );
+    			}else{
+                    //console.log("x: ",values.x, " y: " , values.y );
+                    self.joyleftdir.x = values.x;
+                    self.leftstickmove = true;
+                }
+                //console.log("x: ",values.x, " y: " , values.y );
+    		});
+
+            gamepad.onrightstickchanged(function (values) {
+    			if (values.y < 0){//sphere.chooseDirection(0, 1);
+                }
+    			if (values.y > 0){//sphere.chooseDirection(1, 1);
+                }
+    			if (values.x < 0){//sphere.chooseDirection(2, 1);
+                }
+    			if (values.x > 0){//sphere.chooseDirection(3, 1);
+                }
+
+    			if (values.y < 0.1 && values.y > -0.1) {
+    				//sphere.chooseDirection(0, 0);
+    				//sphere.chooseDirection(1, 0);
+    			}else{
+                    //console.log("x: ",values.x, " y: " , values.y );
+                }
+    			if (values.x < 0.1 && values.x > -0.1) {
+    				//sphere.chooseDirection(2, 0);
+    				//sphere.chooseDirection(3, 0);
+                    //console.log("x: ",values.x, " y: " , values.y );
+    			}else{
+                    //console.log("x: ",values.x, " y: " , values.y );
+                }
+                //console.log("x: ",values.x, " y: " , values.y );
+    		});
+
+    		gamepad.onbuttondown(function (buttonIndex) {
+    			//alert(buttonIndex);
+                //console.log(buttonIndex);
+    		});
+
+    		gamepad.onbuttonup(function (buttonIndex) {
+
+    		});
+
+    	};
+
+        var gamepads = new BABYLON.Gamepads(gamepadConnected);
+
+    	// for google chrome start the monitoring if navigator.getGamepads() has a gamepad at index 0 for example
+    	// this is because chrome doesn't seem to support the gamepadconnected/gamepaddisconnected events perfectly yet,
+    	// it only detects the gamepad if you plug it in again but not if it is already connected
+    	if(navigator.getGamepads()[0]){
+    		gamepads._startMonitoringGamepads();
+    	}
+    }
+
 	PickObject(){
 		//When pointer down event is raised
 	    this.scene.onPointerDown = function (evt, pickResult) {
@@ -865,6 +1099,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 	}
 
 	simple_scene(){
+        var scene = this.scene;
 		//===============================================
 		// simple scene
 		//===============================================
@@ -881,8 +1116,27 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//var box = BABYLON.Mesh.CreateBox("box", 2, this.scenes[this.scenename]);
 		//box.position.y = 10;
 		//box.position.x = -3;
+
+        var box1 = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+        box1.position.x = -5;
+        box1.position.y = 1;
+        //box1.physicsImpostor = new BABYLON.PhysicsImpostor(box1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
+        box1.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false, restitution: 1, mass:0, friction:0.5});
+        box1.showBoundingBox = true;
+        var box2 = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+        box2.position.x = 5;
+        box2.position.y = 1;
+        //box2.physicsImpostor = new BABYLON.PhysicsImpostor(box2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
+        box2.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false, restitution: 1, mass:0, friction:0.5});
+        box2.showBoundingBox = true;
+        //https://doc.babylonjs.com/tutorials/Mesh_CreateXXX_Methods_With_Options_Parameter#box
 		// Let's try our built-in 'ground' shape.  Params: name, width, depth, subdivisions, scene
-    	var ground = BABYLON.Mesh.CreateGround("ground1", 20, 20, 2, this.scene);
+    	//var ground = BABYLON.Mesh.CreateGround("ground1", 20, 20, 2, this.scene);
+        var ground = BABYLON.MeshBuilder.CreateBox("ground", {height:1,width:20,depth:20}, scene);
+        //ground.scale.x = 100;
+        //ground.scale.y = 100;
+        ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false, restitution: 0,  mass:0, friction:10});
+        ground.showBoundingBox = true;
 	}
 
 	//override function...
@@ -912,7 +1166,10 @@ class Babylonjs_game extends Babylonjsbes6 {
 		var self = this;
 		console.log("setup game!");
 		console.log(this.engine);
+        console.log(this.scene);
 		console.log(BABYLON);
+
+        this.init_phsics();
 
 		this.create2DHUD();
 		//this.create2D_BattleHUD();
@@ -921,11 +1178,12 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.scene.debugLayer.show(true);
 		//this.createbattle_prototype();
 		this.create_input();
+        this.create_gamepadinput();
 		this.create_movement();
 		this.PickObject();
 
 		this.simple_scene();
 
-		console.log(this.scene);
+
 	}
 }
