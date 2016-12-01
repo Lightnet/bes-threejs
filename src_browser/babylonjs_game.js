@@ -24,7 +24,7 @@ var uuid = function() {
     });
 };
 
-console.log(uuid());
+//console.log(uuid());
 
 class ObjectRPGID{
 	constructor(args){
@@ -442,12 +442,72 @@ class Babylonjs_game extends Babylonjsbes6 {
 		});
 	}
 
-	create2DHUD(){
-		this.hudcanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
+    createspacecavnas2D(){
+        //screenCanvas
+		this.screencanvas = new BABYLON.ScreenSpaceCanvas2D(this.scene, {
 		    id: "ScreenCanvas",
 			enableInteraction: true//,
 		});
-		//console.log(this.hudcanvas);
+	}
+
+	create2DHUD(){
+        var screencanvas_group2d = new BABYLON.Group2D({
+            parent:this.screencanvas,
+            id:"screencanvas_group2d",
+            marginAlignment: "h: left, v: top"
+            //scale:0.6 //limited since backgroundRoundRadius effect render
+            //scale:1 //limited since backgroundRoundRadius effect render
+        });
+
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DHealth", x: 10, y: -32, width: 64, height: 28, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Health:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DMagic", x: 10, y: -64, width: 64, height: 28, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Magic:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DStamina", x: 10, y: -96, width: 64, height: 28, fill: "#263238FF",
+            children:
+            [
+                new BABYLON.Text2D("Stamina:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+            ]
+        });
+
+        //background bar
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DStamina", x: 90, y: -32, width: 128, height: 28, fill: "#263238FF"
+        });
+        //background bar
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DStamina", x: 90, y: -64, width: 128, height: 28, fill: "#263238FF"
+        });
+        //background bar
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DStamina", x: 90, y: -96, width: 128, height: 28, fill: "#263238FF"
+        });
+        //foreground bar
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DStamina", x: 92, y: -32, width: 124, height: 20, fill: "#64DD17FF"
+        });
+        //foreground bar
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DStamina", x: 92, y: -64, width: 124, height: 20, fill: "#03A9F4FF"
+        });
+        //foreground bar
+        new BABYLON.Rectangle2D({
+            parent: screencanvas_group2d, id: "R2DStamina", x: 92, y: -96, width: 124, height: 20, fill: "#FF9800FF"
+        });
+
 	}
 
 	actionbattle(){
@@ -624,15 +684,15 @@ class Babylonjs_game extends Babylonjsbes6 {
 	create2D_BattleHUD(){
 		var self = this;
 		//button
-		this.AddButton(this.hudcanvas,'button_escape','Escape',10,(22*0+10), ()=>{self.actionescape();});
-		this.AddButton(this.hudcanvas,'button_item','Items',10,(22*1+10), ()=>{self.openitem();});
-		this.AddButton(this.hudcanvas,'button_skills','Skills',10,(22*2+10), ()=>{self.openskills();});
-		this.AddButton(this.hudcanvas,'button_move','Move',10,(22*3+10), ()=>{self.openitem();});
-		this.AddButton(this.hudcanvas,'button_attack','Attack',10,(22*4+10), ()=>{self.actionattack();});
+		this.AddButton(this.screencanvas,'button_escape','Escape',10,(22*0+10), ()=>{self.actionescape();});
+		this.AddButton(this.screencanvas,'button_item','Items',10,(22*1+10), ()=>{self.openitem();});
+		this.AddButton(this.screencanvas,'button_skills','Skills',10,(22*2+10), ()=>{self.openskills();});
+		this.AddButton(this.screencanvas,'button_move','Move',10,(22*3+10), ()=>{self.openitem();});
+		this.AddButton(this.screencanvas,'button_attack','Attack',10,(22*4+10), ()=>{self.actionattack();});
 
-		this.AddButton(this.hudcanvas,'button_attack','Enemy Attack',150,(22*4+10), ()=>{self.actionenemyattack();});
+		this.AddButton(this.screencanvas,'button_attack','Enemy Attack',150,(22*4+10), ()=>{self.actionenemyattack();});
 
-		this.AddButton(this.hudcanvas,'button_battle','Battle',10,(22*5+10), ()=>{self.actionbattle();});
+		this.AddButton(this.screencanvas,'button_battle','Battle',10,(22*5+10), ()=>{self.actionbattle();});
 	}
 
 	AddButton(_scenecanvas, _id, _name, _x, _y, _callback, options){
@@ -844,6 +904,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 	init(){
 		super.init();
 		console.log("init [babylonjs_game]");
+        this.createspacecavnas2D();
 		this.createscene_assets();
 	}
 
@@ -853,7 +914,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 		console.log(this.engine);
 		console.log(BABYLON);
 
-		//this.create2DHUD();
+		this.create2DHUD();
 		//this.create2D_BattleHUD();
 		//BABYLON.DebugLayer().show();
 		//this.scene.debugLayer.show(false);

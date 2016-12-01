@@ -19,13 +19,14 @@ window.addEventListener('DOMContentLoaded', function() {
         Math.degrees = function(radians) {
           return radians * 180 / Math.PI;
         };
+
         var keys={letft:0,right:0,forward:0,back:0};
         var diffAngle;
-        var pickResult;
-        var manState = 'idle';
-        var pickResultPos = new BABYLON.Vector3(0,0,0);
+        //var pickResult;
+        //var manState = 'idle';
+        //var pickResultPos = new BABYLON.Vector3(0,0,0);
         var joydir = new BABYLON.Vector3(0,0,0);
-        var pickResultPosClicked = new BABYLON.Vector3(0,0,100);
+        //var pickResultPosClicked = new BABYLON.Vector3(0,0,100);
         var leftstickmove = false;
 
         // create a basic BJS Scene object
@@ -98,7 +99,6 @@ window.addEventListener('DOMContentLoaded', function() {
                     model.rotation.y = diffAngle;
                     needMove = true;
                 }
-
                 //gamepad
                 if(leftstickmove){
                     var joyangle = Math.atan2(joydir.x,-joydir.z);
@@ -107,7 +107,6 @@ window.addEventListener('DOMContentLoaded', function() {
                     var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 0.5), BABYLON.Matrix.RotationY(rot));
                     model.position.addInPlace(v2);
                 }
-
                 if (needMove) {
                     var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -0.5), BABYLON.Matrix.RotationY(model.rotation.y));
                     model.position.addInPlace(v2);
@@ -240,13 +239,29 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var buttonRect = new BABYLON.Rectangle2D(
             //{ parent: group2d, id: "button", x: 10, y: 10, width: window.screen.width-20, height: window.screen.height-200, fill: "#40C040FF",
+            { parent: screenCanvas, id: "button", x: 10, y: -10, width: 100, height: 100, fill: "#40C040FF",
+                marginAlignment: "h: left, v: top",
+                children:
+                [
+                    new BABYLON.Text2D("List1!", {x:0,y:10, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+                ]
+                });
+        //center screen
+        //var buttonRect = new BABYLON.Rectangle2D(
+            //{ parent: screenCanvas, id: "button", x: 10, y: 10, width: 100, height: 100, fill: "#40C040FF",
+                //marginAlignment: "h: center, v: center"
+                //});
+
+        /*
+        var buttonRect = new BABYLON.Rectangle2D(
+            //{ parent: group2d, id: "button", x: 10, y: 10, width: window.screen.width-20, height: window.screen.height-200, fill: "#40C040FF",
             { parent: group2d, id: "button", x: 10, y: 10, width: window.screen.width-20, height: 200, fill: "#40C040FF",
                 //roundRadius: 10,
                 children:
                 [
                     new BABYLON.Text2D("List1!", { fontName: "30pt Arial", marginAlignment: "h: center, v: center" })
                 ]});
-
+                */
 
 
         /*

@@ -21,14 +21,12 @@ window.addEventListener('DOMContentLoaded', function() {
         };
         var keys={letft:0,right:0,forward:0,back:0};
         var diffAngle;
-        var pickResult;
+        //var pickResult;
         var manState = 'idle';
-        var pickResultPos = new BABYLON.Vector3(0,0,0);
+        //var pickResultPos = new BABYLON.Vector3(0,0,0);
         var joydir = new BABYLON.Vector3(0,0,0);
-        var pickResultPosClicked = new BABYLON.Vector3(0,0,100);
-
+        //var pickResultPosClicked = new BABYLON.Vector3(0,0,100);
         var leftstickmove = false;
-
 
         // create a basic BJS Scene object
         var scene = new BABYLON.Scene(engine);
@@ -67,7 +65,6 @@ window.addEventListener('DOMContentLoaded', function() {
         box2.showBoundingBox = true;
         box2.updatePhysicsBody();
 
-
         var model = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, scene);
         //var model = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
 
@@ -83,8 +80,7 @@ window.addEventListener('DOMContentLoaded', function() {
         model.position.y =3;
         model.showBoundingBox = true;
 
-        console.log(model);
-
+        //console.log(model);
         //var animate = function() {
             //model.applyImpulse(new BABYLON.Vector3(.05, 0, 0), new BABYLON.Vector3(1, 1, 0))
         //}
@@ -143,7 +139,9 @@ window.addEventListener('DOMContentLoaded', function() {
                     //model.position.addInPlace(v2);
                     //model.moveWithCollisions(v2);
                     model.applyImpulse(v2, model.getAbsolutePosition());//workist
-                    model.rotation.y = 0;
+                    model.rotate(BABYLON.Axis.Y, currentAngle);
+                    //model.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0,1,0,0));
+                    //model.rotation.y = 0;
                     //model.setLinearVelocity(v2);//nope
                     //model.setAngularVelocity(new BABYLON.Matrix.RotationY(currentAngle));
                     v2 = null;
@@ -173,6 +171,12 @@ window.addEventListener('DOMContentLoaded', function() {
                 forward = null;
 			//}
 		}
+
+        scene.registerBeforeRender(function () {
+            //model.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0,1,0,0));
+            //model.rotation.y = 0;
+            model.rotate(BABYLON.Axis.Y, 0);
+        });
 
         var gamepadConnected = function (gamepad) {
             console.log(gamepad);

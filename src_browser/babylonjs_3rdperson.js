@@ -140,7 +140,6 @@ window.addEventListener('DOMContentLoaded', function() {
                 console.log("right trigger function doesn't exist");
             }
 
-
             gamepad.onleftstickchanged(function (values) {
     			if (values.y < 0){//sphere.chooseDirection(0, 1);
                 }
