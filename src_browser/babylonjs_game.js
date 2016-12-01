@@ -655,11 +655,11 @@ class Babylonjs_game extends Babylonjsbes6 {
 	}
 
 	setupbattle(){
-
+        console.log("set up");
 	}
 
 	createbattle(){
-
+        console.log("create battle");
 	}
 
 	openitem(){
@@ -710,8 +710,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 	}
 
 	playattackaction(){
-
-
+        console.log("player attack action");
 	}
 
 	characteraction_turn(currentcharacter){
@@ -855,7 +854,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 
 		this.controllerid = model.uniqueId;
         var movestep = .05;
-
         //console.log(model);
 
         model.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move:true, restitution: 0, mass:1, friction:10});
@@ -966,7 +964,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 			if (evt.keyCode==83){//S
 				self.keys.back=1;
 				//console.log("down");
-        //console.log(self.thirdcamera);
+                //console.log(self.thirdcamera);
 				//self.engine.displayLoadingUI();
 			}
 		}
@@ -1053,6 +1051,7 @@ class Babylonjs_game extends Babylonjsbes6 {
     				//sphere.chooseDirection(1, 0);
     			}else{
                     //console.log("x: ",values.x, " y: " , values.y );
+                    self.joyrightdir.y = values.y;
                 }
     			if (values.x < 0.1 && values.x > -0.1) {
     				//sphere.chooseDirection(2, 0);
@@ -1060,6 +1059,7 @@ class Babylonjs_game extends Babylonjsbes6 {
                     //console.log("x: ",values.x, " y: " , values.y );
     			}else{
                     //console.log("x: ",values.x, " y: " , values.y );
+                    self.joyrightdir.x = values.x;
                 }
                 //console.log("x: ",values.x, " y: " , values.y );
     		});
@@ -1183,7 +1183,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 		this.PickObject();
 
 		this.simple_scene();
-
 
 	}
 }

@@ -61,7 +61,7 @@ window.addEventListener('DOMContentLoaded', function() {
         box2.position.x = 5;
         box2.position.y = 1;
         //box2.physicsImpostor = new BABYLON.PhysicsImpostor(box2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
-        box2.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:true, restitution: 1, mass:3, friction:0.5});
+        box2.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:true, restitution: 1, mass:0, friction:0.5});
         box2.showBoundingBox = true;
         box2.updatePhysicsBody();
 
@@ -127,19 +127,21 @@ window.addEventListener('DOMContentLoaded', function() {
                     var joyangle = Math.atan2(joydir.x,-joydir.z);
                     model.rotation.y = diffAngle + joyangle + Math.PI;
                     var rot = diffAngle + joyangle;
-                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 0.5), BABYLON.Matrix.RotationY(rot));
-                    model.position.addInPlace(v2);
+                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 10), BABYLON.Matrix.RotationY(rot));
+                    //model.position.addInPlace(v2);
+                    model.physicsImpostor.setLinearVelocity(v2);
                 }
 
                 if (needMove) {
                     model.rotate(BABYLON.Axis.Y, 1);
-                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -1), BABYLON.Matrix.RotationY(currentAngle));
+                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), BABYLON.Matrix.RotationY(currentAngle));
+                    model.physicsImpostor.setLinearVelocity(v2);
                     //var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -0.5), BABYLON.Matrix.RotationY(currentAngle));
                     //var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -0.5), BABYLON.Matrix.RotationY(model.rotation.y));
                     //model.position.addInPlace(v2);
                     //model.moveWithCollisions(v2);
-                    model.applyImpulse(v2, model.getAbsolutePosition());//workist
-                    model.rotate(BABYLON.Axis.Y, currentAngle);
+                    //model.applyImpulse(v2, model.getAbsolutePosition());//workist
+                    //model.rotate(BABYLON.Axis.Y, currentAngle);
                     //model.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0,1,0,0));
                     //model.rotation.y = 0;
                     //model.setLinearVelocity(v2);//nope
