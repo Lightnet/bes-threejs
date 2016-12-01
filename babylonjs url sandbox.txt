@@ -3,3 +3,10 @@ http://www.babylonjs-playground.com/#1BKDEO#188
 
 http://www.babylonjs-playground.com/#1QWAAP#5
 2D canvas nodetrack 3D object
+
+https://doc.babylonjs.com/overviews/Using_The_Physics_Engine
+
+mass: The only mandatory parameters is mass, which is the object's mass in kg. A 0 as a value will create a static impostor - good for floors.
+friction: is the impostor's friction when colliding against other impostors.
+restitution: is the amount of force the body will "give back" when colliding. A low value will create no bounce, a value of 1 will be a very bouncy interaction.
+nativeOptions: is a JSON with native options of the selected physics plugin. More about it in the advanced tutorial.
