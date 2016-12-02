@@ -856,6 +856,7 @@ class Babylonjs_game extends Babylonjsbes6 {
         var objphysics = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
         objphysics.isVisible = false;
         model.objphysics = objphysics;
+        model.objtype = "player";
 
 		this.controllerid = model.id;
         //var movestep = .05;
@@ -953,15 +954,25 @@ class Babylonjs_game extends Babylonjsbes6 {
 		}
 
         model.interact=function(){
-            //console.log("???" + model.facedir);
+            console.log("???" + this.facedir);
             var fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -2), BABYLON.Matrix.RotationY(model.facedir));
             var rayPick = new BABYLON.Ray(model.objphysics.position, fdir,2);
             var meshFound = self.scene.pickWithRay(rayPick, function (item) {
                 //console.log(item.name);
-                if (item.name.indexOf("box") == 0)
-                    return true;
-                else
+                if (typeof item.objtype === 'string'){
+                    if (item.objtype.indexOf("npc") == 0){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
                     return false;
+                }
+
+                //if (item.name.indexOf("box") == 0)
+                    //return true;
+                //else
+                    //return false;
             });
             //console.log(meshFound);
             if (meshFound != null && meshFound.pickedPoint != null) {
@@ -988,9 +999,10 @@ class Babylonjs_game extends Babylonjsbes6 {
         var objphysics = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
         //objphysics.isVisible = false;
         tmpmodel.objphysics = objphysics;
+        tmpmodel.objtype = "npc";
 
-        console.log(tmpmodel.id);
-        console.log(tmpmodel.uniqueId);
+        //console.log(tmpmodel.id);
+        //console.log(tmpmodel.uniqueId);
 
         objphysics.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move:true, restitution: 0, mass:1, friction:10});
         objphysics.position.y =4;
