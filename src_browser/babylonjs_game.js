@@ -849,16 +849,22 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//box.material = boxMaterial;
 		//console.log(box);
         //var model = this.getmesh("CubeBody");
-        var model = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
+        var Material = new BABYLON.StandardMaterial("material", this.scene);
+        Material.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
+        var model = this.getmesh("CubeBody");
         model.isVisible = true;
+        var objphysics = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
+        objphysics.isVisible = false;
+        model.objphysics = objphysics;
 
-		this.controllerid = model.uniqueId;
+
+		this.controllerid = objphysics.uniqueId;
         var movestep = .05;
         //console.log(model);
 
-        model.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move:true, restitution: 0, mass:1, friction:10});
-        model.position.y =4;
-        model.showBoundingBox = true;
+        objphysics.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move:true, restitution: 0, mass:1, friction:10});
+        objphysics.position.y =4;
+        objphysics.showBoundingBox = true;
         //sphere.position = camera.getFrontPosition(12); //Sphere has 12 unit front the camera.
         camera.setTarget(model);
         this.model = model;
@@ -866,15 +872,18 @@ class Babylonjs_game extends Babylonjsbes6 {
         var keys = self.keys;
         //var leftstickmove = self.leftstickmove;
 
+        var hit = BABYLON.Mesh.CreateBox("hit", 0.5, this.scene);
+        hit.material = Material;
+
         model.update=function(){
             //console.log(leftstickmove);
             //if(controllerid == uniqueId){
                 //vector forward direction
                 //this breaks
-                //var forward = camera.getFrontPosition(1).subtract(camera.position).normalize(); //does not work bug
+                var forward = camera.getFrontPosition(1).subtract(camera.position).normalize(); //does not work bug
                 //this works
-                var target = model.position.clone();
-                var forward = target.subtract(camera.position).normalize();
+                //var target = model.position.clone();
+                //var forward = target.subtract(camera.position).normalize();
                 var needMove = false;
                 forward.y = 0;
                 //get rotation dir
@@ -906,25 +915,55 @@ class Babylonjs_game extends Babylonjsbes6 {
                 //gamepad
                 if(self.leftstickmove){
                     var joyangle = Math.atan2(self.joyleftdir.x,-self.joyleftdir.z);
-                    model.rotation.y = diffAngle + joyangle + Math.PI;
+                    currentAngle = diffAngle + joyangle + Math.PI;
+                    model.rotation.y = currentAngle;
                     var rot = diffAngle + joyangle;
                     var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 10), BABYLON.Matrix.RotationY(rot));
                     //model.position.addInPlace(v2);
-                    model.physicsImpostor.setLinearVelocity(v2);
+                    model.objphysics.physicsImpostor.setLinearVelocity(v2);
                 }
 
                 if (needMove) {
-                    model.rotate(BABYLON.Axis.Y, 1);
+                    //model.rotate(BABYLON.Axis.Y, 1);
                     var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), BABYLON.Matrix.RotationY(currentAngle));
-                    model.physicsImpostor.setLinearVelocity(v2);
+                    model.objphysics.physicsImpostor.setLinearVelocity(v2);
                     //console.log(model.physicsImpostor);
+                    model.rotation.y = currentAngle;
                     v2 = null;
                 }
 
+                var objpos = model.objphysics.position.clone();
+                objpos = objpos.add(new BABYLON.Vector3(0, -0.5, 0));
+                model.position = objpos;
+
                 if (needMove == false) {
-                    model.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+                    model.objphysics.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
                 }
 
+                var fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 1), BABYLON.Matrix.RotationY(0));
+                fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -1), BABYLON.Matrix.RotationY(currentAngle));
+                var rayPick = new BABYLON.Ray(model.objphysics.position, fdir);
+                var meshFound = self.scene.pickWithRay(rayPick, function (item) {
+                    //console.log(item.name);
+                    if (item.name.indexOf("box") == 0)
+                        return true;
+                    else
+                        return false;
+                });
+
+                if (meshFound != null && meshFound.pickedPoint != null) {
+                    //console.log("found!");
+                    //console.log(hit);
+                    hit.position = meshFound.pickedPoint;
+                    //if (!divAlert) {
+                    //divAlert = document.createElement("div");
+                    //document.body.appendChild(divAlert);
+                    //divAlert.innerText = (meshFound.pickedMesh.name + " hit at " + meshFound.pickedPoint);
+                  //}
+                }
+
+                //rayPick = null;
+                //fdir = null;
                 diffAngle = null;
                 currentAngle = null;
                 forward = null;
