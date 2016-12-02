@@ -210,6 +210,9 @@ class Babylonjs_game extends Babylonjsbes6 {
         this.joyrightdir = new BABYLON.Vector3(0,0,0);
         this.joyrighttrigger = 0;
 
+        this.scriptcount = 0;
+        self.mappdata = {}
+
 	}
 
 	createscene_assets(){
@@ -265,8 +268,135 @@ class Babylonjs_game extends Babylonjsbes6 {
 			self.setup_game();
 		});
 		*/
-
 	}
+
+    loadmap_requestXML(){
+        var self = this;
+        var req  = new XMLHttpRequest();
+        req.open('GET', 'http://127.0.0.1/prototype.json');
+        req.onreadystatechange = function() {
+            //alert(req.responseText);
+            //console.log(req.responseText);
+            if (req.readyState == 4) {
+                if(req.status == 200){
+                    //alert(req.responseText);
+                    //console.log(req.responseText);
+                    self.prase_mapjson(req.responseText);
+                    //console.log("done loading?");
+                }
+            }else{
+                //alert("Error loading page\n");
+                //console.log("Error loading page\n");
+            }
+        }
+        req.send();
+    }
+
+    prase_mapjson(stringdata){
+        console.log("init string map");
+        var self = this;
+		var mappdata = self.mappdata;
+		var scriptcount = self.scriptcount;
+
+			var modelfiles = [];
+			var modelcount = 0;
+
+			mappdata = JSON.parse( stringdata );
+            if(mappdata == null){
+                console.log("error!");
+                return;
+            }
+			//console.log(mappdata);
+			scriptcount = 0;
+
+			function loadmodelfiles(){
+				console.log("init models loading files");
+				if(mappdata.assets !=null){
+					console.log("Assets files: "+ mappdata.assets.length);
+					//if there no model files
+					if(mappdata.assets.length == 0){
+						loadscriptfiles();
+					}
+
+					for(var i = 0; i < mappdata.assets.length;i++){
+						console.log(mappdata.assets[i]);
+						if(mappdata.assets[i].type == "model"){
+							modelfiles.push(mappdata.assets[i]);
+							//modelcount += 1;
+						}
+					}
+
+					//console.log("model checking...");
+					for(var mi = 0; mi < modelfiles.length;mi++){
+						//console.log(modelfiles[mi].uuid);
+						var _id = modelfiles[mi].uuid;
+						var _name = modelfiles[mi].path;
+						//console.log('//=========================');
+						//console.log(modelfiles[mi].path);
+                        /*
+						threejsapi.LoadModelFile(modelfiles[mi],(object)=>{
+							console.log('//========================================');
+							//console.log(object.name);//console.log(object.uuid);
+							console.log(object);
+							modelcount++;
+							console.log("models: "+modelcount + ":" +(modelfiles.length));
+							if(modelcount == modelfiles.length){
+								//console.log('Finish loading file models!');
+								//console.log('init scripts!');
+								loadscriptfiles();
+							}
+						});
+                        */
+					}
+				}
+			}
+
+			//load scripts
+			function loadscriptfiles(){
+				if(mappdata.scripts !=null){
+					console.log("init script loading files...");
+					console.log("Scripts files: "+ mappdata.scripts.length);
+					if(mappdata.scripts.length == 0){
+						loadentities();
+					}
+					for(var i = 0; i < mappdata.scripts.length;i++){
+						//threejsapi.addScript(mappdata.scripts[i]);
+						loadScript(mappdata.scripts[i], function(){
+			    			//initialization code
+							scriptcount++;
+							//console.log("script: "+scriptcount + ":" + (mappdata.scripts.length));
+							if(scriptcount == mappdata.scripts.length){ //make sure the scripts are load else it can't used script components
+								//console.log('Finish script components!');
+								//console.log('init load entities!');
+								loadentities();
+							}
+						});
+					}
+				}
+			}
+			//load entities
+			function loadentities(){
+				console.log('loading entities?');
+				if(mappdata.entities !=null){
+					console.log("Entities count:"+ mappdata.entities.length);
+					for(var i = 0; i < mappdata.entities.length;i++){
+						//threejsapi.parseObject(mappdata.entities[i]);
+					}
+					console.log('Finish loading!');
+
+					//self.hideloadingscreen();
+
+					//self.loadScript("/assets/test1.js", function(){
+						//initialization code
+						//console.log("test? js");
+					//});
+					//console.log(threejsapi);
+				}
+			}
+			//loadmodelfiles();
+    }
+
+
 
 	getmesh(_name){
 		var model = null;
@@ -851,153 +981,21 @@ class Babylonjs_game extends Babylonjsbes6 {
         //var model = this.getmesh("CubeBody");
         var Material = new BABYLON.StandardMaterial("material", this.scene);
         Material.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
-        var model = this.getmesh("CubeBody");
-        model.isVisible = true;
-        var objphysics = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
-        objphysics.isVisible = false;
-        model.objphysics = objphysics;
-        model.objtype = "player";
 
-		this.controllerid = model.id;
-        //var movestep = .05;
-        //console.log(model);
+        var  model = this.create_character({x:0,y:0.5,z:0});
 
-        objphysics.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move:true, restitution: 0, mass:1, friction:10});
-        objphysics.position.y =4;
-        objphysics.showBoundingBox = true;
-        //sphere.position = camera.getFrontPosition(12); //Sphere has 12 unit front the camera.
-        camera.setTarget(model);
+        this.controllerid = model.id;
         this.model = model;
-
-        var keys = self.keys;
-        //var leftstickmove = self.leftstickmove;
-
-        //console.log(model.id);
-        //console.log(model.uniqueId);
-
-        var hit = BABYLON.Mesh.CreateBox("hit", 0.5, this.scene);
-        hit.material = Material;
-        model.facedir = 0;
-        var currentAngle = 0;
-        model.update=function(){
-            //console.log(leftstickmove);
-            //console.log(this.uniqueId);
-            if(self.controllerid == this.id){
-                //vector forward direction
-                //this breaks
-                var forward = camera.getFrontPosition(1).subtract(camera.position).normalize(); //does not work bug
-                //this works
-                //var target = model.position.clone();
-                //var forward = target.subtract(camera.position).normalize();
-                var needMove = false;
-                forward.y = 0;
-                //get rotation dir
-                //var diffAngle = Math.atan2(-forward.x,-forward.z);
-                var diffAngle = Math.atan2(forward.x,forward.z);
-                //var currentAngle = 0;
-                if(keys.left){
-                    currentAngle = diffAngle + (Math.PI/2);
-                    //model.rotation.y = currentAngle;
-                    needMove = true;
-				}
-                if(keys.right){
-                    currentAngle = diffAngle - (Math.PI/2);
-                    //model.rotation.y = currentAngle;
-                    needMove = true;
-				}
-				if(keys.forward){
-                    //console.log(Math.degrees(  diffAngle ));
-                    currentAngle = diffAngle + (Math.PI);;
-                    //model.rotation.y = currentAngle;
-                    needMove = true;
-				}
-                if(keys.back){
-                    currentAngle = diffAngle ;
-                    //model.rotation.y = diffAngle;
-                    needMove = true;
-                }
-
-                //gamepad
-                if(self.leftstickmove){
-                    var joyangle = Math.atan2(self.joyleftdir.x,-self.joyleftdir.z);
-                    currentAngle = diffAngle + joyangle + Math.PI;
-                    model.rotation.y = currentAngle;
-                    var rot = diffAngle + joyangle;
-                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 10), BABYLON.Matrix.RotationY(rot));
-                    //model.position.addInPlace(v2);
-                    model.objphysics.physicsImpostor.setLinearVelocity(v2);
-                }
-
-                if (needMove) {
-                    //model.rotate(BABYLON.Axis.Y, 1);
-                    var v2 = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -10), BABYLON.Matrix.RotationY(currentAngle));
-                    model.objphysics.physicsImpostor.setLinearVelocity(v2);
-                    //console.log(model.physicsImpostor);
-                    model.rotation.y = currentAngle;
-                    v2 = null;
-                    model.facedir = currentAngle;
-                }
-
-
-                var objpos = model.objphysics.position.clone();
-                objpos = objpos.add(new BABYLON.Vector3(0, -0.5, 0));
-                model.position = objpos;
-
-                if (needMove == false) {
-                    model.objphysics.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
-                }
-
-                diffAngle = null;
-                currentAngle = null;
-                forward = null;
-			}
-		}
-
-        model.interact=function(){
-            console.log("???" + this.facedir);
-            var fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -2), BABYLON.Matrix.RotationY(model.facedir));
-            var rayPick = new BABYLON.Ray(model.objphysics.position, fdir,2);
-            var meshFound = self.scene.pickWithRay(rayPick, function (item) {
-                //console.log(item.name);
-                if (typeof item.objtype === 'string'){
-                    if (item.objtype.indexOf("npc") == 0){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }else{
-                    return false;
-                }
-
-                //if (item.name.indexOf("box") == 0)
-                    //return true;
-                //else
-                    //return false;
-            });
-            //console.log(meshFound);
-            if (meshFound != null && meshFound.pickedPoint != null) {
-                console.log("found!");
-                //console.log(hit);
-                hit.position = meshFound.pickedPoint;
-                //if (!divAlert) {
-                //divAlert = document.createElement("div");
-                //document.body.appendChild(divAlert);
-                //divAlert.innerText = (meshFound.pickedMesh.name + " hit at " + meshFound.pickedPoint);
-              //}
-          }else{
-              //console.log("not found!");
-          }
-            rayPick=null;
-            fdir=null;
-        }
+        camera.setTarget(model);
 	}
 
-    create_npc(args = {}){
+    create_character(args){
+        args = args || {};
         var self = this;
         var tmpmodel = this.getmesh("CubeBody");
         tmpmodel.isVisible = true;
         var objphysics = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
-        //objphysics.isVisible = false;
+        objphysics.isVisible = false;
         tmpmodel.objphysics = objphysics;
         tmpmodel.objtype = "npc";
 
@@ -1005,13 +1003,23 @@ class Babylonjs_game extends Babylonjsbes6 {
         //console.log(tmpmodel.uniqueId);
 
         objphysics.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move:true, restitution: 0, mass:1, friction:10});
-        objphysics.position.y =4;
-        objphysics.position.z =4;
+        //console.log(typeof args['x']);
+        objphysics.position.x = (typeof args['x'] === 'number') ? args['y'] : 4;
+        objphysics.position.y = (typeof args['y'] === 'number') ? args['y'] : 0.5;
+        objphysics.position.z = (typeof args['z'] === 'number') ? args['z'] : 0;
+        //console.log(args['x'],":",args['y'],":",args['z']);
+        //console.log(objphysics.position.x,":",objphysics.position.y,":",objphysics.position.z);
         objphysics.showBoundingBox = true;
 
         var keys = self.keys;
         tmpmodel.facedir = 0;
         var currentAngle = 0;
+
+        var Material = new BABYLON.StandardMaterial("material", this.scene);
+        Material.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
+
+        var hit = BABYLON.Mesh.CreateBox("hit", 0.5, this.scene);
+        hit.material = Material;
 
         tmpmodel.update=function(){
             //console.log(leftstickmove);
@@ -1374,10 +1382,31 @@ class Babylonjs_game extends Babylonjsbes6 {
         this.create_gamepadinput();
 		this.create_movement();
 		this.PickObject();
-
 		this.simple_scene();
+        this.create_character();
 
-        this.create_npc();
+        this.loadmap_requestXML();
 
+        //jQuery.get('http://127.0.0.1/prototype.json', function(data) {
+            //console.log(data);
+            //alert(data);
+        //});
+
+        /*
+        var req  = new XMLHttpRequest();
+        req.open('GET', 'http://127.0.0.1/prototype.json');
+        req.onreadystatechange = function() {
+          //alert(req.responseText);
+          //console.log(req.responseText);
+          if (req.readyState == 4) {
+             if(req.status == 200)
+              //alert(req.responseText);
+              console.log(req.responseText);
+             else
+              alert("Error loading page\n");
+          }
+        }
+        req.send();
+        */
 	}
 }
