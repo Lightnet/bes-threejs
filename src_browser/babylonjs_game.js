@@ -858,7 +858,7 @@ class Babylonjs_game extends Babylonjsbes6 {
         model.objphysics = objphysics;
 
 
-		this.controllerid = objphysics.uniqueId;
+		this.controllerid = model.uniqueId;
         var movestep = .05;
         //console.log(model);
 
@@ -874,7 +874,8 @@ class Babylonjs_game extends Babylonjsbes6 {
 
         var hit = BABYLON.Mesh.CreateBox("hit", 0.5, this.scene);
         hit.material = Material;
-
+        model.facedir = 0;
+        var currentAngle = 0;
         model.update=function(){
             //console.log(leftstickmove);
             //if(controllerid == uniqueId){
@@ -889,7 +890,7 @@ class Babylonjs_game extends Babylonjsbes6 {
                 //get rotation dir
                 //var diffAngle = Math.atan2(-forward.x,-forward.z);
                 var diffAngle = Math.atan2(forward.x,forward.z);
-                var currentAngle = 0;
+                //var currentAngle = 0;
                 if(keys.left){
                     currentAngle = diffAngle + (Math.PI/2);
                     //model.rotation.y = currentAngle;
@@ -930,7 +931,9 @@ class Babylonjs_game extends Babylonjsbes6 {
                     //console.log(model.physicsImpostor);
                     model.rotation.y = currentAngle;
                     v2 = null;
+                    model.facedir = currentAngle;
                 }
+
 
                 var objpos = model.objphysics.position.clone();
                 objpos = objpos.add(new BABYLON.Vector3(0, -0.5, 0));
@@ -939,7 +942,7 @@ class Babylonjs_game extends Babylonjsbes6 {
                 if (needMove == false) {
                     model.objphysics.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
                 }
-
+                /*
                 var fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, 1), BABYLON.Matrix.RotationY(0));
                 fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -1), BABYLON.Matrix.RotationY(currentAngle));
                 var rayPick = new BABYLON.Ray(model.objphysics.position, fdir);
@@ -961,14 +964,44 @@ class Babylonjs_game extends Babylonjsbes6 {
                     //divAlert.innerText = (meshFound.pickedMesh.name + " hit at " + meshFound.pickedPoint);
                   //}
                 }
+                fdir = null;
+                rayPick = null;
+                */
 
-                //rayPick = null;
-                //fdir = null;
+
                 diffAngle = null;
                 currentAngle = null;
                 forward = null;
 			//}
 		}
+
+        model.interact=function(){
+            //console.log("???" + model.facedir);
+            var fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -2), BABYLON.Matrix.RotationY(model.facedir));
+            var rayPick = new BABYLON.Ray(model.objphysics.position, fdir,2);
+            var meshFound = self.scene.pickWithRay(rayPick, function (item) {
+                //console.log(item.name);
+                if (item.name.indexOf("box") == 0)
+                    return true;
+                else
+                    return false;
+            });
+            //console.log(meshFound);
+            if (meshFound != null && meshFound.pickedPoint != null) {
+                console.log("found!");
+                //console.log(hit);
+                hit.position = meshFound.pickedPoint;
+                //if (!divAlert) {
+                //divAlert = document.createElement("div");
+                //document.body.appendChild(divAlert);
+                //divAlert.innerText = (meshFound.pickedMesh.name + " hit at " + meshFound.pickedPoint);
+              //}
+          }else{
+              //console.log("not found!");
+          }
+            rayPick=null;
+            fdir=null;
+        }
 	}
 
 	create_input(){
@@ -978,6 +1011,15 @@ class Babylonjs_game extends Babylonjsbes6 {
 		window.addEventListener("keydown", handleKeyDown, false);
 		window.addEventListener("keyup", handleKeyUp, false);
 		function handleKeyDown(evt){
+            console.log(evt.keyCode);
+            if (evt.keyCode==69){//E
+                if(self.model !=null){
+                    if(typeof self.model.interact === 'function'){
+                        self.model.interact();
+                    }
+                }
+            }
+
             if (evt.keyCode==65){//A
 				self.keys.left=1;
 				//console.log("left");
