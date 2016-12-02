@@ -1,4 +1,4 @@
-#bes-threejs
+# bes-threejs
 
 Created by: Lightnet
 
@@ -9,15 +9,17 @@ There are multiples Licenses to build web game for ease build or design.
 Libs:
  * webix.js (License: GPL v3)
  * bootstrap.js
- * three.js
+ * three.js (3D engine)
  * socket.io
  * expressjs
  * knockout.js
  * ammo.js
  * cannon.js
  * oimo.js
+ * babylon.js (3D engine)
+ * GunDB (not build yet)
 
-Code Language: Babel es6 > Javascript for nodejs and html javascript
+Code Language: Babeljs es6 > Javascript for nodejs and html javascript
 
 OS: Window 10 64bit Tested (window 32 bit)
 
