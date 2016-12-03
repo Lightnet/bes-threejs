@@ -7,7 +7,7 @@
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript" src="/js/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="/gun.js"></script>
+		<script type="text/javascript" src="http://127.0.0.1:8080/gun.js"></script>
 		<style>
 			html, body {
 				margin: 0px;
@@ -18,24 +18,22 @@
 	</head>
 	<body>
 		<script>
-			var socket = io();
+			window.addEventListener('DOMContentLoaded', function () {
+				var peers = ['http://127.0.0.1:8080/gun'];
+				var gun = Gun(peers);
+				//console.log(io);
+				var socket = io();
 
-			socket.on('connect', function () {
-				console.log('server connected');
+				socket.on('connect', function () {
+					console.log('server connected');
+				});
+				socket.on('disconnect', function () {
+					console.log('server disconnected');
+				});
+				// Create an interface for the `greetings`
+				// key, storing it in a variable.
+				var greetings = gun.get('greetings');
 			});
-
-			socket.on('disconnect', function () {
-				console.log('server disconnected');
-			});
-
-
-			var peers = ['http://localhost/gun'];
-			var gun = Gun(peers);
-
-			// Create an interface for the `greetings`
-			// key, storing it in a variable.
-			var greetings = gun.get('greetings');
-
 		</script>
 	</body>
 </html>

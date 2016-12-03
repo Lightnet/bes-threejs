@@ -68,41 +68,6 @@ app.get("/favicon.ico", function(req, res) {
   res.end(favicon);
  });
 
- // Imports the `Gun` library
- const Gun = require('gun');
- // Imported for side effects, adds level adapters.
- require('gun-level');
- // Import the two libraries
- const levelup = require('levelup');
- const leveldown = require('leveldown');
- // Create a new level instance which saves
- // to the `data/` folder.
- const levelDB = levelup('data', {
-     db: leveldown,
- });
- // create a new gun instance
- //https://github.com/amark/gun/issues/139
- var gun = new Gun({
-	 level: levelDB,
-	 file:false, //disable data.json save file
- 	//init: true,
- });
-
-// Read `thoughts`, saving it to a variable.
- var thoughts = gun.get('thoughts');
-
-// Update the value on `thoughts`.
-thoughts.put({
-    hello: 'world',
-})
-
-http.on('request', gun.wsp.server);
-   //Handle incoming gun traffic
-   //from clients (that's where the
-   //real-time goodness comes from).
-gun.wsp(http);
-console.log("Gundb init!");
-
 var io = require('socket.io')(http);
 
 /*
@@ -151,6 +116,53 @@ var HOSTIP = process.env.IP || "0.0.0.0";
 var HOSTPORT = process.env.PORT || 80;
 http.listen(HOSTPORT, HOSTIP, function () {
     console.log('listening on:' + HOSTIP + ':' + HOSTPORT);
+    console.log(new Date());
+});
+
+// Imports the `Gun` library
+const Gun = require('gun');
+// Imported for side effects, adds level adapters.
+require('gun-level');
+// Import the two libraries
+const levelup = require('levelup');
+const leveldown = require('leveldown');
+// Create a new level instance which saves
+// to the `data/` folder.
+const levelDB = levelup('data', {
+    db: leveldown,
+});
+// create a new gun instance
+//https://github.com/amark/gun/issues/139
+var gun = new Gun({
+    level: levelDB,
+    file:false, //disable data.json save file
+   //init: true,
+});
+
+// Read `thoughts`, saving it to a variable.
+//var thoughts = gun.get('thoughts');
+// Update the value on `thoughts`.
+//thoughts.put({
+   //hello: 'world',
+//})
+var http = require('http');
+var server = new http.Server();
+//console.log(server.on);
+//console.log(gun.wsp.server);
+//var gundbfile = fs.readFileSync(__dirname+'/node_modules/gun/gun.js', "utf8");
+//var request = http.get("http://127.0.0.1:8080/gun.js", function(response) {
+//  response.pipe(file);
+//});
+server.on('request', gun.wsp.server);
+  //Handle incoming gun traffic
+  //from clients (that's where the
+  //real-time goodness comes from).
+gun.wsp(server);
+console.log("Gundb init!");
+//server.listen(8080);
+
+server.listen(8080, '127.0.0.1', function () {
+    console.log('listening on:' + '127.0.0.1' + ':' + '8080' + ' GunDB.js');
     console.log(new Date());
 });
 
