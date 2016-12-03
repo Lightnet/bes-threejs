@@ -211,6 +211,23 @@ class Babylonjs_game extends Babylonjsbes6 {
 
         //EDITOR props
         //this.text2D;
+        this.selectobject = null;
+
+        this.selectobject_text_id = null;
+
+        this.selectobject_text_px = null;
+        this.selectobject_text_py = null;
+        this.selectobject_text_pz = null;
+
+        this.selectobject_text_rx = null;
+        this.selectobject_text_ry = null;
+        this.selectobject_text_rz = null;
+
+        this.selectobject_text_sx = null;
+        this.selectobject_text_sy = null;
+        this.selectobject_text_sz = null;
+
+
 
 
         this.scriptcount = 0;
@@ -797,21 +814,40 @@ class Babylonjs_game extends Babylonjsbes6 {
         this.create_R2D_Text01(panel,{text:"Animations",balign:true,x:308,y:-32*1, width: 70});
 
         //props
-
+        var _obj = null;
         this.create_R2D_Text01(panel,{text:"ID:",x:10,y:-32*2});
-        this.create_R2D_TextInput01(panel,{text:"None",x:34,y:-32*2});
+        _obj = this.create_R2D_TextInput01(panel,{text:"None",x:34,y:-32*2,returnarray:true});
+        this.selectobject_text_id = _obj[1];
 
         this.create_R2D_Text01(panel,{text:"px",x:10,y:-32*3});
+        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*3,returnarray:true});
+        this.selectobject_text_px = _obj[1];
         this.create_R2D_Text01(panel,{text:"py",x:10,y:-32*4});
+        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*4,returnarray:true});
+        this.selectobject_text_py = _obj[1];
         this.create_R2D_Text01(panel,{text:"pz",x:10,y:-32*5});
+        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*5,returnarray:true});
+        this.selectobject_text_pz = _obj[1];
 
         this.create_R2D_Text01(panel,{text:"rx",x:10,y:-32*6});
+        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*6,returnarray:true});
+        this.selectobject_text_rx = _obj[1];
         this.create_R2D_Text01(panel,{text:"ry",x:10,y:-32*7});
+        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*7,returnarray:true});
+        this.selectobject_text_ry = _obj[1];
         this.create_R2D_Text01(panel,{text:"rz",x:10,y:-32*8});
+        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*8,returnarray:true});
+        this.selectobject_text_rz = _obj[1];
 
         this.create_R2D_Text01(panel,{text:"sx",x:10,y:-32*9});
+        _obj = this.create_R2D_TextInput01(panel,{text:"1",x:34,y:-32*9,returnarray:true});
+        this.selectobject_text_sx = _obj[1];
         this.create_R2D_Text01(panel,{text:"sy",x:10,y:-32*10});
+        _obj = this.create_R2D_TextInput01(panel,{text:"1",x:34,y:-32*10,returnarray:true});
+        this.selectobject_text_sy = _obj[1];
         this.create_R2D_Text01(panel,{text:"sz",x:10,y:-32*11});
+        _obj = this.create_R2D_TextInput01(panel,{text:"1",x:34,y:-32*11,returnarray:true});
+        this.selectobject_text_sz = _obj[1];
     }
 
 
@@ -921,6 +957,7 @@ class Babylonjs_game extends Babylonjsbes6 {
         var _text = (typeof args['text'] === 'string') ? args['text'] : 'none';
         //console.log(typeof args['balign']);
         var _balign = (typeof args['balign'] === 'boolean') ? args['align'] : false;
+        var _returnarray = (typeof args['returnarray'] === 'boolean') ? args['returnarray'] : false;
 
         var _config = {};
         _config['fontName'] = "10pt Arial";
@@ -939,9 +976,7 @@ class Babylonjs_game extends Babylonjsbes6 {
                 text2d
             ]
         });
-
-        console.log(text2d);
-
+        //console.log(text2d);
         function TextInputKey(e){
             console.log(e.keyCode);
             if (e.keyCode == 8) {
@@ -970,16 +1005,15 @@ class Babylonjs_game extends Babylonjsbes6 {
             }
 
             var txt = String.fromCharCode(e.which);
-             console.log(txt + ' : ' + e.which);
+            console.log(txt + ' : ' + e.which);
 
-             if(!txt.match(/[A-Za-z0-9+#.]/))
-             {
-                 return false;
+            if(!txt.match(/[A-Za-z0-9+#.]/))
+            {
+                return false;
             }else{
-                 console.log("TYPEING?");
-                 text2d.text = text2d.text + txt;
+                //console.log("TYPEING?");
+                text2d.text = text2d.text + txt;
             }
-
             //console.log("test?");
         }
 
@@ -998,7 +1032,11 @@ class Babylonjs_game extends Babylonjsbes6 {
             document.removeEventListener("keydown",TextInputKey );
         }));
 
-        return panel;
+        if(_returnarray){
+            return [panel,text2d];
+        }else{
+            return panel;
+        }
     }
 
     //TextInputKey(e){
@@ -1532,11 +1570,15 @@ class Babylonjs_game extends Babylonjsbes6 {
     	}
     }
 
-	PickObject(){
+	ScenePickObject(){
+        var self = this;
 		//When pointer down event is raised
 	    this.scene.onPointerDown = function (evt, pickResult) {
 	        // if the click hits the ground object, we change the impact position
 	        if (pickResult.hit) {
+                console.log(pickResult);
+                self.selectobject = pickResult.pickedMesh;
+                self.updateselectobject();
 	            //impact.position.x = pickResult.pickedPoint.x;
 	            //impact.position.y = pickResult.pickedPoint.y;
 				//console.log("HIT"+pickResult.pickedPoint);
@@ -1597,9 +1639,54 @@ class Babylonjs_game extends Babylonjsbes6 {
 						self.scenes[self.scenename].meshes[i].update();
 					}
 				}
+
+                if(self.selectobject !=null){
+
+
+                }
 			}
 		});
 	}
+
+    updateselectobject(){
+        var self = this;
+        if(self.selectobject !=null){
+            if(self.selectobject_text_id !=null){
+                self.selectobject_text_id.text = self.selectobject.id;
+            }
+            //===
+            if(self.selectobject_text_px !=null){
+                self.selectobject_text_px.text = self.selectobject.position.x.toString();
+                //console.log("found x",self.selectobject.position.x);
+            }
+            if(self.selectobject_text_py !=null){
+                self.selectobject_text_py.text = self.selectobject.position.y.toString();
+            }
+            if(self.selectobject_text_pz !=null){
+                self.selectobject_text_pz.text = self.selectobject.position.z.toString();
+            }
+            //===
+            if(self.selectobject_text_rx !=null){
+                self.selectobject_text_rx.text = self.selectobject.rotation.x.toString();
+            }
+            if(self.selectobject_text_ry !=null){
+                self.selectobject_text_ry.text = self.selectobject.rotation.y.toString();
+            }
+            if(self.selectobject_text_rz !=null){
+                self.selectobject_text_rz.text = self.selectobject.rotation.z.toString();
+            }
+            //===
+            if(self.selectobject_text_sx !=null){
+                self.selectobject_text_sx.text = self.selectobject.scaling.x.toString();
+            }
+            if(self.selectobject_text_sy !=null){
+                self.selectobject_text_sy.text = self.selectobject.scaling.y.toString();
+            }
+            if(self.selectobject_text_sz !=null){
+                self.selectobject_text_sz.text = self.selectobject.scaling.z.toString();
+            }
+        }
+    }
 
 	init(){
 		super.init();
@@ -1624,7 +1711,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 		this.create_input();
         this.create_gamepadinput();
 		this.create_movement();
-		//this.PickObject();
+		this.ScenePickObject();
 		this.simple_scene();
         //this.create_character();
 
