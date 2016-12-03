@@ -781,20 +781,54 @@ class Babylonjs_game extends Babylonjsbes6 {
             //scale:1 //limited since backgroundRoundRadius effect render
         });
 
+        var panel = this.create_R2D_Drag01(editor_group2d,{text:'Drag Panel',x:10,y:-142});
+
+        //tab
+        this.create_R2D_Text01(panel,{text:"Object",balign:true,x:10,y:-32*1, width: 70});
+        this.create_R2D_Text01(panel,{text:"Transform",balign:true,x:84,y:-32*1, width: 70});
+        this.create_R2D_Text01(panel,{text:"Materials",balign:true,x:158,y:-32*1, width: 70});
+        this.create_R2D_Text01(panel,{text:"Scripts",balign:true,x:234,y:-32*1, width: 70});
+        this.create_R2D_Text01(panel,{text:"Animations",balign:true,x:308,y:-32*1, width: 70});
+
+        //props
+
+        this.create_R2D_Text01(panel,{text:"ID:",x:10,y:-32*2});
+
+        this.create_R2D_Text01(panel,{text:"px",x:10,y:-32*3});
+        this.create_R2D_Text01(panel,{text:"py",x:10,y:-32*4});
+        this.create_R2D_Text01(panel,{text:"pz",x:10,y:-32*5});
+
+        this.create_R2D_Text01(panel,{text:"rx",x:10,y:-32*6});
+        this.create_R2D_Text01(panel,{text:"ry",x:10,y:-32*7});
+        this.create_R2D_Text01(panel,{text:"rz",x:10,y:-32*8});
+
+        this.create_R2D_Text01(panel,{text:"sx",x:10,y:-32*9});
+        this.create_R2D_Text01(panel,{text:"sy",x:10,y:-32*10});
+        this.create_R2D_Text01(panel,{text:"sz",x:10,y:-32*11});
+
+    }
+
+
+    create_R2D_Drag01(_parent,args){//RIGHT TOP DRAG
+        var self = this;
+        if(args == null){args = {};};
+
+        var _x = (typeof args['x'] === 'number') ? args['x'] : 0; //rect position
+        var _y = (typeof args['y'] === 'number') ? args['y'] : 0;
+        var _width = (typeof args['width'] === 'number') ? args['width'] : 128; //rect size
+        var _height = (typeof args['height'] === 'number') ? args['height'] : 32;
+
+        var _text = (typeof args['text'] === 'string') ? args['text'] : 'Drag';
+
         var panel = new BABYLON.Rectangle2D({
-            parent: editor_group2d, id: "R2DPanel", x: 10, y: -142, width: 128, height: 32, fill: "#263238FF",
-            //children:
-            //[
-                //new BABYLON.Text2D("Panel:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            //]
+            parent: _parent, id: "R2Dpanel", x: _x, y: _y, width: _width, height: _height, fill: "#263238FF",
         });
 
-
         var paneldrag = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 0, y: 0, width: 124, height: 28, fill: "#0D47A1FF",
+            parent: panel, id: "R2Dpaneldrag", x: 0, y: 0, width: _width - 4, height: _height - 4, fill: "#455A64FF",
             children:
             [
-                new BABYLON.Text2D("Drag", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
+                new BABYLON.Text2D(_text, {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
             ]
         });
 
@@ -828,138 +862,44 @@ class Babylonjs_game extends Babylonjsbes6 {
 
         paneldrag.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOutTrigger,panel, "bdrag", false));
 
-        //panel
-
-        var panel_name = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*1, width: 70, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("Object", { fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_name = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 84, y: -32*1, width: 70, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("Transform", { fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_name = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 158, y: -32*1, width: 70, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("Materials", {fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_name = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 234, y: -32*1, width: 70, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("Scripts", {fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_name = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 308, y: -32*1, width: 70, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("Animations", {fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-
-
-        var panel_id = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*2, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("ID:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_px = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*3, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("px:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_py = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*4, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("py:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_pz = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*5, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("pz:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_rx = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*6, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("rx:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_ry = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*7, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("ry:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_rz = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*8, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("rz:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-
-        var panel_sx = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*9, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("sx:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_sy = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*10, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("sy:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-        var panel_sz = new BABYLON.Rectangle2D({
-            parent: panel, id: "R2DPanel", x: 10, y: -32*11, width: 128, height: 32, fill: "#263238FF",
-            children:
-            [
-                new BABYLON.Text2D("sz:", {x:5,y:0, fontName: "10pt Arial", marginAlignment: "h: center, v: center" })
-            ]
-        });
-
-
-
+        return panel;
     }
 
+    create_R2D_Text01(_parent,args){
+        if(args == null){args = {};};
+        var panel;
+        //console.log(typeof args['color']);
+        var _color = (typeof args['color'] === 'string') ? args['color'] : '#263238FF';
+        var _width = (typeof args['width'] === 'number') ? args['width'] : 128;
+        var _height = (typeof args['height'] === 'number') ? args['height'] : 32;
+        var _x = (typeof args['x'] === 'number') ? args['x'] : 0; //rect position
+        var _y = (typeof args['y'] === 'number') ? args['y'] : 0;
+        var _tx = (typeof args['tx'] === 'number') ? args['tx'] : 2; //text position
+        var _ty = (typeof args['ty'] === 'number') ? args['ty'] : 0;
+        var _text = (typeof args['text'] === 'string') ? args['text'] : 'none';
+        console.log(typeof args['balign']);
+        var _balign = (typeof args['balign'] === 'boolean') ? args['align'] : false;
 
+        var _config = {};
+        _config['fontName'] = "10pt Arial";
+        if(_balign){
+            _config['marginAlignment'] = "h: center, v: center";
+        }else{
+            _config['x'] = _tx;
+            _config['y'] = _ty;
+        }
+        var text2d = new BABYLON.Text2D(_text, _config);
 
+        panel = new BABYLON.Rectangle2D({
+            parent: _parent, id: "R2D" + _text, x: _x, y: _y, width: _width, height: _height, fill: _color,
+            children:
+            [
+                text2d
+            ]
+        });
 
+        return panel;
+    }
 
 	actionbattle(){
 		console.log("action battle ...");
