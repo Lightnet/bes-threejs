@@ -209,8 +209,14 @@ class Babylonjs_game extends Babylonjsbes6 {
         this.joyrightdir = new BABYLON.Vector3(0,0,0);
         this.joyrighttrigger = 0;
 
+        //EDITOR props
+        //this.text2D;
+
+
         this.scriptcount = 0;
-        self.mappdata = {}
+        self.mappdata = {};
+
+
 
 	}
 
@@ -793,6 +799,7 @@ class Babylonjs_game extends Babylonjsbes6 {
         //props
 
         this.create_R2D_Text01(panel,{text:"ID:",x:10,y:-32*2});
+        this.create_R2D_TextInput01(panel,{text:"None",x:34,y:-32*2});
 
         this.create_R2D_Text01(panel,{text:"px",x:10,y:-32*3});
         this.create_R2D_Text01(panel,{text:"py",x:10,y:-32*4});
@@ -805,7 +812,6 @@ class Babylonjs_game extends Babylonjsbes6 {
         this.create_R2D_Text01(panel,{text:"sx",x:10,y:-32*9});
         this.create_R2D_Text01(panel,{text:"sy",x:10,y:-32*10});
         this.create_R2D_Text01(panel,{text:"sz",x:10,y:-32*11});
-
     }
 
 
@@ -837,7 +843,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 
         paneldrag.pointerEventObservable.add(function (d, s) {
             //button2Rect.levelVisible = !button2Rect.levelVisible;
-            console.log("PointerDown!");
+            //console.log("PointerDown!");
             //console.log(d);
             //console.log(buttonRect);
             panel.bdrag = true;
@@ -845,7 +851,7 @@ class Babylonjs_game extends Babylonjsbes6 {
         }, BABYLON.PrimitivePointerInfo.PointerDown);
 
         paneldrag.pointerEventObservable.add(function (d, s) {
-            console.log("PointerUp!");
+            //console.log("PointerUp!");
             panel.bdrag = false;
         }, BABYLON.PrimitivePointerInfo.PointerUp);
         //console.log(this.engine);
@@ -877,7 +883,43 @@ class Babylonjs_game extends Babylonjsbes6 {
         var _tx = (typeof args['tx'] === 'number') ? args['tx'] : 2; //text position
         var _ty = (typeof args['ty'] === 'number') ? args['ty'] : 0;
         var _text = (typeof args['text'] === 'string') ? args['text'] : 'none';
-        console.log(typeof args['balign']);
+        //console.log(typeof args['balign']);
+        var _balign = (typeof args['balign'] === 'boolean') ? args['align'] : false;
+
+        var _config = {};
+        _config['fontName'] = "10pt Arial";
+        if(_balign){
+            _config['marginAlignment'] = "h: center, v: center";
+        }else{
+            _config['x'] = _tx;
+            _config['y'] = _ty;
+        }
+        var text2d = new BABYLON.Text2D(_text, _config);
+
+        panel = new BABYLON.Rectangle2D({
+            parent: _parent, id: "R2D" + _text, x: _x, y: _y, width: _width, height: _height, fill: _color,
+            children:
+            [
+                text2d
+            ]
+        });
+        return panel;
+    }
+
+    create_R2D_TextInput01(_parent,args){
+        var self = this;
+        if(args == null){args = {};};
+        var panel;
+        //console.log(typeof args['color']);
+        var _color = (typeof args['color'] === 'string') ? args['color'] : '#263238FF';
+        var _width = (typeof args['width'] === 'number') ? args['width'] : 128;
+        var _height = (typeof args['height'] === 'number') ? args['height'] : 32;
+        var _x = (typeof args['x'] === 'number') ? args['x'] : 0; //rect position
+        var _y = (typeof args['y'] === 'number') ? args['y'] : 0;
+        var _tx = (typeof args['tx'] === 'number') ? args['tx'] : 2; //text position
+        var _ty = (typeof args['ty'] === 'number') ? args['ty'] : 0;
+        var _text = (typeof args['text'] === 'string') ? args['text'] : 'none';
+        //console.log(typeof args['balign']);
         var _balign = (typeof args['balign'] === 'boolean') ? args['align'] : false;
 
         var _config = {};
@@ -898,8 +940,75 @@ class Babylonjs_game extends Babylonjsbes6 {
             ]
         });
 
+        console.log(text2d);
+
+        function TextInputKey(e){
+            console.log(e.keyCode);
+            if (e.keyCode == 8) {
+                console.log('BACKSPACE was pressed');
+                var llen = text2d.text.length;
+                //text2d.text = text2d.text.substring(1, llen);//first letter
+                text2d.text = text2d.text.substring(0,llen-1);//last letter
+                // Call event.preventDefault() to stop the character before the cursor
+                // from being deleted. Remove this line if you don't want to do that.
+                e.preventDefault();
+            }
+            if (e.keyCode == 46) {
+                //console.log('DELETE was pressed');
+                // Call event.preventDefault() to stop the character after the cursor
+                // from being deleted. Remove this line if you don't want to do that.
+                e.preventDefault();
+            }
+
+            if (e.keyCode == 13) {
+                //console.log('DELETE was pressed');
+                // Call event.preventDefault() to stop the character after the cursor
+                // from being deleted. Remove this line if you don't want to do that.
+                console.log('remove listener');
+                document.removeEventListener("keydown",TextInputKey );
+                e.preventDefault();
+            }
+
+            var txt = String.fromCharCode(e.which);
+             console.log(txt + ' : ' + e.which);
+
+             if(!txt.match(/[A-Za-z0-9+#.]/))
+             {
+                 return false;
+            }else{
+                 console.log("TYPEING?");
+                 text2d.text = text2d.text + txt;
+            }
+
+            //console.log("test?");
+        }
+
+        panel.pointerEventObservable.add(function (d, s) {
+            console.log("PointerDown!");
+            //window.addEventListener("keypress",TextInputKey );
+        }, BABYLON.PrimitivePointerInfo.PointerDown);
+
+        panel.pointerEventObservable.add(function (d, s) {
+            console.log("PointerUp!");
+            document.addEventListener("keydown",TextInputKey );
+        }, BABYLON.PrimitivePointerInfo.PointerUp);
+
+        panel.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOutTrigger,function(evt){
+            console.log("out??");
+            document.removeEventListener("keydown",TextInputKey );
+        }));
+
         return panel;
     }
+
+    //TextInputKey(e){
+        //if(e.keyCode === 8 && document.activeElement !== 'text') {
+            //e.preventDefault();
+            //alert('Prevent page from going back');
+        //}
+        //console.log("test?");
+    //}
+
 
 	actionbattle(){
 		console.log("action battle ...");
