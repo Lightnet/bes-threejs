@@ -22,13 +22,13 @@
                 "depthSegments": 1
             },
             "position": {
-                "x": 0,
-                "y": 0,
+                "x": 2,
+                "y": 0.5,
                 "z": 0
             },
             "rotation": {
                 "x": 0,
-                "y": 0,
+                "y": 0.5,
                 "z": 0,
                 "_order": "XYZ"
             },

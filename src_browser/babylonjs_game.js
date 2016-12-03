@@ -1385,9 +1385,9 @@ class Babylonjs_game extends Babylonjsbes6 {
 		//this.createbattle_prototype();
 		this.create_input();
         this.create_gamepadinput();
-		//this.create_movement();
+		this.create_movement();
 		//this.PickObject();
-		//this.simple_scene();
+		this.simple_scene();
         //this.create_character();
 
         //this.loadmap_requestXML();
