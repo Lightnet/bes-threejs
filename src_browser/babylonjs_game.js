@@ -10,7 +10,6 @@ Math.degrees = function(radians) {
   return radians * 180 / Math.PI;
 };
 
-
 //RFC Type 4 (random) schema
 var uuid = function() {
     var buf = new Uint32Array(4);
@@ -31,6 +30,8 @@ class ObjectRPGID{
 		this.id = "";
 		this.name = "none";
 		this.description = "none";
+        this.objtype = "none";
+        this.gundbid = "";
 		if(args !=null){
 			if(args['name'] !=null){
 				this.name = args['name'];
@@ -96,6 +97,38 @@ class RPGWeapon extends RPGEquip{
 	}
 }
 
+class RPGMesh extends ObjectRPGID{
+    constructor(args){
+		super(args);
+    }
+}
+
+class RPGLight extends ObjectRPGID{
+    constructor(args){
+		super(args);
+    }
+}
+
+class RPGCamera extends ObjectRPGID{
+    constructor(args){
+		super(args);
+    }
+}
+
+class RPGMaterial extends ObjectRPGID{
+    constructor(args){
+		super(args);
+    }
+}
+
+class RPGTexture extends ObjectRPGID{
+    constructor(args){
+		super(args);
+    }
+}
+
+
+
 class RPGStatus extends ObjectRPGID{
 	constructor(args){
 		super(args);
@@ -141,6 +174,7 @@ class RPGStatus extends ObjectRPGID{
 		this.finishaction = false;
 
 		this.mesh = null;
+        this.bphysics = true;
 		this.isdead = false;
 		this.targets = [];
 
@@ -612,7 +646,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 		    id: "ScreenCanvas",
 			enableInteraction: true//,
 		});
-        console.log(this.screencanvas);
+        //console.log(this.screencanvas);
 	}
 
 	create2DHUD(){
@@ -791,7 +825,7 @@ class Babylonjs_game extends Babylonjsbes6 {
             console.log("R2DHome clicked!");
         }, BABYLON.PrimitivePointerInfo.PointerUp);
 
-        this.setupeditor();
+        //this.setupeditor();
 	}
 
     setupeditor(){
@@ -980,7 +1014,7 @@ class Babylonjs_game extends Babylonjsbes6 {
         function TextInputKey(e){
             console.log(e.keyCode);
             if (e.keyCode == 8) {
-                console.log('BACKSPACE was pressed');
+                //console.log('BACKSPACE was pressed');
                 var llen = text2d.text.length;
                 //text2d.text = text2d.text.substring(1, llen);//first letter
                 text2d.text = text2d.text.substring(0,llen-1);//last letter
@@ -999,7 +1033,7 @@ class Babylonjs_game extends Babylonjsbes6 {
                 //console.log('DELETE was pressed');
                 // Call event.preventDefault() to stop the character after the cursor
                 // from being deleted. Remove this line if you don't want to do that.
-                console.log('remove listener');
+                //console.log('remove listener');
                 document.removeEventListener("keydown",TextInputKey );
                 e.preventDefault();
             }
@@ -1018,17 +1052,17 @@ class Babylonjs_game extends Babylonjsbes6 {
         }
 
         panel.pointerEventObservable.add(function (d, s) {
-            console.log("PointerDown!");
+            //console.log("PointerDown!");
             //window.addEventListener("keypress",TextInputKey );
         }, BABYLON.PrimitivePointerInfo.PointerDown);
 
         panel.pointerEventObservable.add(function (d, s) {
-            console.log("PointerUp!");
+            //console.log("PointerUp!");
             document.addEventListener("keydown",TextInputKey );
         }, BABYLON.PrimitivePointerInfo.PointerUp);
 
         panel.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOutTrigger,function(evt){
-            console.log("out??");
+            //console.log("out!");
             document.removeEventListener("keydown",TextInputKey );
         }));
 
@@ -1385,16 +1419,9 @@ class Babylonjs_game extends Babylonjsbes6 {
                 else
                     return false;
             });
-            //console.log(meshFound);
             if (meshFound != null && meshFound.pickedPoint != null) {
-                console.log("found!");
-                //console.log(hit);
+                //console.log("found!");
                 hit.position = meshFound.pickedPoint;
-                //if (!divAlert) {
-                //divAlert = document.createElement("div");
-                //document.body.appendChild(divAlert);
-                //divAlert.innerText = (meshFound.pickedMesh.name + " hit at " + meshFound.pickedPoint);
-                //}
           }else{
               //console.log("not found!");
           }
@@ -1427,30 +1454,18 @@ class Babylonjs_game extends Babylonjsbes6 {
             if (evt.keyCode==65){//A
 				self.keys.left=1;
 				//console.log("left");
-				//self.render_scene(self.scene);
-				//self.scenename = "default";
-				//self.moveVector.z = movestep;
-				//self.box.moveWithCollisions(self.moveVector);
 			}
 			if (evt.keyCode==68){//D
                 self.keys.right=1;
 				//console.log("right");
-				//self.moveVector.z = -movestep;
-				//self.box.moveWithCollisions(self.moveVector);
-				//self.render_scene(self.sceneassets);
-				//self.scenename = "sceneassets";
 			}
 			if (evt.keyCode==87){//W
 				self.keys.forward=1;
 				//console.log("up");
-				//self.stop_render();
-				//self.engine.hideLoadingUI();
 			}
 			if (evt.keyCode==83){//S
 				self.keys.back=1;
 				//console.log("down");
-                //console.log(self.thirdcamera);
-				//self.engine.displayLoadingUI();
 			}
 		}
 
@@ -1490,29 +1505,15 @@ class Babylonjs_game extends Babylonjsbes6 {
                 console.log("right trigger function doesn't exist");
             }
 
-
             gamepad.onleftstickchanged(function (values) {
-    			if (values.y < 0){//sphere.chooseDirection(0, 1);
-                }
-    			if (values.y > 0){//sphere.chooseDirection(1, 1);
-                }
-                if (values.x < 0){//sphere.chooseDirection(2, 1);
-                }
-    			if (values.x > 0){//sphere.chooseDirection(3, 1);
-                }
                 self.leftstickmove = false;
     			if (values.y < 0.1 && values.y > -0.1) {
-    				//sphere.chooseDirection(0, 0);
-    				//sphere.chooseDirection(1, 0);
     			}else{
                     //console.log("x: ",values.x, " y: " , values.y );
                     self.joyleftdir.z = values.y;
                     self.leftstickmove = true;
                 }
     			if (values.x < 0.1 && values.x > -0.1) {
-    				//sphere.chooseDirection(2, 0);
-    				//sphere.chooseDirection(3, 0);
-                    //console.log("x: ",values.x, " y: " , values.y );
     			}else{
                     //console.log("x: ",values.x, " y: " , values.y );
                     self.joyleftdir.x = values.x;
@@ -1522,25 +1523,13 @@ class Babylonjs_game extends Babylonjsbes6 {
     		});
 
             gamepad.onrightstickchanged(function (values) {
-    			if (values.y < 0){//sphere.chooseDirection(0, 1);
-                }
-    			if (values.y > 0){//sphere.chooseDirection(1, 1);
-                }
-    			if (values.x < 0){//sphere.chooseDirection(2, 1);
-                }
-    			if (values.x > 0){//sphere.chooseDirection(3, 1);
-                }
 
     			if (values.y < 0.1 && values.y > -0.1) {
-    				//sphere.chooseDirection(0, 0);
-    				//sphere.chooseDirection(1, 0);
     			}else{
                     //console.log("x: ",values.x, " y: " , values.y );
                     self.joyrightdir.y = values.y;
                 }
     			if (values.x < 0.1 && values.x > -0.1) {
-    				//sphere.chooseDirection(2, 0);
-    				//sphere.chooseDirection(3, 0);
                     //console.log("x: ",values.x, " y: " , values.y );
     			}else{
                     //console.log("x: ",values.x, " y: " , values.y );
@@ -1576,7 +1565,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 	    this.scene.onPointerDown = function (evt, pickResult) {
 	        // if the click hits the ground object, we change the impact position
 	        if (pickResult.hit) {
-                console.log(pickResult);
+                //console.log(pickResult);
                 self.selectobject = pickResult.pickedMesh;
                 self.updateselectobject();
 	            //impact.position.x = pickResult.pickedPoint.x;
@@ -1698,11 +1687,12 @@ class Babylonjs_game extends Babylonjsbes6 {
 	setup_game(){
 		var self = this;
 		console.log("setup game!");
-		console.log(this.engine);
-        console.log(this.scene);
-		console.log(BABYLON);
+		//console.log(this.engine);
+        //console.log(this.scene);
+		//console.log(BABYLON);
         this.init_phsics();
 		this.create2DHUD();
+        //this.setupeditor();
 		//this.create2D_BattleHUD();
 		//BABYLON.DebugLayer().show();
 		//this.scene.debugLayer.show(false);
@@ -1714,29 +1704,6 @@ class Babylonjs_game extends Babylonjsbes6 {
 		this.ScenePickObject();
 		this.simple_scene();
         //this.create_character();
-
         //this.loadmap_requestXML();
-
-        //jQuery.get('http://127.0.0.1/prototype.json', function(data) {
-            //console.log(data);
-            //alert(data);
-        //});
-
-        /*
-        var req  = new XMLHttpRequest();
-        req.open('GET', 'http://127.0.0.1/prototype.json');
-        req.onreadystatechange = function() {
-          //alert(req.responseText);
-          //console.log(req.responseText);
-          if (req.readyState == 4) {
-             if(req.status == 200)
-              //alert(req.responseText);
-              console.log(req.responseText);
-             else
-              alert("Error loading page\n");
-          }
-        }
-        req.send();
-        */
 	}
 }
