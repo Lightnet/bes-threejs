@@ -46,11 +46,11 @@ Gun.chain.value = function (cb, opt) {
 
 // We're not connecting to any peers
 // just yet...
-var peers = ['http://localhost/gun'];
+var peers = ['http://127.0.0.1:8080/gun'];
 var gun = Gun(peers);
 
 var gamemap = gun.get('gamemap');
-console.log(gamemap);
+//console.log(gamemap);
 window.addEventListener('DOMContentLoaded', function () {
 
     $('form').on('submit', function(event) {
@@ -65,7 +65,7 @@ window.addEventListener('DOMContentLoaded', function () {
     });
 
     gamemap.map().val(function(message, id) {
-        console.log(id,message);
+        //console.log(id,message);
         if (!message) {
             return;
         }
@@ -83,10 +83,10 @@ window.addEventListener('DOMContentLoaded', function () {
         //gamemap.path(this.id).put(null);
     });
 
-    console.log("=======");
-    gamemap.get('AGTeuPSPm4REMqdjWIF2BAXa').map(function(message, id) {
-        console.log(">>>>",message," : ",id);
-    });
+    //console.log("=======");
+    //gamemap.get('AGTeuPSPm4REMqdjWIF2BAXa').map(function(message, id) {
+        //console.log(">>>>",message," : ",id);
+    //});
 
     /*
     gamemap.get('AGTeuPSPm4REMqdjWIF2BAXa').map().val(function(message, id) {
@@ -99,18 +99,109 @@ window.addEventListener('DOMContentLoaded', function () {
 
 });
 
+console.log(gun);
+
+function AddMapKey(){
+    gun.get('map/key').set({name:"random",id:"01"},(error,ok)=>{
+        if(error){
+            console.log(error);
+        }
+        console.log(ok);
+    });
+}
+function GameMapList(){
+    gun.get('map/key').val((value, property)=> {
+        console.log("....");
+        console.log(value);
+        console.log(property);
+    });
+}
+
+function GameMapListStream(){
+    gun.get('map/key').each((message, id)=> {
+        console.log(id,message);
+    });
+}
+
 function AddGameMap(){
 
+    gamemap.put({name:"test",id:"000"},(error,ok)=>{
+        if(error){
+            console.log(error);
+            return;
+        }
+        console.log("pass");
+        console.log(ok);
+    });
+}
+
+function ListGameMap(){
+    gamemap.map().val(function(message, id) {
+        console.log(id,message);
+    });
 }
 
 function DeleteGameMap(){
     console.log("Delete!");
 }
 
+//var mapkey = gun.get('map/key');
+
+//mapkey.val();
+
+//mapkey.map().val(function(message, id) {
+    //console.log(id,message);
+//});
 
 
 
+/*
+gun.put({}).key('map/key',(error,ok)=>{
+    if(error){
+        console.log(error);
+        return;
+    }
+    console.log("pass");
+    console.log(ok);
+});
+*/
 
+/*
+gun.set({name:"test",version:"1.0.1"}).key('map/key',(error,ok)=>{
+    if(error){
+        console.log(error);
+        return;
+    }
+    console.log("pass");
+    console.log(ok);
+});
+*/
+
+
+/*
+gun.get('map').key('map/key',(error,ok)=>{
+    if(error){
+        console.log(error);
+        return;
+    }
+    console.log("pass");
+    console.log(ok);
+});
+*/
+
+/*
+var mapkey = gun.get('map/key',(error,ok)=>{
+    if(error){
+        console.log(error);
+        return;
+    }
+    console.log("pass");
+    console.log(ok);
+});
+*/
+
+
+//mapkey.put({version:"1.0.1"});
 
 /*
 // Create an interface for the `greetings`

@@ -6,6 +6,7 @@
   "scripts": {
     "wbabel": "babel src_browser/ --watch --out-dir public/js/",
     "babel": "babel --presets es2015 src_browser/index.js -o public/js/index.js",
+    "babelc": "babel babylonjs_engine_core/core.js -o dist/script-compiled.js",
     "dev": "nodemon --exec babel-node src/index.js",
     "prestart": "babel src --out-dir dist",
     "start": "node dist/index.js"
@@ -15,10 +16,17 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-plugin-transform-es2015-modules-amd": "^6.18.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.18.0",
     "gulp": "^3.9.1",
+    "gulp-add-src": "^0.2.0",
     "gulp-babel": "^6.1.2",
+    "gulp-clean-ts-extends": "^0.1.1",
+    "gulp-concat": "^2.6.1",
     "gulp-minify": "0.0.14",
+    "gulp-optimize-js": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^2.0.0",
     "nodemon": "^1.11.0"
