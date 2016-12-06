@@ -6,7 +6,7 @@
 
     Information: Please read the readme.md file for more information.
 */
-
+var version = "1.0.0";
 var fs = require('fs');
 var configpath = __dirname +'/app/config.json';
 //console.log(configpath);
@@ -46,7 +46,7 @@ var plugin = require('./app/libs/plugin');
 
 import express from 'express';
 //var favicon = require('serve-favicon');
-var app = express();
+var app = module.exports.app = exports.app = express();
 var http = require('http').Server(app);
 //var io = require('socket.io')(http);
 import path from 'path';

@@ -32,3 +32,6 @@ public/js/gundb_gamemap.js
 public/js/babylonjs_framework.js
 dest/
 public/js/babylonjs_main.js
+public/babylonjs_app/babylonjs_framework_module.js
+public/babylonjs_app/babylonjs_framework.js
+public/babylonjs_app/babylonjs_framework_boot.js

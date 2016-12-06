@@ -1,13 +1,21 @@
+/*
+    Project Name: bes-threejs
+    Link:https://github.com/Lightnet/bes-threejs
+    Created By: Lightnet
+    License: cc (creative commons)
 
-//import {CreateScene} from 'babylonjs_framework_scene';
+    Information: Please read the readme.md file for more information.
+*/
 
 export class Babylonjs_framework{
-    
-    constructor(args){
-        //super(args);
-        this.test = "test";
-        console.log("init framework");
-        //return this;
+
+    constructor(self){
+
+        if(self != null){
+            self.init = this.init;
+            self.setup = this.setup;
+            self.setup_user = this.setup_user;
+        }
     }
 
     init(){

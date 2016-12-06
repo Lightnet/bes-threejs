@@ -35,7 +35,7 @@ Required:
 Gulp current work in progress as testing builds.
 
 Install Packages:
- * npm install
+ * npm install (package.json list there)
  * npm install gulp -g
 
 Type gulp in the current command line. Make sure you install '-g' for global execute run build. For develop build.

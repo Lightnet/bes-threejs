@@ -20,22 +20,31 @@ const optimisejs = require('gulp-optimize-js');
 const babel = require('gulp-babel');
 const del = require('del');
 const requirejs = require('gulp-requirejs');
+const server = require('gulp-express');
 
-gulp.task('clean-temp', function(){
-  //return del(['dist']);
+gulp.task('clean-temp', () =>{
+  //return del(['dist/*']);
 });
 
-gulp.task('server',['clean-temp'], () => {
-    gulp.src('src/**/*.js')
+gulp.task('server',['src'], () => {
+    // Start the server at the beginning of the task
+    server.run(['dist/index.js']);
+
+    //return gulp.watch(['dist/index.js'], server.notify);
+    return gulp.watch(['dist/index.js'], [server.run]);
+});
+
+gulp.task('src', () => {
+    return gulp.src(['src/*.js','src/**/*.js'])
         .pipe(babel({
             presets: ['es2015']
         }))
-		.pipe(uglify())
+		//.pipe(uglify())
 		.pipe(gulp.dest('dist'));
 });
 
 gulp.task('src_browser', () => {
-    gulp.src('src_browser/**/*.js')
+    return gulp.src('src_browser/**/*.js')
         .pipe(babel({
 			presets: ['es2015']
         }))
@@ -45,56 +54,32 @@ gulp.task('src_browser', () => {
 		.pipe(gulp.dest('public/js/'));
 });
 
-gulp.task('babylon_framework', () => {
-    gulp.src('babylonjs_framework/babylonjs_framework.js')
-        //.pipe(addsrc.append('babylonjs_framework/babylonjs_framework_scene.js'))
-        //.pipe(addsrc.append('babylonjs_framework/babylonjs_framework_init.js'))
-        .pipe(babel({
-			presets: ['es2015'] ,
-            modules:["common"]
-        }))
-        .pipe(concat('babylonjs_framework.js'))
-        .pipe(cleants())
-		//.pipe(uglify())
-        .pipe(optimisejs())
-		.pipe(gulp.dest('public/js/'));
-});
-
-//gulp.task('default',['server','babylon_framework']);
-
-gulp.task('es6-amd', function(){
+gulp.task('es6-amd', () =>{
     return gulp.src(['babylonjs_framework/*.js','babylonjs_framework/**/*.js'])
     .pipe(babel({
-        presets: ['es2015']
-        //plugins: ['transform-runtime'],
-        //modules:"amd"
+        presets: ['es2015'],
+        //modules:["common"],
+        plugins: ["transform-es2015-modules-amd"]
+
     }))
-    //.pipe(gulp.dest('dest/temp'));
     .pipe(gulp.dest('public/babylonjs_app'));
 });
 
-gulp.task('bundle-amd-clean', function(){
-  return del(['es5/amd']);
-});
-
-gulp.task('amd-bundle',['es6-amd'], function(){
+gulp.task('amd-bundle',['es6-amd'], () =>{
   return requirejs({
     name: 'babylonjs_framework_boot',
     baseUrl: 'public/babylonjs_app',
     out: 'app.js'
   })
-  .pipe(uglify())
-  //.pipe(gulp.dest("es5/amd"));
+  //.pipe(uglify())
   .pipe(gulp.dest("public/babylonjs_app"));
 });
 
-//gulp.task('default',['amd-bundle']);
-//gulp.task('default',['es6-amd']);
-
-gulp.task('default', function () {
-    gulp.watch('src/**/*.js', ['server']);
+gulp.task('watch', () =>{
+    gulp.watch('src/**/*.js',['src']);
     gulp.watch('src_browser/**/*.js', ['src_browser']);
     gulp.watch('babylonjs_framework/**/*.js', ['es6-amd']);
-    //gulp.watch('babylonjs_framework/**/*.js', ['babylon_framework']);
-    //gulp.watch('babylonjs_framework/babylonjs_framework.js', ['default']);
 });
+
+
+gulp.task('default',['src','server','watch']);
