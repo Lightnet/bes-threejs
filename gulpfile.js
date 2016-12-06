@@ -25,7 +25,7 @@ const server = require('gulp-express');
 gulp.task('clean-temp', () =>{
   //return del(['dist/*']);
 });
-
+//run express server
 gulp.task('server',['src'], () => {
     // Start the server at the beginning of the task
     server.run(['dist/index.js']);
@@ -33,7 +33,7 @@ gulp.task('server',['src'], () => {
     //return gulp.watch(['dist/index.js'], server.notify);
     return gulp.watch(['dist/index.js'], [server.run]);
 });
-
+//compile nodejs javascript
 gulp.task('src', () => {
     return gulp.src(['src/*.js','src/**/*.js'])
         .pipe(babel({
@@ -42,7 +42,7 @@ gulp.task('src', () => {
 		//.pipe(uglify())
 		.pipe(gulp.dest('dist'));
 });
-
+//compile for web javascript
 gulp.task('src_browser', () => {
     return gulp.src('src_browser/**/*.js')
         .pipe(babel({
@@ -53,33 +53,32 @@ gulp.task('src_browser', () => {
         .pipe(optimisejs())
 		.pipe(gulp.dest('public/js/'));
 });
-
+//compile amd for require.js build for web javascript
 gulp.task('es6-amd', () =>{
     return gulp.src(['babylonjs_framework/*.js','babylonjs_framework/**/*.js'])
     .pipe(babel({
         presets: ['es2015'],
-        //modules:["common"],
         plugins: ["transform-es2015-modules-amd"]
 
     }))
     .pipe(gulp.dest('public/babylonjs_app'));
 });
 
-gulp.task('amd-bundle',['es6-amd'], () =>{
-  return requirejs({
-    name: 'babylonjs_framework_boot',
-    baseUrl: 'public/babylonjs_app',
-    out: 'app.js'
-  })
+//gulp.task('amd-bundle',['es6-amd'], () =>{
+  //return requirejs({
+    //name: 'babylonjs_framework_boot',
+    //baseUrl: 'public/babylonjs_app',
+    //out: 'app.js'
+  //})
   //.pipe(uglify())
-  .pipe(gulp.dest("public/babylonjs_app"));
-});
-
+  //.pipe(gulp.dest("public/babylonjs_app"));
+//});
+//watch files changes and auto compile file.
 gulp.task('watch', () =>{
     gulp.watch('src/**/*.js',['src']);
     gulp.watch('src_browser/**/*.js', ['src_browser']);
     gulp.watch('babylonjs_framework/**/*.js', ['es6-amd']);
 });
 
-
+//main entry call task or default task call
 gulp.task('default',['src','server','watch']);

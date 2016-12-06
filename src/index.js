@@ -6,6 +6,7 @@
 
     Information: Please read the readme.md file for more information.
 */
+
 var version = "1.0.0";
 var fs = require('fs');
 var configpath = __dirname +'/app/config.json';

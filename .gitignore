@@ -35,3 +35,4 @@ public/js/babylonjs_main.js
 public/babylonjs_app/babylonjs_framework_module.js
 public/babylonjs_app/babylonjs_framework.js
 public/babylonjs_app/babylonjs_framework_boot.js
+public/babylonjs_app/babylonjs_framework_init.js
