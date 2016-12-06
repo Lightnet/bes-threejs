@@ -1,5 +1,5 @@
 /*
-    Project Name: Discord Modular Bot
+    Project Name: bes-threejs
     Link:https://github.com/Lightnet/bes-threejs
     Created By: Lightnet
     License: cc (creative commons)
@@ -13,7 +13,27 @@ var app = express();
 var http = require('http').Server(app);
 //var path = require('path');
 //file for index.html
-app.use("/", express.static('./public'));
+console.log(__dirname + '/../public');
+app.use("/", express.static(__dirname + '/../public'));
+
+var io = require('socket.io')(http);
+
+//socket.io
+io.on('connection', function (socket) {
+	console.log("client connect.");
+	socket.on('disconnect', function (data) {
+		console.log('client disconnect');
+	});
+});
+
+var HOSTIP = process.env.IP || "0.0.0.0";
+var HOSTPORT = process.env.PORT || 80;
+http.listen(HOSTPORT, HOSTIP, function () {
+    console.log('listening on: ' + HOSTIP + ':' + HOSTPORT);
+});
+
+var http = require('http');
+var server = new http.Server();
 // Imports the `Gun` library
 const Gun = require('gun');
 // Imported for side effects, adds level adapters.
@@ -33,23 +53,12 @@ const levelDB = levelup('data', {
 	 file:false, //disable data.json save file
  	//init: true,
 });
-http.on('request', gun.wsp.server);
+server.on('request', gun.wsp.server);
+gun.wsp(server);
 
+// Start the server on port 8080.
+server.listen(8080, HOSTIP, function () {
+  console.log('listening on: ' + HOSTIP + ':8080/gun');
+})
 
-var io = require('socket.io')(http);
-gun.wsp(http);
-
-//socket.io
-io.on('connection', function (socket) {
-	console.log("client connect.");
-	socket.on('disconnect', function (data) {
-		console.log('client disconnect');
-	});
-});
-
-var HOSTIP = process.env.IP || "0.0.0.0";
-var HOSTPORT = process.env.PORT || 80;
-http.listen(HOSTPORT, HOSTIP, function () {
-    console.log('listening on:' + HOSTIP + ':' + HOSTPORT);
-    console.log(new Date());
-});
+console.log(new Date());

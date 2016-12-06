@@ -1,1 +1,1 @@
-node server_simple.js
+node src/server_simple.js

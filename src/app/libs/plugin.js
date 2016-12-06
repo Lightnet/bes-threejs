@@ -1,5 +1,5 @@
 /*
-    Project Name: Discord Modular Bot
+    Project Name: bes-threejs
     Link:https://github.com/Lightnet/bes-threejs
     Created By: Lightnet
     License: cc (creative commons)
