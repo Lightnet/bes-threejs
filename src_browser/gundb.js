@@ -53,8 +53,7 @@ Gun.chain.value = function (cb, opt) {
   }, opt);
 };
 
-// We're not connecting to any peers
-// just yet...
+// connecting to any peers array list
 var peers = ['http://localhost/gun'];
 var gun = Gun(peers);
 

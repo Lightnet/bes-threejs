@@ -31,3 +31,4 @@ public/js/babylonjs_2dcanvas_ui.js
 public/js/gundb_gamemap.js
 public/js/babylonjs_framework.js
 dest/
+public/js/babylonjs_main.js

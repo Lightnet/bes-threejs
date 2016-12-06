@@ -1,20 +1,25 @@
 
-import {CreateScene} from 'babylonjs_framework_scene';
+//import {CreateScene} from 'babylonjs_framework_scene';
 
-class Babylonjs_engine_core{
+export class Babylonjs_framework{
+    
     constructor(args){
         //super(args);
         this.test = "test";
+        console.log("init framework");
+        //return this;
     }
+
     init(){
         console.log("testing...");
-        CreateScene();
     }
+
     setup(){
         console.log("setup..");
     }
-	setup_user(){
-		
-	}
-}
 
+	setup_user(){
+        console.log("setup user..");
+	}
+
+}

@@ -1,3 +1,12 @@
+/*
+    Project Name: bes-threejs
+    Link:https://github.com/Lightnet/bes-threejs
+    Created By: Lightnet
+    License: cc (creative commons)
+
+    Information: Please read the readme.md file for more information.
+*/
+
 //https://www.sitepoint.com/transpiling-es6-modules-to-amd-commonjs-using-babel-gulp/
 
 const gulp = require('gulp');
@@ -56,10 +65,12 @@ gulp.task('babylon_framework', () => {
 gulp.task('es6-amd', function(){
     return gulp.src(['babylonjs_framework/*.js','babylonjs_framework/**/*.js'])
     .pipe(babel({
+        presets: ['es2015']
         //plugins: ['transform-runtime'],
-        modules:["amd"]
+        //modules:"amd"
     }))
-    .pipe(gulp.dest('dest/temp'));
+    //.pipe(gulp.dest('dest/temp'));
+    .pipe(gulp.dest('public/babylonjs_app'));
 });
 
 gulp.task('bundle-amd-clean', function(){
@@ -68,18 +79,22 @@ gulp.task('bundle-amd-clean', function(){
 
 gulp.task('amd-bundle',['es6-amd'], function(){
   return requirejs({
-    name: 'bootstrap',
-    baseUrl: 'dest/temp',
+    name: 'babylonjs_framework_boot',
+    baseUrl: 'public/babylonjs_app',
     out: 'app.js'
   })
   .pipe(uglify())
-  .pipe(gulp.dest("es5/amd"));
+  //.pipe(gulp.dest("es5/amd"));
+  .pipe(gulp.dest("public/babylonjs_app"));
 });
 
-//gulp.task('default',['amd-bundle'], function () {
+//gulp.task('default',['amd-bundle']);
+//gulp.task('default',['es6-amd']);
+
 gulp.task('default', function () {
-    //gulp.watch('babylonjs_framework/babylonjs_framework.js', ['default']);
     gulp.watch('src/**/*.js', ['server']);
     gulp.watch('src_browser/**/*.js', ['src_browser']);
-    gulp.watch('babylonjs_framework/**/*.js', ['babylon_framework']);
+    gulp.watch('babylonjs_framework/**/*.js', ['es6-amd']);
+    //gulp.watch('babylonjs_framework/**/*.js', ['babylon_framework']);
+    //gulp.watch('babylonjs_framework/babylonjs_framework.js', ['default']);
 });

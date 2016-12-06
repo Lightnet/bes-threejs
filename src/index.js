@@ -8,7 +8,6 @@
 */
 
 var fs = require('fs');
-
 var configpath = __dirname +'/app/config.json';
 //console.log(configpath);
 var config;
@@ -91,9 +90,8 @@ io.use(function(socket, next){
 	//client.send('This is a message from the server!  ' + new Date().getTime());
 //},5000);
 
-import {Game} from './app/libs/threejsapi';
-
-var threejsgame = new Game();
+//import {Game} from './app/libs/threejsapi';
+//var threejsgame = new Game();
 //threejsgame.init();
 //console.log("threejs init!");
 //socket.io
@@ -147,8 +145,6 @@ var gun = new Gun({
 //})
 var http = require('http');
 var server = new http.Server();
-//console.log(server.on);
-//console.log(gun.wsp.server);
 //var gundbfile = fs.readFileSync(__dirname+'/node_modules/gun/gun.js', "utf8");
 //var request = http.get("http://127.0.0.1:8080/gun.js", function(response) {
 //  response.pipe(file);
@@ -158,8 +154,7 @@ server.on('request', gun.wsp.server);
   //from clients (that's where the
   //real-time goodness comes from).
 gun.wsp(server);
-console.log("Gundb init!");
-//server.listen(8080);
+console.log("Initialzie Gun Database");
 
 server.listen(8080, '127.0.0.1', function () {
     console.log('listening on:' + '127.0.0.1' + ':' + '8080' + ' GunDB.js');
