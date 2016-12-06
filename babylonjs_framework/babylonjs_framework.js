@@ -1,4 +1,4 @@
-//test
+
 import {CreateScene} from 'babylonjs_framework_scene';
 
 class Babylonjs_engine_core{
@@ -13,4 +13,8 @@ class Babylonjs_engine_core{
     setup(){
         console.log("setup..");
     }
+	setup_user(){
+		
+	}
 }
+

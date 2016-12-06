@@ -42,10 +42,15 @@ Required:
  * python 2.7 (? from nodejs npm compile builds)
  * visual studio community c/c++? (? from nodejs npm compile builds)
 
- Please note there are other softwares that current need to run for headless server.
+ Please note there are other softwares and packages that current need to run for headless server.
+
+Gulp current work in progress as testing builds.
 
 Install Packages:
  * npm install
+ * npm install gulp -g
+
+Type gulp in the current command line. Make sure you install '-g' for global execute run build. For develop build.
 
 Run CMD:
  * npm run dev (run server dev change on files)

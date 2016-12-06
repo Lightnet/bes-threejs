@@ -6,6 +6,7 @@
 
     Information: Please read the readme.md file for more information.
 */
+
 var socket = io();
 
 socket.on('connect', function () {

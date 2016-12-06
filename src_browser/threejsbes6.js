@@ -6,6 +6,12 @@
 
     Information: Please read the readme.md file for more information.
 */
+/*
+	Javascript compile: babeljs ES6
+	Simple example to extends threejs game API to run simple test game.
+	That run on higher javascript to low javascript when compile with extra features
+	from the web browser.
+*/
 
 //place holder id
 function object3d() {

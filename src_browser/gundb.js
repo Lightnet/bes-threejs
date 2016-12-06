@@ -1,3 +1,12 @@
+/*
+    Project Name: bes-threejs
+    Link:https://github.com/Lightnet/bes-threejs
+    Created By: Lightnet
+    License: cc (creative commons)
+
+    Information: Please read the readme.md file for more information.
+*/
+
 //https://github.com/amark/gun/wiki/snippets-(v0.3.x)#savinggetting-images-in-gun
 
 Gun.chain.image = function (img) {

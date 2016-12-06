@@ -23,11 +23,13 @@
     "gulp": "^3.9.1",
     "gulp-add-src": "^0.2.0",
     "gulp-babel": "^6.1.2",
+    "gulp-browserify": "^0.5.1",
     "gulp-clean-ts-extends": "^0.1.1",
     "gulp-concat": "^2.6.1",
     "gulp-minify": "0.0.14",
     "gulp-optimize-js": "^1.1.0",
     "gulp-rename": "^1.2.2",
+    "gulp-requirejs": "^0.4.0",
     "gulp-uglify": "^2.0.0",
     "nodemon": "^1.11.0"
   },
