@@ -14,6 +14,17 @@ export class Threejs_framework_init{
             args = {};
             //console.log("no args...");
         }
+
+        var propertyNames = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
+        for(var fun in propertyNames){
+            //console.log(fun);
+            //console.log(propertyNames[fun]);
+            if(propertyNames[fun] != "constructor"){
+                args[propertyNames[fun]] = this[propertyNames[fun]];
+            }else{
+                //console.log('ignore ' + propertyNames[fun] );
+            }
+        }
     }
 
 }

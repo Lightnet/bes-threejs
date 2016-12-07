@@ -7,22 +7,25 @@
     Information: Please read the readme.md file for more information.
 */
 
-
 import {Threejs_framework_network} from './threejs_framework_network';
+import {Threejs_framework_physics} from './threejs_framework_physics';
+import {Threejs_framework_editor} from './threejs_framework_editor';
 import {Threejs_framework_scene} from './threejs_framework_scene';
+
+import {Threejs_framework_hud} from './threejs_framework_hud';
+import {Threejs_framework_ui} from './threejs_framework_ui';
+import {Threejs_framework_loader} from './threejs_framework_loader';
+import {Threejs_framework_gundb} from './threejs_framework_gundb';
 
 export class Threejs_framework{
 
     constructor(args){
+        var self = this;
         if(!args){
             args = {};
             //console.log("no args...");
         }
-        new Threejs_framework_network(this);
-        //this.setup_network();
-        new Threejs_framework_scene(this);
-
-
+        //{
         this.version = "0.0.1";
 		this.antialias = true;//threejs
 		this.bfixedassetpath = true;
@@ -55,6 +58,17 @@ export class Threejs_framework{
 			'/js/postprocessing/MaskPass.js',
 			'/js/postprocessing/ShaderPass.js'
 		];
+        //}
+        new Threejs_framework_network(this);
+        new Threejs_framework_physics(this);
+        new Threejs_framework_editor(this);
+        new Threejs_framework_scene(this);
+        new Threejs_framework_hud(this);
+        new Threejs_framework_ui(this);
+        new Threejs_framework_loader(this);
+        new Threejs_framework_gundb(this);
+
+
     }
 
     initloadingscreen(){

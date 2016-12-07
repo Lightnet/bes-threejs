@@ -14,6 +14,10 @@ Information: Run on es6 for nodejs and web browser that is to compile to better 
 
 To develop open world 3D model editor for game master and freedom to craft objects and script them.(Idea) Current for dungeon map and editor for role playing game design.
 
+Atom.io Packages helper:
+ * gulp-manager
+ * bottom-dock
+
 Current Projects:
  * Threejs (work in progress)
  * Babylon.js (3D engine) (work in progress) (main)
@@ -21,11 +25,12 @@ Current Projects:
   * Editor (work in progress)
   * Modules  (work in progress)
  * GunDB (work in progress)(not build into game  yet still testing and editor builds)
- 
+
 Dev Folders:
  * src (server)
  * src_browser (web browser)
  * bayblonjs_frameworks (web browser) (prototype)
+ * threejs_frameworks (web browser) (prototype)
 
 Required:
  * nodejs 7.0.0

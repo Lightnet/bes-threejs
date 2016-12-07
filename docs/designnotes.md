@@ -11,13 +11,13 @@ Need to work on:
   * Model preview needs add for testing animations.
   * ...
  * 3D Pathing needs to be added later.  
- 
+
 To Do List:
  * Gun Database setup functions
  * Need to create some simple models like dungeon and home base for now.
  * Role playing game open world sandbox. Not yet design town, city, buildings.
- * 
- 
+ *
+
 
 
 Blue Grey
@@ -47,3 +47,6 @@ Grey
 700     #616161
 800     #424242
 900     #212121
+
+Links:
+ * http://stackoverflow.com/questions/9362716/how-to-duplicate-object-properties-in-another-object
