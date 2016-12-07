@@ -44,19 +44,5 @@ export class Babylonjs_framework_scene extends Babylonjs_framework_module{
 		this.ground = ground;
 	}
 
-    //start render scene set array
-	start_scenerender(){
-		var self = this;
-		this.engine.runRenderLoop(function() {
-			if(self.scenes[self.scenename] !=null){
-				if(typeof self.scenes[self.scenename].renderloop === 'function'){
-					self.scenes[self.scenename].renderloop(); //custom function call
-				}else{
-					self.scenes[self.scenename].render();
-				}
-			}
-		});
-	}
-
 
 }

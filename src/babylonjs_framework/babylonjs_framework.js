@@ -71,6 +71,22 @@ export class Babylonjs_framework{
   		});
 	}
 
+    //this need to be here sub class add doesn't work
+    //start render scene set array
+	start_scenerender(){
+		var self = this;
+		this.engine.runRenderLoop(function() {
+            //console.log("main render!");
+			if(self.scenes[self.scenename] !=null){
+				if(typeof self.scenes[self.scenename].renderloop === 'function'){
+					self.scenes[self.scenename].renderloop(); //custom function call
+				}else{
+					self.scenes[self.scenename].render();
+				}
+			}
+		});
+	}
+
     init(){
 		//console.log("init babylonjsbes6");
 		var self = this;

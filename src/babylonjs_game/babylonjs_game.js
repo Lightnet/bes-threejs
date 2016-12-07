@@ -189,9 +189,11 @@ export class Babylonjs_game extends Babylonjs_framework{
 	start_scenerender(){
 		var self = this;
 		this.engine.runRenderLoop(function() {
+            //console.log("hellow");
 			if(self.scenes[self.scenename] !=null){
 				self.scenes[self.scenename].render();
 				for(var i =0; i < self.scenes[self.scenename].meshes.length;i++){
+                    //console.log("hellow");
 					if(typeof self.scenes[self.scenename].meshes[i].update === 'function'){
 						self.scenes[self.scenename].meshes[i].update();
 					}

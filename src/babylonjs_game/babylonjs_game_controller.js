@@ -55,6 +55,7 @@ export class Babylonjs_game_controller extends Babylonjs_game_module{
             //console.log(evt.keyCode);
             if (evt.keyCode==69){//E
                 if(self.model !=null){
+                    console.log(self.model);
                     if(typeof self.model.interact === 'function'){
                         self.model.interact();
                     }
