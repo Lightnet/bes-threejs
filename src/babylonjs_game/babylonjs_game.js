@@ -7,16 +7,12 @@
     Information: Please read the readme.md file for more information.
 */
 
-export class Babylonjs_framework_scene{
+import {Babylonjs_framework} from '../babylonjs_framework/babylonjs_framework';
 
-    constructor(self){
+export class Babylonjs_game extends Babylonjs_framework{
 
-        if(self != null){
-            self.CreateScene = this.CreateScene;
-        }
+    constructor(args){
+        super(args);
     }
 
-    CreateScene(){
-        console.log("CreateScene");
-    }
 }

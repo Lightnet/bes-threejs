@@ -6,16 +6,12 @@
 
     Information: Please read the readme.md file for more information.
 */
+import {Threejs_framework_module} from './threejs_framework_module';
 
-export class Babylonjs_framework_gui{
+export class Threejs_framework_ui extends Threejs_framework_module{
 
-    constructor(self){
-        if(self != null){
-            self.createui = this.createui;
-        }
+    constructor(args){
+        super(args);
     }
 
-    createui(){
-        console.log("createui");
-    }
 }

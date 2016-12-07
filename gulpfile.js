@@ -35,7 +35,14 @@ gulp.task('server',['src'], () => {
 });
 //compile nodejs javascript
 gulp.task('src', () => {
-    return gulp.src(['src/*.js','src/**/*.js'])
+    return gulp.src(['src/index.js',
+                        'src/**/*.js',
+                        '!src/server_simple.js',
+                        '!src/browser/*.js',
+                        '!src/babylonjs_framework/*.js',
+                        '!src/babylonjs_game/*.js',
+                        '!src/threejs_framework/*.js',
+                        '!src/threejs_game/*.js'])
         .pipe(babel({
             presets: ['es2015']
         }))
@@ -44,7 +51,7 @@ gulp.task('src', () => {
 });
 //compile for web javascript
 gulp.task('src_browser', () => {
-    return gulp.src('src_browser/**/*.js')
+    return gulp.src('src/browser/**/*.js')
         .pipe(babel({
 			presets: ['es2015']
         }))
@@ -55,7 +62,7 @@ gulp.task('src_browser', () => {
 });
 //compile amd for require.js build for web javascript
 gulp.task('es6-amd-babylonjs', () =>{
-    return gulp.src(['babylonjs_framework/*.js','babylonjs_framework/**/*.js'])
+    return gulp.src(['src/babylonjs_framework/*.js','src/babylonjs_framework/**/*.js'])
     .pipe(babel({
         presets: ['es2015'],
         plugins: ["transform-es2015-modules-amd"]
@@ -64,14 +71,34 @@ gulp.task('es6-amd-babylonjs', () =>{
     .pipe(gulp.dest('public/babylonjs_framework'));
 });
 //compile amd for require.js build for web javascript
+gulp.task('es6-amd-babylonjs-game', () =>{
+    return gulp.src(['src/babylonjs_game/*.js','src/babylonjs_game/**/*.js'])
+    .pipe(babel({
+        presets: ['es2015'],
+        plugins: ["transform-es2015-modules-amd"]
+
+    }))
+    .pipe(gulp.dest('public/babylonjs_game'));
+});
+//compile amd for require.js build for web javascript
 gulp.task('es6-amd-threejs', () =>{
-    return gulp.src(['threejs_framework/*.js','threejs_framework/**/*.js'])
+    return gulp.src(['src/threejs_framework/*.js','src/threejs_framework/**/*.js'])
     .pipe(babel({
         presets: ['es2015'],
         plugins: ["transform-es2015-modules-amd"]
 
     }))
     .pipe(gulp.dest('public/threejs_framework'));
+});
+
+//compile amd for require.js build for web javascript
+gulp.task('es6-amd-threejs-game', () =>{
+    return gulp.src(['src/threejs_game/*.js','src/threejs_game/**/*.js'])
+    .pipe(babel({
+        presets: ['es2015'],
+        plugins: ["transform-es2015-modules-amd"]
+    }))
+    .pipe(gulp.dest('public/threejs_game'));
 });
 
 
@@ -88,11 +115,13 @@ gulp.task('es6-amd-threejs', () =>{
 
 //watch files changes and auto compile file.
 gulp.task('watch', () =>{
-    gulp.watch('src/**/*.js',['src']);
-    gulp.watch('src_browser/**/*.js', ['src_browser']);
-    gulp.watch('babylonjs_framework/**/*.js', ['es6-amd-babylonjs']);
-    gulp.watch('threejs_framework/**/*.js', ['es6-amd-threejs']);
+    gulp.watch(['src/index.js','src/app/**/*.js'],['src']);
+    gulp.watch('src/browser/**/*.js', ['src_browser']);
+    gulp.watch('src/babylonjs_framework/**/*.js', ['es6-amd-babylonjs']);
+    gulp.watch('src/babylonjs_game/**/*.js', ['es6-amd-babylonjs-game']);
+    gulp.watch('src/threejs_framework/**/*.js', ['es6-amd-threejs']);
+    gulp.watch('src/threejs_game/**/*.js', ['es6-amd-threejs-game']);
 });
 
 //main entry call task or default task call
-gulp.task('default',['src','server','src_browser','es6-amd-babylonjs','es6-amd-babylonjs','watch']);
+gulp.task('default',['src','server','src_browser','es6-amd-babylonjs','es6-amd-babylonjs-game','es6-amd-threejs','es6-amd-threejs-game','watch']);

@@ -40,3 +40,5 @@ public/js/babylonjs_app.js
 public/js/threejs_main.js
 public/babylonjs_framework/
 public/threejs_framework/
+public/babylonjs_game/
+public/threejs_game/

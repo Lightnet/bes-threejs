@@ -8,18 +8,22 @@
 */
 
 console.log("Boot init...");
-//setup simple
-import {Babylonjs_framework_init} from './babylonjs_framework_init';
-//console.log(Babylonjs_framework_init);
-
-//import {Babylonjs_framework} from './babylonjs_framework';
+//setup simple bare
+import {Babylonjs_framework} from './babylonjs_framework';
 //console.log(Babylonjs_framework);
+var babylonjs_Framework  = new Babylonjs_framework();
 
-
+//import {Babylonjs_game} from './babylonjs_game';
+//console.log(Babylonjs_game);
 //init
-var Baylonjs = new Babylonjs_framework_init();
-console.log(Baylonjs);
+//var config = {};
+//config = {mode:"editor"};
 
+//var baylonjs_Game = new Babylonjs_game(config);
+//console.log(baylonjs_Game);
+
+/*
+//example script
 var canvas = document.getElementById('renderCanvas');
 var engine = new BABYLON.Engine(canvas, true);
 
@@ -44,5 +48,5 @@ engine.runRenderLoop(function(){
 window.addEventListener('resize', function(){
    engine.resize();
 });
-
+*/
 console.log("Main boot finish.");

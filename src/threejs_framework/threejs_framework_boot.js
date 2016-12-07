@@ -8,22 +8,23 @@
 */
 
 //main access for setup
+import {Threejs_framework} from './threejs_framework';
+var Threejs_FW = new Threejs_framework();
 
-//import {Threejs_framework} from './threejs_framework';
-//var Threejs_FW = new Threejs_framework();
+//import {Threejs_game} from './threejs_game';
 
-import {Threejs_game} from './threejs_game';
-
-var threejsapi;
-var config;
+//var threejsapi;
+//var config;
 //editor settings
 //config = {mode:"editor",bupdateobjects:true,bablephysics:false};
 //game HUD UI
-config = {bupdateobjects:true, mode:"css3dwebgl"};
-var game = new Threejs_game(config);
-console.log(game);
+//config = {bupdateobjects:true, mode:"css3dwebgl"};
+//var game = new Threejs_game(config);
+//console.log(game);
+
 
 /*
+//Example script
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 

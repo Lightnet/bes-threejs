@@ -6,26 +6,14 @@
 
     Information: Please read the readme.md file for more information.
 */
+import {Threejs_framework_module} from './threejs_framework_module';
 
-export class Threejs_framework_loadingscreen{
+export class Threejs_framework_loadingscreen extends Threejs_framework_module{
 
     constructor(args){
-        if(!args){
-            args = {};
-            //console.log("no args...");
-        }
-
-        var propertyNames = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
-        for(var fun in propertyNames){
-            //console.log(fun);
-            //console.log(propertyNames[fun]);
-            if(propertyNames[fun] != "constructor"){
-                args[propertyNames[fun]] = this[propertyNames[fun]];
-            }else{
-                //console.log('ignore ' + propertyNames[fun] );
-            }
-        }
+        super(args);
     }
+
 
     initloadingscreen(){
 		var styleloadingscreen = document.createElement("style");

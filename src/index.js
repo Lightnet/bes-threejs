@@ -9,17 +9,19 @@
 
 var version = "1.0.0";
 var fs = require('fs');
-var configpath = __dirname +'/app/config.json';
+var configpath = __dirname + '/app/config.json';
 //console.log(configpath);
 var config;
-if (fs.existsSync(configpath)) {
-    //console.log("config found!");
+var stat = fs.statSync(configpath);
+//console.log(stat);
+if (stat.size != 0) {
+    console.log("config found!");
     config = require(configpath);
     //console.log('config file exists');
 }
 else
 {
-    //console.log("config not found!");
+    console.log("config not found!");
     config = {
         blocalhost: true,
         host: "127.0.0.1",
@@ -36,13 +38,13 @@ else
             console.log(err);
         }
         else {
-            //console.log("JSON saved to " + configpath);
+            console.log("JSON saved to " + configpath);
         }
     });
 }
 
 //var plugin = require(__dirname + '/app/lib/plugin');
-var plugin = require('./app/libs/plugin');
+var plugin = require(__dirname+'/app/libs/plugin');
 //console.log(config);
 
 import express from 'express';

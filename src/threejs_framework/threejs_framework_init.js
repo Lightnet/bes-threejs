@@ -6,16 +6,12 @@
 
     Information: Please read the readme.md file for more information.
 */
-import {Threejs_framework} from './threejs_framework';
+import {Threejs_framework_module} from './threejs_framework_module';
 
-export class Threejs_game extends Threejs_framework{
+export class Threejs_framework_init extends Threejs_framework_module{
 
     constructor(args){
         super(args);
-        if(!args){
-            args = {};
-        }
-        console.log("init Threejs_framework...");
     }
 
 }

@@ -6,27 +6,12 @@
 
     Information: Please read the readme.md file for more information.
 */
+import {Threejs_framework_module} from './threejs_framework_module';
 
-export class Threejs_framework_scene{
+export class Threejs_framework_scene extends Threejs_framework_module{
 
     constructor(args){
-        if(!args){
-            args = {};
-            //console.log("no args...");
-        }
-
-        var propertyNames = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
-        for(var fun in propertyNames){
-            //console.log(fun);
-            //console.log(propertyNames[fun]);
-            if(propertyNames[fun] != "constructor"){
-                args[propertyNames[fun]] = this[propertyNames[fun]];
-            }else{
-                //console.log('ignore ' + propertyNames[fun] );
-            }
-        }
-
-        //args.
+        super(args);
     }
 
     setup_css3d(){
