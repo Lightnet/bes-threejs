@@ -8,15 +8,18 @@
 */
 
 import {Threejs_framework_network} from './threejs_framework_network';
+import {Threejs_framework_loadingscreen} from './threejs_framework_loadingscreen';
 import {Threejs_framework_physics} from './threejs_framework_physics';
 import {Threejs_framework_editor} from './threejs_framework_editor';
 import {Threejs_framework_scene} from './threejs_framework_scene';
-
 import {Threejs_framework_hud} from './threejs_framework_hud';
 import {Threejs_framework_ui} from './threejs_framework_ui';
 import {Threejs_framework_loader} from './threejs_framework_loader';
+import {Threejs_framework_script} from './threejs_framework_script';
 import {Threejs_framework_gundb} from './threejs_framework_gundb';
-
+//===============================================
+//main class entry
+//===============================================
 export class Threejs_framework{
 
     constructor(args){
@@ -25,7 +28,8 @@ export class Threejs_framework{
             args = {};
             //console.log("no args...");
         }
-        //{
+        var self = this;
+
         this.version = "0.0.1";
 		this.antialias = true;//threejs
 		this.bfixedassetpath = true;
@@ -33,7 +37,27 @@ export class Threejs_framework{
 
 		this.ToRad = 0.0174532925199432957;
 
-        this.scenenodes = [];//editor scene
+		this.scene = null;
+		this.scenehud = null;
+		this.camera = null;
+		this.camerahud = null;
+		this.canvas = null;
+		this.renderer = null;
+
+		this.objects = [];
+		this.raycaster = new THREE.Raycaster();
+		this.mouse = new THREE.Vector2();
+
+		this.bablephysics = false;
+		this.physicsIndex = 2;
+		this.setPhysicsType = ['Oimo.js', 'Cannon.js', 'Ammo.js'];
+		this.timeSteptimeStep = 1 / 60;
+		this.world = null;
+		this.meshs = [];
+		this.bodies = [];
+		this.grounds = [];
+
+		this.scenenodes = [];//editor scene
 		this.mapscenenodes = [];
 		this.scriptcomponents = [];//javascript
 
@@ -41,7 +65,7 @@ export class Threejs_framework{
 		this.scriptcount = 0;
 		this.loader = new THREE.XHRLoader();
 
-        this.scriptlist = [
+		this.scriptlist = [
 			'/js/libs/threex.domevents.js',
 			'js/loaders/FBXLoader.js',
 			'js/loaders/collada/Animation.js',
@@ -58,7 +82,8 @@ export class Threejs_framework{
 			'/js/postprocessing/MaskPass.js',
 			'/js/postprocessing/ShaderPass.js'
 		];
-        //}
+
+        new Threejs_framework_loadingscreen(this);
         new Threejs_framework_network(this);
         new Threejs_framework_physics(this);
         new Threejs_framework_editor(this);
@@ -67,80 +92,82 @@ export class Threejs_framework{
         new Threejs_framework_ui(this);
         new Threejs_framework_loader(this);
         new Threejs_framework_gundb(this);
+        new Threejs_framework_script(this);
 
+        this.initloadingscreen();
+		this.showloadingscreen();
 
+        if(args != null){
+			if(args['mode'] != null){
+				this.mode = args['mode'];
+			}else{
+				this.mode = "game;";
+			}
+			console.log("mode: "+this.mode);
+			if (args['bupdateobjects'] != null) {
+                    this.bupdateobjects = args['bupdateobjects'];
+                }
+			if (args['bfixedassetpath'] != null) {
+                this.bfixedassetpath = args['bfixedassetpath'];
+            }
+			if (args['bablephysics'] != null) {
+                this.bablephysics = args['bablephysics'];
+            }
+			//this need to be last else it variable are not assign
+            if (args['onload'] == true) {
+                this.addListener("load", window, function () {
+                    //console.log('init window listen threejs setup... ');
+                    //_this.init();
+					self.loadlibraries();
+                });
+            } else {
+                //console.log('init threejs setup...');
+                //this.init();
+				this.loadlibraries();
+            }
+
+			if(args['load'] !=null ){
+				this.bmap = true;
+				this.mapurl = args['load'];
+			}else{
+				this.bmap = false;
+				this.mapurl = "";
+			}
+			//console.log("Map: " + this.bmap + " url: "+ this.mapurl);
+		}
     }
 
-    initloadingscreen(){
-		var styleloadingscreen = document.createElement("style");
-		styleloadingscreen.innerHTML = '';
-		styleloadingscreen.innerHTML += '.loader {border: 16px solid #f3f3f3;border-top: 16px solid #3498db;border-radius: 50%;width: 120px;height: 120px;animation: spin 2s linear infinite;}';
-		styleloadingscreen.innerHTML += '\n@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg);}}';
-		styleloadingscreen.type = 'text/css';
-		document.getElementsByTagName('head')[0].appendChild(styleloadingscreen);
+    setup_render(){
+		//this.setup_network();
 
-		var divloadingscreen = document.createElement("div");
-		divloadingscreen.id = "loadingscreen";
-		divloadingscreen.style['background-color'] = '#dddddd';
-		divloadingscreen.style.position = 'absolute';
-		divloadingscreen.style.top = 0;
-		divloadingscreen.style.left = 0;
-		divloadingscreen.style.width = '100%';
-		divloadingscreen.style.height = '100%';
-		divloadingscreen.innerHTML = "<div style='background-color: #dddddd;position: absolute;left: 0;height: 50%;width: 100%;top: 50%;'><center><div class='loader'></div></center> <center id='loadingscreentext'>Loading...</center></div>"
-		document.getElementsByTagName('body')[0].appendChild(divloadingscreen);
-	}
+		if((this.mode == "css3dwebgl")||(this.mode == "editor")){
+			//css3d render
+			this.setup_css3d();
+		}
 
-	loadingscreentext(_TEXT="loading......"){
-		document.getElementById('loadingscreentext').innerHTML = _TEXT;
-	}
+		//webgl render
+		this.setup_webgl();
+		this.setup_hud();
 
-	showloadingscreen(){
-		document.getElementById('loadingscreen').style.display = 'block';
-	}
+		if(this.bmap){
+			this.load();
+		}
 
-	hideloadingscreen(){
-		document.getElementById('loadingscreen').style.display = 'none';
-	}
-
-    loadlibraries(){
-		var scriptcount = 0;
-		var scriptlist = this.scriptlist;
-		var self = this;
-		for(var i = 0; i < scriptlist.length;i++){
-			//threejsapi.addScript(mappdata.scripts[i]);
-			this.loadjavascript(scriptlist[i], function(){
-				//initialization code
-				scriptcount++;
-				//console.log("script: "+scriptcount + ":" + (scriptlist.length));
-				if(scriptcount == scriptlist.length){ //make sure the scripts are load else it can't used script components
-					console.log("script: "+scriptcount + ":" + (scriptlist.length));
-					console.log('Finish load javascript libs!');
-					self.init();
-				}
-			});
+		//render pass with two secnes
+		this.setup_renderpass();
+		this.render();
+		if(this.bmap == false){
+			this.hideloadingscreen();
 		}
 	}
 
-    addListener(event, obj, fn) {
-        if (obj.addEventListener) {
-            obj.addEventListener(event, fn, false); // modern browsers
-        }
-        else {
-            obj.attachEvent("on" + event, fn); // older versions of IE
-        }
-    }
-
     init(){
-        console.log("testing...");
+        this.setup_render();
+		//this.hideloadingscreen();
+		if(this.bablephysics){
+			this.initPhysics();
+		}
+		//console.log("game init");
     }
-
-    setup(){
-        console.log("setup..");
-    }
-
-	setup_user(){
-        console.log("setup user..");
-	}
 
 }

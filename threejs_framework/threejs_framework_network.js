@@ -27,11 +27,11 @@ export class Threejs_framework_network{
         //console.log(propertyNames);
         for(var fun in propertyNames){
             //console.log(fun);
-            console.log(propertyNames[fun]);
+            //console.log(propertyNames[fun]);
             if(propertyNames[fun] != "constructor"){
                 args[propertyNames[fun]] = this[propertyNames[fun]];
             }else{
-                console.log('ignore ' + propertyNames[fun] );
+                //console.log('ignore ' + propertyNames[fun] );
             }
         }
         //var self = this;

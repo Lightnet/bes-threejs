@@ -27,6 +27,228 @@ export class Threejs_framework_editor{
         }
     }
 
+    setup_editor(group){
+		//ASSETS
+		//autowidth:true,
+		var assetstable = new webix.ui({
+            container:"assets",
+            view:"datatable",
+            columns:[
+				{ id:"filetype", header:"Type"},
+                { id:"title", header:"Assets",fillspace:true}
+            ],
+			data:[
+				{id:1,title:"test"},
+				{id:2,title:"test2"}
+			],
+			select:"row",
+			on:{
+    			"onItemClick":function(id, e, trg){
+        			webix.message("Click on row: " + id.row+", column: " + id.column);
+				}
+    		} //default click behavior that is true for any datatable cell
+        });
+
+		assetstable.add({
+		    title:"Best film ever"
+		});
+
+		var _div_l = document.createElement( 'div' );
+		_div_l.style.width = '480px';
+		_div_l.style.height = '360px';
+		_div_l.style.backgroundColor = '#000';
+
+		//var _element_l  = document.createElement('div');
+		//_element_l.style.width = '480px';
+		//_element_l.style.height = '360px';
+		//_element_l.style.border = '0px';
+		//_element_l.innerHTML = 'Plain text inside a div.<br>Assets?';
+    	//_element_l.className = 'three-div';
+		//_div_l.appendChild( _element_l );
+
+		var assetsid = document.getElementById('assets');
+		_div_l.appendChild( assetsid );
+
+		var object = new THREE.CSS3DObject( _div_l );
+		object.position.set( -600, 100, 10 );
+		object.rotation.y = 0;
+
+		group.add( object );
+
+		// SCENE
+		var _div_r = document.createElement( 'div' );
+		_div_r.style.width = '480px';
+		_div_r.style.height = '360px';
+		_div_r.style.backgroundColor = '#000';
+
+		//var _element_r  = document.createElement('div');
+		//_element_r.style.width = '480px';
+		//_element_r.style.height = '360px';
+		//_element_r.style.border = '0px';
+		//_element_r.innerHTML = 'Plain text inside a div.<br>Scene?';
+    	//_element_r.className = 'three-div';
+		//_div_r.appendChild( _element_r );
+
+		var scenetable = new webix.ui({
+            container:"scene",
+            view:"tree",
+			select:true,
+			data: [
+		        {id:"root", value:"Cars", open:true, data:[
+		            { id:"1", open:true, value:"Toyota", data:[
+		                { id:"1.1", value:"Avalon" },
+		                { id:"1.2", value:"Corolla" },
+		                { id:"1.3", value:"Camry" }
+		            ]},
+		            { id:"2", open:true, value:"Skoda", data:[
+		                { id:"2.1", value:"Octavia" },
+		                { id:"2.2", value:"Superb" }
+		            ]}
+		        ]}
+		    ],
+			select: true,
+			on: {"onItemClick": function (id, e, node) {
+				//alert("item has just been clicked");
+				var item = this.getItem(id);
+				console.log(item);
+			}}
+        });
+		//http://docs.webix.com/api__link__ui.tree_onitemclick_event.html
+		//console.log(scenetable);
+
+		scenetable.add({ value:"New item"}, 0);
+
+		//scenetable.add( {value:"New item"}, 0, parentId);
+		//var nodeId = tree.getSelectedId();
+		scenetable.add( {value:"New item"}, 0, 2);
+
+		var sceneid = document.getElementById('scene');
+		_div_r.appendChild( sceneid );
+
+		var object = new THREE.CSS3DObject( _div_r );
+		object.position.set( 600, 100, 10 );
+		object.rotation.y = 0;
+
+		group.add( object );
+	}
+
+    //===============================================
+    // Tool bar
+    //===============================================
+
+    toolbar(action) {
+		//console.log(action);
+		if (action == 'EditorComponents:Object3D') {
+			this.createshape({ shape: "Object3D" });
+		}
+		if (action == 'EditorComponents:Scene') {
+			this.createshape({ shape: "Scene" });
+		}
+		if (action == 'EditorComponents:BoxGeometry') {
+			this.createshape({ shape: "BoxGeometry" });
+		}
+		if (action == 'EditorComponents:CylinderGeometry') {
+			this.createshape({ shape: "CylinderGeometry" });
+		}
+		if (action == 'EditorComponents:CircleGeometry') {
+			this.createshape({ shape: "CircleGeometry" });
+		}
+		if (action == 'EditorComponents:PlaneGeometry') {
+			this.createshape({ shape: "PlaneGeometry" });
+		}
+		if (action == 'EditorComponents:SphereGeometry') {
+			this.createshape({ shape: "SphereGeometry" });
+		}
+		if (action == 'EditorComponents:DodecahedronGeometry') {
+			this.createshape({ shape: "DodecahedronGeometry" });
+		}
+		if (action == 'EditorComponents:IcosahedronGeometry') {
+			this.createshape({ shape: "IcosahedronGeometry" });
+		}
+		if (action == 'EditorComponents:OctahedronGeometry') {
+			this.createshape({ shape: "OctahedronGeometry" });
+		}
+		if (action == 'EditorComponents:RingGeometry') {
+			this.createshape({ shape: "RingGeometry" });
+		}
+		if (action == 'EditorComponents:TetrahedronGeometry') {
+			this.createshape({ shape: "TetrahedronGeometry" });
+		}
+		if (action == 'EditorComponents:TorusGeometry') {
+			this.createshape({ shape: "TorusGeometry" });
+		}
+		if (action == 'EditorComponents:TorusKnotGeometry') {
+			this.createshape({ shape: "TorusKnotGeometry" });
+		}
+		if (action == 'EditorComponents:TextGeometry') {
+			this.createshape({ shape: "TextGeometry" });
+		}
+		if (action == 'EditorComponents:ArrowHelper') {
+			this.createshape({ shape: "ArrowHelper" });
+		}
+		if (action == 'EditorComponents:AxisHelper') {
+			this.createshape({ shape: "AxisHelper" });
+		}
+		if (action == 'EditorComponents:BoundingBoxHelper') {
+			this.createshape({ shape: "BoundingBoxHelper" });
+		}
+		if (action == 'EditorComponents:EdgesHelper') {
+			this.createshape({ shape: "EdgesHelper" });
+		}
+		if (action == 'EditorComponents:FaceNormalsHelper') {
+			this.createshape({ shape: "FaceNormalsHelper" });
+		}
+		if (action == 'EditorComponents:GridHelper') {
+			this.createshape({ shape: "GridHelper" });
+		}
+		if (action == 'EditorComponents:PointLightHelper') {
+			this.createshape({ shape: "PointLightHelper" });
+		}
+		if (action == 'EditorComponents:SpotLightHelper') {
+			this.createshape({ shape: "SpotLightHelper" });
+		}
+		if (action == 'EditorComponents:VertexNormalsHelper') {
+			this.createshape({ shape: "VertexNormalsHelper" });
+		}
+		if (action == 'EditorComponents:WireframeHelper') {
+			this.createshape({ shape: "WireframeHelper" });
+		}
+		if (action == 'EditorComponents:Sprite2D') {
+			this.createshape({ shape: "Sprite" });
+		}
+		if (action == 'EditorComponents:CubeCamera') {
+			this.createObjectScene({ object: 'CubeCamera' });
+		}
+		if (action == 'EditorComponents:PerspectiveCamera') {
+			this.createObjectScene({ object: 'PerspectiveCamera' });
+		}
+		if (action == 'EditorComponents:OrthographicCamera') {
+			this.createObjectScene({ object: 'OrthographicCamera' });
+		}
+		if (action == 'EditorComponents:AmbientLight') {
+			this.createObjectScene({ object: 'AmbientLight' });
+		}
+		if (action == 'EditorComponents:DirectionalLight') {
+			this.createObjectScene({ object: 'DirectionalLight' });
+		}
+		if (action == 'EditorComponents:HemisphereLight') {
+			this.createObjectScene({ object: 'HemisphereLight' });
+		}
+		if (action == 'EditorComponents:Light') {
+			this.createObjectScene({ object: 'Light' });
+		}
+		if (action == 'EditorComponents:PointLight') {
+			this.createObjectScene({ object: 'PointLight' });
+		}
+		if (action == 'EditorComponents:SpotLight') {
+			this.createObjectScene({ object: 'SpotLight' });
+		}
+	}
+
+    //===============================================
+    //
+    //===============================================
+
     createObjectScene(args) {
 		if (args != null) {
             if (args['object'] != null) {
@@ -104,6 +326,10 @@ export class Threejs_framework_editor{
             }
         }
     }
+
+    //===============================================
+    //
+    //===============================================
 
     parentObj(object, uuid) {
 		//console.log("ADDED");
@@ -837,7 +1063,4 @@ export class Threejs_framework_editor{
             }
         }
     }
-
-
-
 }

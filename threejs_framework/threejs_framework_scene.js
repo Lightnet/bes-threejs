@@ -214,6 +214,8 @@ export class Threejs_framework_scene{
 
 	}
 
+    update(){
 
+	}
 
 }

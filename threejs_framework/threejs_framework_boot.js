@@ -13,7 +13,14 @@
 //var Threejs_FW = new Threejs_framework();
 
 import {Threejs_game} from './threejs_game';
-var game = new Threejs_game();
+
+var threejsapi;
+var config;
+//editor settings
+//config = {mode:"editor",bupdateobjects:true,bablephysics:false};
+//game HUD UI
+config = {bupdateobjects:true, mode:"css3dwebgl"};
+var game = new Threejs_game(config);
 console.log(game);
 
 /*
