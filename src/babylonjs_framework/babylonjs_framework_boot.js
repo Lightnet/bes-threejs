@@ -12,6 +12,8 @@ console.log("Boot init...");
 import {Babylonjs_framework} from './babylonjs_framework';
 //console.log(Babylonjs_framework);
 var babylonjs_Framework  = new Babylonjs_framework();
+babylonjs_Framework.init();
+babylonjs_Framework.createscene_objects();
 
 //import {Babylonjs_game} from './babylonjs_game';
 //console.log(Babylonjs_game);

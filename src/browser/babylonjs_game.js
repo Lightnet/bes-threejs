@@ -71,26 +71,26 @@ class RPGStats{
 
 class RPGCondition extends ObjectRPGID{
 	constructor(args){
-		super();
+		super(args);
 		this.params = [];
 	}
 }
 
 class RPGSkill extends ObjectRPGID{
 	constructor(args){
-		super();
+		super(args);
 	}
 }
 
 class RPGItem extends ObjectRPGID{
 	constructor(args){
-		super();
+		super(args);
 	}
 }
 
 class RPGEquip extends RPGItem{
 	constructor(args){
-		super();
+		super(args);
 		this.stats = new Stats();
 		this.params = [];
 	}
@@ -98,7 +98,7 @@ class RPGEquip extends RPGItem{
 
 class RPGWeapon extends RPGEquip{
 	constructor(args){
-		super();
+		super(args);
 		this.stats = new RPGStats();
 		this.params = [];
 	}
@@ -133,8 +133,6 @@ class RPGTexture extends ObjectRPGID{
 		super(args);
     }
 }
-
-
 
 class RPGStatus extends ObjectRPGID{
 	constructor(args){
@@ -1635,10 +1633,7 @@ class Babylonjs_game extends Babylonjsbes6 {
 						self.scenes[self.scenename].meshes[i].update();
 					}
 				}
-
                 if(self.selectobject !=null){
-
-
                 }
 			}
 		});

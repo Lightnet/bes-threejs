@@ -20,6 +20,7 @@ config = {mode:"editor"};
 
 var baylonjs_Game = new Babylonjs_game(config);
 console.log(baylonjs_Game);
+baylonjs_Game.init();
 
 /*
 //example script

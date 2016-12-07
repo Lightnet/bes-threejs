@@ -34,7 +34,7 @@ export class Babylonjs_framework_physics extends Babylonjs_framework_module{
 	}
 
     //init oimo.js physics
-	init_phsics(){
+	init_physics(){
 		this.scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
 	}
 

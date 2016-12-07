@@ -9,6 +9,7 @@
 import {Babylonjs_framework_network} from './babylonjs_framework_network';
 import {Babylonjs_framework_physics} from './babylonjs_framework_physics';
 import {Babylonjs_framework_scene} from './babylonjs_framework_scene';
+import {Babylonjs_framework_editor} from './babylonjs_framework_editor';
 import {Babylonjs_framework_gui} from './babylonjs_framework_gui';
 
 //place holder id
@@ -21,9 +22,11 @@ function object3d() {
 export class Babylonjs_framework{
 
     constructor(args){
+
         new Babylonjs_framework_network(this);
         new Babylonjs_framework_physics(this);
         new Babylonjs_framework_scene(this);
+        new Babylonjs_framework_editor(this);
         new Babylonjs_framework_gui(this);
 
         var self = this;
@@ -33,7 +36,6 @@ export class Babylonjs_framework{
 
 		this.scenename = "default"; //default name
 		this.scenes = []; //manage scene
-
 
         //var id = new object3d();
         //console.log(id);
@@ -50,11 +52,7 @@ export class Babylonjs_framework{
 			this.addListener("load", window, function () {
 				self.init();
 			});
-		}else{
-            self.init();
-            console.log("manual init();");
-        }
-
+		}
     }
 
     //window load listen event
@@ -91,28 +89,13 @@ export class Babylonjs_framework{
 			//this.render();
 		//}
 
-		//this.createscene_objects();
-		//init oimo.js physics
-		//this.init_phsics();
-		//this.createphsycis_test();
-		//https://doc.babylonjs.com/tutorials/how_to_use_assetsmanager
-		//this.create_hud();
-
 		//this.setup_network();
 		//render the scene
 		this.start_scenerender();
 
-		/*
-		this.engine.runRenderLoop(function() {
-			var name = "scene";
-		    self.scene.render();
-		});
-		*/
 		//add listen event for window to load
 		window.addEventListener('resize', function() {
     		self.engine.resize();
 		});
-		//this.engine.hideLoadingUI();
 	}
-
 }
