@@ -76,7 +76,7 @@ class Threejsbes6 {
 			'/js/postprocessing/ShaderPass.js'
 		];
 
-		var _this = this;
+		var self = this;
 
 		this.initloadingscreen();
 		this.showloadingscreen();
@@ -108,7 +108,7 @@ class Threejsbes6 {
                 this.addListener("load", window, function () {
                     console.log('init window listen threejs setup... ');
                     //_this.init();
-					_this.loadlibraries();
+					self.loadlibraries();
                 });
             } else {
                 console.log('init threejs setup...');

@@ -7,6 +7,16 @@
     Information: Please read the readme.md file for more information.
 */
 
+//main access for setup
+
+//import {Threejs_framework} from './threejs_framework';
+//var Threejs_FW = new Threejs_framework();
+
+import {Threejs_game} from './threejs_game';
+var game = new Threejs_game();
+console.log(game);
+
+/*
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
@@ -36,3 +46,4 @@ function onWindowResize(){
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
+*/
