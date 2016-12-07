@@ -54,31 +54,45 @@ gulp.task('src_browser', () => {
 		.pipe(gulp.dest('public/js/'));
 });
 //compile amd for require.js build for web javascript
-gulp.task('es6-amd', () =>{
+gulp.task('es6-amd-babylonjs', () =>{
     return gulp.src(['babylonjs_framework/*.js','babylonjs_framework/**/*.js'])
     .pipe(babel({
         presets: ['es2015'],
         plugins: ["transform-es2015-modules-amd"]
 
     }))
-    .pipe(gulp.dest('public/babylonjs_app'));
+    .pipe(gulp.dest('public/babylonjs_framework'));
+});
+//compile amd for require.js build for web javascript
+gulp.task('es6-amd-threejs', () =>{
+    return gulp.src(['threejs_framework/*.js','threejs_framework/**/*.js'])
+    .pipe(babel({
+        presets: ['es2015'],
+        plugins: ["transform-es2015-modules-amd"]
+
+    }))
+    .pipe(gulp.dest('public/threejs_framework'));
 });
 
+
+//copy all files to single one [NOT recommended]
 //gulp.task('amd-bundle',['es6-amd'], () =>{
-  //return requirejs({
-    //name: 'babylonjs_framework_boot',
-    //baseUrl: 'public/babylonjs_app',
-    //out: 'app.js'
-  //})
-  //.pipe(uglify())
-  //.pipe(gulp.dest("public/babylonjs_app"));
+    //return requirejs({
+        //name: 'babylonjs_framework_boot',
+        //baseUrl: 'public/babylonjs_app',
+        //out: 'app.js'
+    //})
+    //.pipe(uglify())
+    //.pipe(gulp.dest("public/babylonjs_app"));
 //});
+
 //watch files changes and auto compile file.
 gulp.task('watch', () =>{
     gulp.watch('src/**/*.js',['src']);
     gulp.watch('src_browser/**/*.js', ['src_browser']);
-    gulp.watch('babylonjs_framework/**/*.js', ['es6-amd']);
+    gulp.watch('babylonjs_framework/**/*.js', ['es6-amd-babylonjs']);
+    gulp.watch('threejs_framework/**/*.js', ['es6-amd-threejs']);
 });
 
 //main entry call task or default task call
-gulp.task('default',['src','server','watch']);
+gulp.task('default',['src','server','src_browser','es6-amd-babylonjs','es6-amd-babylonjs','watch']);

@@ -36,3 +36,7 @@ public/babylonjs_app/babylonjs_framework_module.js
 public/babylonjs_app/babylonjs_framework.js
 public/babylonjs_app/babylonjs_framework_boot.js
 public/babylonjs_app/babylonjs_framework_init.js
+public/js/babylonjs_app.js
+public/js/threejs_main.js
+public/babylonjs_framework/
+public/threejs_framework/

@@ -4,10 +4,10 @@
 requirejs.config({
     baseUrl: 'lib',
     paths: {
-        app: '../babylonjs_framework'
+        app: '../threejs_framework'
     }
 });
 
 // Start loading the main app file. Put all of
 // your application logic in there.
-requirejs(['./app/babylonjs_framework_boot']);
+requirejs(['./app/threejs_framework_boot']);
