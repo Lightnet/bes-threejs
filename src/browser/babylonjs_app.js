@@ -26,4 +26,9 @@ requirejs(['./app/babylonjs_game'],(app)=>{
     //Call();
 });
 
+requirejs(['./app/gmodule'],(app)=>{
+    //console.log(app.default['value']);
+    //console.log(app.default);
+});
+
 //console.log(threejsapi);
