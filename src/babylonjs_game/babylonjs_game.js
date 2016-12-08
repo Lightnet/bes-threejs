@@ -114,6 +114,7 @@ export class Babylonjs_game extends Babylonjs_framework{
         this.scriptcount = 0;
         self.mappdata = {};
 
+        new Babylonjs_game_network(this);
         new Babylonjs_game_physics(this);
         new Babylonjs_game_parse(this);
         new Babylonjs_game_load(this);

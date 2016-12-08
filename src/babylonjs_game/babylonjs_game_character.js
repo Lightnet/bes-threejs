@@ -63,7 +63,7 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
                 //var currentAngle = 0;
                 //console.log(keys.left);
                 if(keys.left){
-                    console.log("left");
+                    //console.log("left");
                     currentAngle = diffAngle + (Math.PI/2);
                     needMove = true;
 				}

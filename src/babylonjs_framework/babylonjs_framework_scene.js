@@ -9,9 +9,13 @@
 import {Babylonjs_framework_module} from './babylonjs_framework_module';
 
 export class Babylonjs_framework_scene extends Babylonjs_framework_module{
+//export class Babylonjs_framework_scene {
 
     constructor(args){
         super(args);
+        //args.createScene = this.createScene;
+        //args.createscene_objects = this.createscene_objects;
+        //args.start_scenerender = this.start_scenerender;
     }
 
     //create simple scene
@@ -43,6 +47,20 @@ export class Babylonjs_framework_scene extends Babylonjs_framework_module{
 	    var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, this.scene);
 		this.ground = ground;
 	}
+
+    //start_scenerender(){
+		//var self = this;
+		//this.engine.runRenderLoop(function() {
+            //console.log("main render!");
+			//if(self.scenes[self.scenename] !=null){
+				//if(typeof self.scenes[self.scenename].renderloop === 'function'){
+					//self.scenes[self.scenename].renderloop(); //custom function call
+				//}else{
+					//self.scenes[self.scenename].render();
+				//}
+			//}
+		//});
+	//}
 
 
 }

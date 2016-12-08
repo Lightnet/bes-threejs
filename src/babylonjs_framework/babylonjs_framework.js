@@ -76,7 +76,7 @@ export class Babylonjs_framework{
 	start_scenerender(){
 		var self = this;
 		this.engine.runRenderLoop(function() {
-            //console.log("main render!");
+            console.log("main render!");
 			if(self.scenes[self.scenename] !=null){
 				if(typeof self.scenes[self.scenename].renderloop === 'function'){
 					self.scenes[self.scenename].renderloop(); //custom function call

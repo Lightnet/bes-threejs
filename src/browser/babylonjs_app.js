@@ -11,4 +11,19 @@ requirejs.config({
 
 // Start loading the main app file. Put all of
 // your application logic in there.
-requirejs(['./app/babylonjs_game_boot']);
+//requirejs(['./app/babylonjs_game_boot']);
+var threejsapi;
+//function Call(){
+    //console.log(threejsapi);
+//}
+
+requirejs(['./app/babylonjs_game'],(app)=>{
+    console.log(app);
+    var BGame = new app.Babylonjs_game();
+    console.log(BGame);
+    BGame.init();
+    threejsapi = BGame;
+    //Call();
+});
+
+//console.log(threejsapi);

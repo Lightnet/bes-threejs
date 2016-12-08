@@ -12,6 +12,27 @@ export class Babylonjs_game_network extends Babylonjs_game_module{
 
     constructor(args){
         super(args);
+        //var propertyNames = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
+        //var propertyNames = Object.getOwnPropertyNames(this);
+        //propertyNames.forEach(function(key) {
+            //console.log(key);
+            //if(key != constructor){
+                //var desc = Object.getOwnPropertyDescriptor(this, key);
+                //console.log(desc);
+                //Object.defineProperty(clone, key, desc);
+            //}
+        //});
+        /*
+        for(var fun in propertyNames){
+            //console.log(fun);
+            //console.log(propertyNames[fun]);
+            if(propertyNames[fun] != "constructor"){
+                args[propertyNames[fun]] = this[propertyNames[fun]];
+            }else{
+                //console.log('ignore ' + propertyNames[fun] );
+            }
+        }
+        */
     }
 
     setup_network(){
