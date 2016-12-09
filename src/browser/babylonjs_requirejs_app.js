@@ -12,18 +12,18 @@ requirejs.config({
 // Start loading the main app file. Put all of
 // your application logic in there.
 //requirejs(['./app/babylonjs_game_boot']);
-var threejsapi;
-//function Call(){
-    //console.log(threejsapi);
-//}
+var BABYLONJSAPI;
+function Call(){
+    console.log(BABYLONJSAPI);
+}
 
 requirejs(['./app/babylonjs_game'],(app)=>{
     console.log(app);
     var BGame = new app.Babylonjs_game();
     console.log(BGame);
     BGame.init();
-    threejsapi = BGame;
-    //Call();
+    BABYLONJSAPI = BGame;
+    Call();
 });
 
 requirejs(['./app/gmodule'],(app)=>{
@@ -31,4 +31,4 @@ requirejs(['./app/gmodule'],(app)=>{
     //console.log(app.default);
 });
 
-//console.log(threejsapi);
+console.log(BABYLONJSAPI);
