@@ -110,10 +110,11 @@ gulp.task('es6-amd-threejs-game', () =>{
 gulp.task('html',['src'], () =>{
     //return gulp.src(['src/html/*.html'])
     return gulp.src(['src/html/index.html',
+        'src/html/requirejs_main.html',
         'src/html/babylonjs_requirejs_app.html',
-        'src/html/babylonjs_requirejs.html',
-        'src/html/requirejs.html',
-        'src/html/threejs_requirejs.html',
+        'src/html/babylonjs_requirejs_main.html',
+        'src/html/threejs_requirejs_app.html',
+        'src/html/threejs_requirejs_main.html',
         'src/html/gundb.html',
         'src/html/network.html'
     ])
@@ -130,6 +131,12 @@ gulp.task('assets', () =>{
     //return gulp.src(['src/html/*.html'])
     return gulp.src(['src/assets/**/*'],{compact: false})
     .pipe(gulp.dest('public/assets'));
+});
+
+gulp.task('lib', () =>{
+    //return gulp.src(['src/html/*.html'])
+    return gulp.src(['src/lib/**/*'])
+    .pipe(gulp.dest('public/lib'));
 });
 
 //copy all files to single one [NOT recommended]
@@ -153,9 +160,12 @@ gulp.task('watch', () =>{
     gulp.watch('src/threejs_game/**/*.js', ['es6-amd-threejs-game']);
 });
 
-gulp.task('build',['html','src','src_browser','es6-amd-babylonjs','es6-amd-babylonjs-game','es6-amd-threejs','es6-amd-threejs-game'] ,() =>{
+gulp.task('build',['html','lib','src','src_browser','es6-amd-babylonjs','es6-amd-babylonjs-game','es6-amd-threejs','es6-amd-threejs-game'] ,() =>{
 
 });
 
+gulp.task('buildassets',['assets','thirdparties']);
+
+
 //main entry call task or default task call
-gulp.task('default',['build','watch','server']);
+gulp.task('default',['server','build','watch']);
