@@ -37,6 +37,12 @@ gulp.task('server',['src'], () => {
 gulp.task('src', () => {
     return gulp.src(['src/index.js',
                         'src/**/*.js',
+                        '!src/js/**/*',
+                        '!src/lib/*',
+                        '!src/css/*',
+                        '!src/html/*',
+                        '!src/assets/*',
+                        '!src/thirdparties/**/*',
                         '!src/server_simple.js',
                         '!src/browser/*.js',
                         '!src/babylonjs_framework/*.js',
@@ -101,6 +107,30 @@ gulp.task('es6-amd-threejs-game', () =>{
     .pipe(gulp.dest('public/threejs_game'));
 });
 
+gulp.task('html',['src'], () =>{
+    //return gulp.src(['src/html/*.html'])
+    return gulp.src(['src/html/index.html',
+        'src/html/babylonjs_requirejs_app.html',
+        'src/html/babylonjs_requirejs.html',
+        'src/html/requirejs.html',
+        'src/html/threejs_requirejs.html',
+        'src/html/gundb.html',
+        'src/html/network.html'
+    ])
+    .pipe(gulp.dest('public'));
+});
+
+gulp.task('thirdparties', () =>{
+    //return gulp.src(['src/html/*.html'])
+    return gulp.src(['src/thirdparties/**/*'],{compact: false})
+    .pipe(gulp.dest('public'));
+});
+
+gulp.task('assets', () =>{
+    //return gulp.src(['src/html/*.html'])
+    return gulp.src(['src/assets/**/*'],{compact: false})
+    .pipe(gulp.dest('public/assets'));
+});
 
 //copy all files to single one [NOT recommended]
 //gulp.task('amd-bundle',['es6-amd'], () =>{
@@ -123,5 +153,9 @@ gulp.task('watch', () =>{
     gulp.watch('src/threejs_game/**/*.js', ['es6-amd-threejs-game']);
 });
 
+gulp.task('build',['html','src','src_browser','es6-amd-babylonjs','es6-amd-babylonjs-game','es6-amd-threejs','es6-amd-threejs-game'] ,() =>{
+
+});
+
 //main entry call task or default task call
-gulp.task('default',['src','server','src_browser','es6-amd-babylonjs','es6-amd-babylonjs-game','es6-amd-threejs','es6-amd-threejs-game','watch']);
+gulp.task('default',['build','watch','server']);

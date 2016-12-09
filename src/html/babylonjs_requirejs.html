@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Sample Project</title>
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="/css/bootstrap.min.css" >
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/js/libs/oimo.min.js"></script>
+		<script type="text/javascript" src="/js/babylon.max.js"></script>
+		<script type="text/javascript" src="/js/babylon.canvas2d.max.js"></script>
+        <!-- data-main attribute tells require.js to load
+             scripts/main.js after require.js loads. -->
+        <script data-main="js/babylonjs_main" src="/lib/require.js"></script>
+        <style>
+			html, body {
+				overflow: hidden;
+				width   : 100%;
+				height  : 100%;
+				margin  : 0;
+				padding : 0;
+			}
+			#renderCanvas {
+		        width   : 100%;
+		        height  : 100%;
+		        touch-action: none;
+		    }
+		</style>
+    </head>
+    <body>
+        <canvas id="renderCanvas"></canvas>
+    </body>
+</html>
