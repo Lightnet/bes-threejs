@@ -41,7 +41,8 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 
 		this.cameracss3d = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
 		//this.cameracss3d.position.set( 500, 350, 750 );
-		this.cameracss3d.position.set( 0, 0, 1024 );
+		//this.cameracss3d.position.set( 0, 0, 1024+128 );
+        this.cameracss3d.position.set( 0, 0, screen.width+32 );
 		this.scenecss3d = new THREE.Scene();
 		this.renderercss3d = new THREE.CSS3DRenderer();
 		this.renderercss3d.setSize( window.innerWidth, window.innerHeight );
@@ -86,8 +87,11 @@ export class Threejs_framework_scene extends Threejs_framework_module{
     setup_webgl(){
 		if((this.mode == "editor")||(this.mode == "css3dwebgl")){
 			var webgldiv = document.createElement( 'div' );
-			webgldiv.style.width = '800px';
-			webgldiv.style.height = '600px';
+			//webgldiv.style.width = '800px';
+            //webgldiv.style.height = '600px';
+            //console.log("WINDOW.WIDTH: " + window.width);
+            webgldiv.style.width = screen.width + 'px';
+            webgldiv.style.height = screen.height + 'px';
 			webgldiv.style.backgroundColor = '#000';
 		}
 
@@ -100,10 +104,12 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 		this.camera = new THREE.PerspectiveCamera( 75, 800/600, 0.1, 1000 );
 		//renderer = new THREE.WebGLRenderer( { alpha: true } ); // init like this
 		if((this.mode == "editor")||(this.mode == "css3dwebgl")){
+            console.log("editor | csswebgl");
 			this.renderer = new THREE.WebGLRenderer({ alpha: true,antialias: true  });
 			this.renderer.domElement.style.position = 'absolute';
 			this.renderer.domElement.style.top = 0;
-			this.renderer.setSize( 800, 600 );
+			//this.renderer.setSize( 800, 600 );
+            this.renderer.setSize( screen.width, screen.height );
 		}else{
 			this.canvas = document.getElementById("container");
 			this.renderer = new THREE.WebGLRenderer({ alpha: true,antialias: true  });
@@ -135,20 +141,17 @@ export class Threejs_framework_scene extends Threejs_framework_module{
     setup_renderpass(){
 		var copyPass = new THREE.ShaderPass(THREE.CopyShader);
 		copyPass.renderToScreen = true;
-
 		var renderpass1 = new THREE.RenderPass(this.scene, this.camera);
 		renderpass1.renderToScreen = false;
 		if((this.scenehud !=null)&&(this.camerahud != null)){
 			var renderpass2 = new THREE.RenderPass(this.scenehud, this.camerahud);
 			renderpass2.clear = false;
 		}
-
 		this.effectComposer = new THREE.EffectComposer(this.renderer);
 		this.effectComposer.addPass(renderpass1);
 		if((this.scenehud !=null)&&(this.camerahud != null)){
         	this.effectComposer.addPass(renderpass2);
 		}
-
 		this.effectComposer.addPass(copyPass);
 	}
 
@@ -196,7 +199,6 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 		if(this.effectComposer !=null){
 			this.effectComposer.render();
 		}
-
 	}
 
     update(){

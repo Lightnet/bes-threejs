@@ -221,7 +221,9 @@ export class Babylonjs_game extends Babylonjs_framework{
         this.init_physics();
 		this.create2DHUD();
         //this.setupeditor();
-		//this.create2D_BattleHUD();
+        //this.create2D_BattleHUD();
+        this.createinventoryHUD();
+
 		//BABYLON.DebugLayer().show();
 		//this.scene.debugLayer.show(false);
 		//this.scene.debugLayer.show(true);
@@ -231,6 +233,8 @@ export class Babylonjs_game extends Babylonjs_framework{
 		this.create_movement();
 		//this.ScenePickObject();
 		this.simple_scene();
+
+
 
         //this.create_character();
         //this.loadmap_requestXML();

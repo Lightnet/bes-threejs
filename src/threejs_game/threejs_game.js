@@ -32,9 +32,6 @@ var uuid = function() {
     });
 };
 
-
-
-
 export class Threejs_game extends Threejs_framework{
     constructor(args){
         super(args);
@@ -42,5 +39,33 @@ export class Threejs_game extends Threejs_framework{
             args = {};
         }
         //console.log("init Threejs_framework...");
+    }
+
+    init(){
+        super.init();
+        this.setup();
+    }
+
+    createbasescene(){
+        var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+		var cube = new THREE.Mesh( geometry, material );
+        cube.update =function(){
+            cube.rotation.x += 0.1;
+            cube.rotation.y += 0.1;
+        };
+		this.scene.add( cube );
+        this.camera.position.z = 5;
+        //console.log(this.scene);
+    }
+
+    setup(){
+        //console.log(window.width);
+        //console.log(screen.width);
+        console.log("setup");
+
+        this.createbasescene();
+
+
     }
 }
