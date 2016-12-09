@@ -1,9 +1,9 @@
 dist
 node_modules/
-public/
-npm-debug.log
-data/
-public/js/gundb.js
-*.blend1
 dest/
+data/
+npm-debug.log
+*.blend1
 
+
+public/
