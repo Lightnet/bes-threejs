@@ -83,6 +83,8 @@ export class Threejs_framework{
 			'/js/postprocessing/ShaderPass.js'
 		];
 
+        //this.scriptlist.push('/js/libs/three-interface.min.js'); //css3d
+
         new Threejs_framework_loadingscreen(this);
         new Threejs_framework_network(this);
         new Threejs_framework_physics(this);
@@ -95,7 +97,7 @@ export class Threejs_framework{
         new Threejs_framework_script(this);
 
         this.initloadingscreen();
-		this.showloadingscreen();
+		//this.showloadingscreen();
 
         if(args != null){
 			if(args['mode'] != null){
@@ -115,12 +117,14 @@ export class Threejs_framework{
             }
 			//this need to be last else it variable are not assign
             if (args['onload'] == true) {
+                console.log("load listen");
                 this.addListener("load", window, function () {
                     //console.log('init window listen threejs setup... ');
                     //_this.init();
 					self.loadlibraries();
                 });
             } else {
+                console.log("load");
                 //console.log('init threejs setup...');
                 //this.init();
 				this.loadlibraries();
@@ -148,13 +152,13 @@ export class Threejs_framework{
 		//webgl render
 		this.setup_webgl();
 		this.setup_hud();
+        this.setup_renderpass();
 
-		if(this.bmap){
-			this.load();
-		}
+		//if(this.bmap){
+			//this.load();
+		//}
 
 		//render pass with two secnes
-		this.setup_renderpass();
 		this.render();
 		if(this.bmap == false){
 			this.hideloadingscreen();

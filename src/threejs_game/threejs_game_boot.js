@@ -19,7 +19,8 @@ var config;
 //editor settings
 //config = {mode:"editor",bupdateobjects:true,bablephysics:false};
 //game HUD UI
-config = {bupdateobjects:true, mode:"css3dwebgl"};
+//config = {bupdateobjects:true, mode:"css3dwebgl"};
+config = {bupdateobjects:true};
 var game = new Threejs_game(config);
 console.log(game);
 

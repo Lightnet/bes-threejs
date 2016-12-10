@@ -17,6 +17,7 @@ export class Threejs_framework_hud extends Threejs_framework_module{
 
     //works mesh over lap scenes
 	setup_hud(){
+        console.log("setup_hud");
 		this.scenehud = new THREE.Scene();
 		//this.cameraHUD = new THREE.OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 0, 30);
 		//this.camerahud = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );

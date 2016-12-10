@@ -16,29 +16,6 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 
     setup_css3d(){
 		var container = document.getElementById( 'container' );
-		/*
-		var Element = function ( id, x, y, z, ry ) {
-
-			var div = document.createElement( 'div' );
-			div.style.width = '480px';
-			div.style.height = '360px';
-			div.style.backgroundColor = '#000';
-
-			var iframe = document.createElement('iframe');
-			iframe.style.width = '480px';
-			iframe.style.height = '360px';
-			iframe.style.border = '0px';
-			iframe.src = [ 'https://www.youtube.com/embed/', id, '?rel=0' ].join( '' );
-			div.appendChild( iframe );
-
-			var object = new THREE.CSS3DObject( div );
-			object.position.set( x, y, z );
-			object.rotation.y = ry;
-
-			return object;
-		};
-		*/
-
 		this.cameracss3d = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 5000 );
 		//this.cameracss3d.position.set( 500, 350, 750 );
 		//this.cameracss3d.position.set( 0, 0, 1024+128 );
@@ -51,14 +28,6 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 		container.appendChild( this.renderercss3d.domElement );
 
 		var self = this;
-		//function animate() {
-			//requestAnimationFrame( animate );
-			//trackcontrolcss3d.update();
-			//console.log("update?");
-			//self.renderercss3d.render( self.scenecss3d, self.cameracss3d );
-		//}
-		//animate();
-
 		function onWindowResize() {
 			self.cameracss3d.aspect = window.innerWidth / window.innerHeight;
 			self.cameracss3d.updateProjectionMatrix();
@@ -85,6 +54,7 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 	}
 
     setup_webgl(){
+        var self = this;
 		if((this.mode == "editor")||(this.mode == "css3dwebgl")){
 			var webgldiv = document.createElement( 'div' );
 			//webgldiv.style.width = '800px';
@@ -94,6 +64,7 @@ export class Threejs_framework_scene extends Threejs_framework_module{
             webgldiv.style.height = screen.height + 'px';
 			webgldiv.style.backgroundColor = '#000';
 		}
+        console.log("setup scene webgl");
 
 		this.scene = new THREE.Scene();
 		this.scene.name = "scene";
@@ -111,10 +82,25 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 			//this.renderer.setSize( 800, 600 );
             this.renderer.setSize( screen.width, screen.height );
 		}else{
+            console.log("default");
 			this.canvas = document.getElementById("container");
 			this.renderer = new THREE.WebGLRenderer({ alpha: true,antialias: true  });
+            this.renderer.domElement.style.position = 'absolute';
+			this.renderer.domElement.style.top = 0;
 			this.renderer.setSize( window.innerWidth, window.innerHeight );
+            //this.renderer.setSize( 800, 600 );
+            //console.log(window.innerWidth);
+            //console.log(window.innerHeight);
 			this.canvas.appendChild(this.renderer.domElement);
+
+            function onWindowResize() {
+                //console.log(window.innerWidth);
+    			self.camera.aspect = window.innerWidth / window.innerHeight;
+    			self.camera.updateProjectionMatrix();
+    			self.renderer.setSize( window.innerWidth, window.innerHeight );
+    		}
+    		window.addEventListener( 'resize', onWindowResize, false );
+
 		}
 		//this.renderer.setClearColor( 0xffffff, 0);
 		//this.renderer.setClearColor(0xEEEEEE);
@@ -123,6 +109,7 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 		//this.renderer.shadowMap.type = THREE.PCFShadowMap; //THREE.BasicShadowMap;
 
 		if((this.mode == "editor")||(this.mode == "css3dwebgl")){
+            console.log("editor",":","css3dwebgl");
 			webgldiv.appendChild(this.renderer.domElement);
 			var object = new THREE.CSS3DObject( webgldiv );
 			object.position.set( 0, 0, 0 );
@@ -157,6 +144,7 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 
     render(){
 		requestAnimationFrame(()=>{this.render()});
+        //console.log("update?");
 		//this.cube.rotation.x += 0.1;
 		//this.cube.rotation.y += 0.1;
 		this.update();

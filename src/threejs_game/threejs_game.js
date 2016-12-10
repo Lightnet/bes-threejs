@@ -34,10 +34,12 @@ var uuid = function() {
 
 export class Threejs_game extends Threejs_framework{
     constructor(args){
+
         super(args);
         if(!args){
             args = {};
         }
+
         //console.log("init Threejs_framework...");
     }
 
@@ -59,12 +61,159 @@ export class Threejs_game extends Threejs_framework{
         //console.log(this.scene);
     }
 
+    createbasescene02(){
+        var geometry = new THREE.BufferGeometry();
+        // create a simple square shape. We duplicate the top left and bottom right
+        // vertices because each vertex needs to appear once per triangle.
+        var vertices = new Float32Array( [
+        	-1.0, -1.0,  1.0,
+        	 1.0, -1.0,  1.0,
+        	 1.0,  1.0,  1.0,
+
+        	 1.0,  1.0,  1.0,
+        	-1.0,  1.0,  1.0,
+        	-1.0, -1.0,  1.0
+        ] );
+
+        // itemSize = 3 because there are 3 values (components) per vertex
+        geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
+        var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+        var mesh = new THREE.Mesh( geometry, material );
+        mesh.update =function(){
+            //mesh.rotation.x += 0.1;
+            //mesh.rotation.y += 0.1;
+        };
+		this.scene.add( mesh );
+        this.camera.position.z = 5;
+        //console.log(this.scene);
+    }
+
+    createbasescene03(){
+        var geometry = new THREE.Geometry();
+        var point = new THREE.Vector3( -1,  1, 0 );
+        geometry.vertices.push(
+        	point,
+        	new THREE.Vector3( -1, -1, 0 ),
+        	new THREE.Vector3(  1, -1, 0 )
+        );
+        geometry.faces.push( new THREE.Face3( 0, 1, 2 ) );
+        geometry.verticesNeedUpdate = true;
+        geometry.computeBoundingSphere();
+
+        var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+        var mesh = new THREE.Mesh( geometry, material );
+        console.log(mesh);
+        mesh.update =function(){
+            //mesh.geometry.verticesNeedUpdate = true;
+            //mesh.rotation.x += 0.1;
+            //point.x += 0.1;
+            //if(point.x > 1){
+                //point.x = -1;
+            //}
+            //mesh.rotation.y += 0.1;
+        };
+		this.scene.add( mesh );
+        this.camera.position.z = 10;
+        //console.log(this.scene);
+    }
+
+    createbasescene04(){
+        //https://threejs.org/docs/?q=PlaneBufferGeometry#Reference/Geometries/PlaneBufferGeometry
+        //http://jsfiddle.net/tfjvggfu/24/
+        //http://stackoverflow.com/questions/20153705/three-js-wireframe-material-all-polygons-vs-just-edges
+
+
+        var light = new THREE.HemisphereLight( 0xeeeeee, 0x888888, 1 );
+        light.position.set( 0, 20, 0 );
+        this.scene.add( light );
+
+        // axes
+        this.scene.add( new THREE.AxisHelper( 20 ) );
+        var geometry = new THREE.PlaneBufferGeometry( 8, 8,4,4 );
+        //var geometry = new THREE.SphereGeometry( 5, 12, 8 );
+        //var material = new THREE.MeshBasicMaterial( {color: 0x156289, side: THREE.DoubleSide,wireframe: true} );
+        //var material = new THREE.LineBasicMaterial( {color: 0xffffff,transparent: true,opacity: 0.5,side: THREE.DoubleSide} );
+        //var material = new THREE.MeshPhongMaterial( {color: 0x156289,emissive: 0x072534,side: THREE.DoubleSide,shading: THREE.FlatShading});
+        var material = new THREE.MeshPhongMaterial( {
+            color: 0xff0000,
+            shading: THREE.FlatShading,
+            polygonOffset: true,
+            polygonOffsetFactor: 1, // positive value pushes polygon further away
+            polygonOffsetUnits: 1,
+            side: THREE.DoubleSide,
+            wireframe: true
+        });
+
+        var vertices = geometry.attributes.position.array;
+        for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
+            vertices[ j + 2 ] = Math.random(0,1);
+        }
+
+        var plane = new THREE.Mesh( geometry,material );
+
+        // wireframe - new way
+        //var geo = new THREE.EdgesGeometry( plane.geometry ); // or WireframeGeometry
+        //var mat = new THREE.LineBasicMaterial( { color: 0xffffff, linewidth: 2} );
+        //var wireframe = new THREE.LineSegments( geo, mat );
+        //plane.add( wireframe );
+
+        //var vertices = geometry.attributes.position.array;
+
+        //console.log(plane.geometry.attributes.position.array);
+
+        console.log(plane);
+
+        plane.rotation.x = 90;
+        plane.update =function(){
+            //plane.geometry.verticesNeedUpdate = true;
+            //plane.geometry.attributes.needsUpdate = true;
+            //plane.geometry.attributes.verticesNeedUpdate = true;
+            plane.geometry.attributes.position.needsUpdate = true;
+            //plane.rotation.x += 0.1;
+            //point.x += 0.1;
+            //if(point.x > 1){
+                //point.x = -1;
+            //}
+            //plane.rotation.y += 0.1;
+            var vertices = plane.geometry.attributes.position.array;
+            for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
+				//vertices[ j + 1 ] += 0.01;
+                vertices[ j + 2 ] = Math.random(0,1);
+			}
+            //plane.geometry.attributes.position.array = vertices;
+        };
+
+        //console.log(vertices);
+        this.scene.add( plane );
+        this.camera.position.z = 10;
+    }
+
+    createinterface(){
+        var html = '<div method="click">Click Me</div>';
+        var methods = {
+            click: function (elem) {
+                console.log('element clicked!', elem);
+            }
+        };
+        var options = {
+            throttle: 250,          // throttle for the renderer in milliseconds, can be disabled with false (default 250ms)
+            observe: true,         // watches the element for changes and re-renders (default true)
+            alwaysOnTop: false,    // ensures the UI is always on top of everything in the scene (default false)
+            debug: false           // places a small sphere at the click point (default false)
+        };
+        var ui = new THREE.Interface(html, methods, options);
+        this.scene.add(ui);
+    }
+
     setup(){
+        this.hideloadingscreen();
         //console.log(window.width);
         //console.log(screen.width);
         console.log("setup");
 
-        this.createbasescene();
+        //this.createbasescene();
+        this.createbasescene04();
+        //this.createinterface();
 
 
     }
