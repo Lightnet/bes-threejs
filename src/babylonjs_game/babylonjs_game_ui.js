@@ -111,11 +111,14 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
         });
         panel.bdrag = false;
         panel.dragpostion = new BABYLON.Vector2(0,0);
+
+        console.log(_parent);
+
         // DOWN
         paneldrag.pointerEventObservable.add(function (d, s) {
             //button2Rect.levelVisible = !button2Rect.levelVisible;
             //console.log("PointerDown!");
-            //console.log(d);
+            console.log(d);
             //console.log(buttonRect);
             panel.bdrag = true;
             panel.dragpostion = d.primitivePointerPos;
@@ -128,13 +131,15 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
         //console.log(this.engine);
         //this.screencanvas.size.height
         //this.screencanvas.viewportSize.height
+
+
         // MOVE
         paneldrag.pointerEventObservable.add(function (d, s) {
             //console.log(d.canvasPointerPos);
             //console.log(d.primitivePointerPos);
             if(panel.bdrag){
-                panel.x = d.canvasPointerPos.x - panel.dragpostion.x;
-                //panel.y = -((self.screencanvas.size.height - (d.canvasPointerPos.y + panel.dragpostion.y))+32);
+                panel.x = (d.canvasPointerPos.x - panel.dragpostion.x - _parent.x);
+                panel.y = -((self.screencanvas.size.height - ( d.canvasPointerPos.y + panel.dragpostion.y - _parent.y))+32);
             }
         }, BABYLON.PrimitivePointerInfo.PointerMove);
         paneldrag.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOutTrigger,panel, "bdrag", false));
