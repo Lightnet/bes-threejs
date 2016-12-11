@@ -28,6 +28,36 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
 	}
 
     //===========================================
+    // @params Progress bar
+    //===========================================
+
+    createprogressbar(_parent,args){
+
+        var self = this;
+        if(args == null){args = {};};
+
+        var _id = (typeof args['id'] === 'string') ? args['id'] : ( "progressbar");
+
+        var _fcolor = (typeof args['fcolor'] === 'string') ? args['fcolor'] : '#64DD17FF';
+        console.log(_fcolor);
+        var _x = (typeof args['x'] === 'number') ? args['x'] : 0; //rect position
+        var _y = (typeof args['y'] === 'number') ? args['y'] : 0;
+        var _width = (typeof args['width'] === 'number') ? args['width'] : 128; //rect size
+        var _height = (typeof args['height'] === 'number') ? args['height'] : 28;
+
+        //background bar
+        var R2SRectBackground = new BABYLON.Rectangle2D({
+            parent: _parent, id: "R2DB" + _id, x: _x, y: _y, width: _width, height: _height, fill: "#263238FF"
+        });
+        //background bar
+        var R2SRectForeground = new BABYLON.Rectangle2D({
+            parent: R2SRectBackground, id: "R2DF" + _id, x: 2, y: 2, width: _width, height: _height - 4, fill: _fcolor
+        });
+
+        return [R2SRectBackground,R2SRectForeground];
+    }
+
+    //===========================================
     // @params BOX DRAG 01
     //===========================================
 
@@ -111,9 +141,7 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
         });
         panel.bdrag = false;
         panel.dragpostion = new BABYLON.Vector2(0,0);
-
-        console.log(_parent);
-
+        //console.log(_parent);
         // DOWN
         paneldrag.pointerEventObservable.add(function (d, s) {
             //button2Rect.levelVisible = !button2Rect.levelVisible;
@@ -131,8 +159,6 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
         //console.log(this.engine);
         //this.screencanvas.size.height
         //this.screencanvas.viewportSize.height
-
-
         // MOVE
         paneldrag.pointerEventObservable.add(function (d, s) {
             //console.log(d.canvasPointerPos);
@@ -294,7 +320,7 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
 
         if(args == null){args = {};};
 
-        var _color = (typeof args['color'] === 'string') ? args['color'] : '#40C040FF';
+        var _color = (typeof args['color'] === 'string') ? args['color'] : '#263238FF';
         var _width = (typeof args['width'] === 'number') ? args['width'] : 100;
         var _height = (typeof args['height'] === 'number') ? args['height'] : 20;
         var _x = (typeof args['x'] === 'number') ? args['x'] : 0; //rect position

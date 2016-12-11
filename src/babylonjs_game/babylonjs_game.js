@@ -222,7 +222,10 @@ export class Babylonjs_game extends Babylonjs_framework{
 		this.create2DHUD();
         //this.setupeditor();
         //this.create2D_BattleHUD();
-        this.createinventoryHUD();
+        //this.createinventoryHUD();
+
+        //this.createstorageUI();
+        //this.createlootUI();
 
 		//BABYLON.DebugLayer().show();
 		//this.scene.debugLayer.show(false);
