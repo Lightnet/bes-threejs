@@ -290,6 +290,8 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
             //console.log("test?");
         }
 
+        panel.bedit_text = false;
+
         panel.pointerEventObservable.add(function (d, s) {
             //console.log("PointerDown!");
             //window.addEventListener("keypress",TextInputKey );
@@ -300,10 +302,28 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
             document.addEventListener("keydown",TextInputKey );
         }, BABYLON.PrimitivePointerInfo.PointerUp);
 
+
+        //panel.actionManager = new BABYLON.ActionManager(this.scene);
+
         panel.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOutTrigger,function(evt){
-            //console.log("out!");
+            console.log("out!");
             document.removeEventListener("keydown",TextInputKey );
         }));
+
+        panel.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger,function(evt){
+            console.log("typing...");
+            //document.removeEventListener("keydown",TextInputKey );
+        }));
+
+
+        //console.log(this.scene);
+
+        //this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
+            //console.log(" scene typing...");
+            //if (evt.sourceEvent.key == "r") {
+            //}
+        //}));
+
 
         if(_returnarray){
             return [panel,text2d];

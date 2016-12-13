@@ -25,6 +25,7 @@ import {Babylonjs_game_character} from './babylonjs_game_character';
 import {Babylonjs_game_controller} from './babylonjs_game_controller';
 import {Babylonjs_game_battle} from './babylonjs_game_battle';
 import {Babylonjs_game_parse} from './babylonjs_game_parse';
+import {Babylonjs_game_terrain} from './babylonjs_game_terrain';
 
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
@@ -126,6 +127,7 @@ export class Babylonjs_game extends Babylonjs_framework{
         new Babylonjs_game_character(this);
         new Babylonjs_game_controller(this);
         new Babylonjs_game_battle(this);
+        new Babylonjs_game_terrain(this);
 
     }
 
@@ -215,6 +217,23 @@ export class Babylonjs_game extends Babylonjs_framework{
 	setup_game(){
 		var self = this;
 		console.log("setup game!");
+
+        this.camera.attachControl(this.canvas, false);
+
+        var box1 = BABYLON.Mesh.CreateBox("box", 1.0, this.scene);
+
+        //this.actionManager = new BABYLON.ActionManager(this.scene);
+        //console.log(this.actionManager);
+        //this.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
+            //console.log(" scene typing...");
+            //if (evt.sourceEvent.key == "r") {
+            //}
+        //}));
+        //this.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
+            //console.log(" scene typing...");
+            //if (evt.sourceEvent.key == "r") {
+            //}
+        //}));
 		//console.log(this.engine);
         //console.log(this.scene);
 		//console.log(BABYLON);
@@ -233,11 +252,12 @@ export class Babylonjs_game extends Babylonjs_framework{
 		//this.createbattle_prototype();
 		this.create_input();
         this.create_gamepadinput();
-		this.create_movement();
+		//this.create_movement();
 		//this.ScenePickObject();
-		this.simple_scene();
+		//this.simple_scene();
 
-
+        //this.simpleterrain()
+        this.simpleterrain01();
 
         //this.create_character();
         //this.loadmap_requestXML();
