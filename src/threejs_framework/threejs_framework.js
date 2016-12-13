@@ -74,6 +74,8 @@ export class Threejs_framework{
 			'js/loaders/ColladaLoader.js',
 			'js/loaders/OBJLoader.js',
 			'/js/controls/TrackballControls.js',
+            '/js/controls/OrbitControls.js',
+            '/js/controls/FirstPersonControls.js',
 			'/js/renderers/CSS3DRenderer.js',
 			'/js/shaders/CopyShader.js',
 			'/js/postprocessing/EffectComposer.js',
@@ -168,10 +170,14 @@ export class Threejs_framework{
     init(){
         this.setup_render();
 		//this.hideloadingscreen();
-		if(this.bablephysics){
-			this.initPhysics();
-		}
+		//if(this.bablephysics){
+			//this.initPhysics();
+		//}
 		//console.log("game init");
     }
+
+    update(){
+
+	}
 
 }

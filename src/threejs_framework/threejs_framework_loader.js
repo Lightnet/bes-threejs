@@ -54,7 +54,7 @@ export class Threejs_framework_loader extends Threejs_framework_module{
 			this.loadjavascript(scriptlist[i], function(){
 				//initialization code
 				scriptcount++;
-				console.log("script: "+scriptcount + ":" + (scriptlist.length));
+				//console.log("script: "+scriptcount + ":" + (scriptlist.length));
 				if(scriptcount == scriptlist.length){ //make sure the scripts are load else it can't used script components
 					console.log("script: "+scriptcount + ":" + (scriptlist.length));
 					console.log('Finish load javascript libs!');

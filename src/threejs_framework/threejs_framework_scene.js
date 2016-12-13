@@ -188,9 +188,4 @@ export class Threejs_framework_scene extends Threejs_framework_module{
 			this.effectComposer.render();
 		}
 	}
-
-    update(){
-
-	}
-
 }
