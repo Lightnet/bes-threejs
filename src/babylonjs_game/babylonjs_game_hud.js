@@ -148,7 +148,7 @@ export class Babylonjs_game_hud extends Babylonjs_game_module{
     }
 
     setupeditor(){
-        console.log("setupeditor");
+        //console.log("setupeditor");
         var self = this;
         var editor_group2d = new BABYLON.Group2D({
             parent:this.screencanvas,

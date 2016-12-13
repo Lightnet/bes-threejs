@@ -146,7 +146,7 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
         paneldrag.pointerEventObservable.add(function (d, s) {
             //button2Rect.levelVisible = !button2Rect.levelVisible;
             //console.log("PointerDown!");
-            console.log(d);
+            //console.log(d);
             //console.log(buttonRect);
             panel.bdrag = true;
             panel.dragpostion = d.primitivePointerPos;
@@ -278,7 +278,7 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
             }
 
             var txt = String.fromCharCode(e.which);
-            console.log(txt + ' : ' + e.which);
+            //console.log(txt + ' : ' + e.which);
 
             if(!txt.match(/[A-Za-z0-9+#.]/))
             {
@@ -302,7 +302,7 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
             document.addEventListener("keydown",TextInputKey );
         }, BABYLON.PrimitivePointerInfo.PointerUp);
 
-
+        //console.log(panel);
         //panel.actionManager = new BABYLON.ActionManager(this.scene);
 
         panel.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPointerOutTrigger,function(evt){

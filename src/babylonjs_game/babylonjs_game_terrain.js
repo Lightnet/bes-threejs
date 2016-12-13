@@ -50,7 +50,7 @@ export class Babylonjs_game_terrain extends Babylonjs_game_module{
             //vp[i - 1] = Math.floor(Math.random() * 16);
             //console.log(vp[i - 2]);
         //}
-        console.log(JSON);
+        //console.log(JSON);
 
         this.engine.runRenderLoop(function() {
             var vp = ground.getVerticesData(BABYLON.VertexBuffer.PositionKind);

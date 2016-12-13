@@ -217,23 +217,48 @@ export class Babylonjs_game extends Babylonjs_framework{
 	setup_game(){
 		var self = this;
 		console.log("setup game!");
-
-        this.camera.attachControl(this.canvas, false);
-
+        //this.camera.attachControl(this.canvas, false);
         var box1 = BABYLON.Mesh.CreateBox("box", 1.0, this.scene);
+        console.log("BABYLON.ActionManager");
+        console.log(BABYLON.ActionManager);
+        //input key
+        //this.camera.attachControl(this.scene.getEngine().getRenderingCanvas());
+        //working... some what
+        this.scene.actionManager = new BABYLON.ActionManager(this.scene);
+        this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyUpTrigger, parameter: "r" }, function (evt) {
+            console.log("typing r...");
+            console.log(evt);
+            //if (evt.sourceEvent.key == "r") {
+            //}
+        }));
+        this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
+            console.log(" OnKeyUpTrigger typing...");
+            console.log(evt);
+            //if (evt.sourceEvent.key == "r") {
+            //}
+        }));
+        this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
+            console.log(" OnKeyDownTrigger typing...");
+            console.log(evt);
+            //if (evt.sourceEvent.key == "r") {
+            //}
+        }));
 
-        //this.actionManager = new BABYLON.ActionManager(this.scene);
-        //console.log(this.actionManager);
-        //this.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
+        //box1.actionManager = new BABYLON.ActionManager(this.scene);
+        //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, function () {
+            //alert('player clicked');
+        //}));
+        //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
             //console.log(" scene typing...");
             //if (evt.sourceEvent.key == "r") {
             //}
         //}));
-        //this.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
-            //console.log(" scene typing...");
+        //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyUpTrigger, parameter: "r" }, function (evt) {
+            //console.log("typing r...");
             //if (evt.sourceEvent.key == "r") {
             //}
         //}));
+
 		//console.log(this.engine);
         //console.log(this.scene);
 		//console.log(BABYLON);
@@ -250,14 +275,14 @@ export class Babylonjs_game extends Babylonjs_framework{
 		//this.scene.debugLayer.show(false);
 		//this.scene.debugLayer.show(true);
 		//this.createbattle_prototype();
-		this.create_input();
-        this.create_gamepadinput();
+		//this.create_input();
+        //this.create_gamepadinput();
 		//this.create_movement();
 		//this.ScenePickObject();
 		//this.simple_scene();
 
         //this.simpleterrain()
-        this.simpleterrain01();
+        //this.simpleterrain01();
 
         //this.create_character();
         //this.loadmap_requestXML();
