@@ -45,6 +45,29 @@ export class Babylonjs_game_controller extends Babylonjs_game_module{
         camera.setTarget(model);
 	}
 
+    spawn_player(args){
+        var self = this;
+        if(args == null){args = {};};
+        var _x = (typeof args['x'] === 'number') ? args['x'] : 0; 
+        var _y = (typeof args['y'] === 'number') ? args['y'] : 0.5;
+        var _z = (typeof args['z'] === 'number') ? args['z'] : 0;
+        //console.log("create movement");
+		var self = this;
+		var camera = new BABYLON.ArcRotateCamera("arcCamera1",0,0,10,BABYLON.Vector3.Zero(),this.scene);
+        camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
+        camera.attachControl(this.canvas,false);
+        camera.setPosition(new BABYLON.Vector3(0,5,5));
+		this.scene.activeCamera.attachControl(self.canvas);
+		this.scene.activeCamera = camera;
+        this.thirdcamera = camera;
+        var Material = new BABYLON.StandardMaterial("material", this.scene);
+        Material.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
+        var model = this.create_character({x:_x,y:_y,z:_z});
+        this.controllerid = model.id;
+        this.model = model;
+        camera.setTarget(model);
+	}
+
     create_input(){
         var self = this;
 

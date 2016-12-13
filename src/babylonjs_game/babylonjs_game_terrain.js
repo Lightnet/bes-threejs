@@ -222,4 +222,49 @@ export class Babylonjs_game_terrain extends Babylonjs_game_module{
         // scene.debugLayer.show();
     }
 
+
+    simpleterrain03(){
+        //http://www.babylonjs-playground.com/#PF032
+        //http://www.html5gamedevs.com/topic/23973-editing-height-map-terrain/
+        var ground = BABYLON.Mesh.CreateGround("ground", 128, 128, 2, this.scene, false);
+    	var material = new BABYLON.StandardMaterial("mat", this.scene);
+    	material.diffuseColor = new BABYLON.Color3(1, 1, 1);
+    	ground.material = material;
+        ground.material.wireframe = true;
+        //console.log(ground);
+        var vp = ground.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+            for (var i =0; i  < vp.length - 3; i += 3) {
+                vp[i + 1] = Math.floor(Math.random() * 8);
+            }
+
+        ground.setVerticesData(BABYLON.VertexBuffer.PositionKind,vp, false); //this is correct function params height set
+        ground.showBoundingBox = true;
+        //ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.HeightmapImpostor, restitution: 0, mass:0, friction:1});
+        //ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, restitution: 0.9, mass:0, friction:1});
+        //ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.PlaneImpostor, restitution: 0.9, mass:0, friction:1});
+        ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.MeshImpostor, restitution: 0.9, mass:0, friction:1});
+
+
+        /*
+        this.engine.runRenderLoop(function() {
+            var vp = ground.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+            for (var i =0; i  < vp.length - 3; i += 3) {
+                vp[i + 1] = Math.floor(Math.random() * 32);
+        	}
+
+            ground.setVerticesData(BABYLON.VertexBuffer.PositionKind,vp, false); //this is correct function params height set
+        });
+        */
+    }
+
+    simpleterrain04(){
+        // Ground
+        var ground = BABYLON.Mesh.CreateGroundFromHeightMap("ground", "assets/heightMap.png", 100, 100, 100, 0, 10, this.scene, false);
+        //var groundMaterial = new BABYLON.StandardMaterial("ground", this.scene);
+        //groundMaterial.diffuseTexture = new BABYLON.Texture("assets/ground.jpg", this.scene);
+        ground.showBoundingBox = true;
+        //ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.HeightmapImpostor, restitution: 0, mass:0, friction:1});
+        //ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, restitution: 0.9, mass:0, friction:1});
+    }
+
 }

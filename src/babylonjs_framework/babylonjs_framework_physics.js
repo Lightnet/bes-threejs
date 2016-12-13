@@ -27,15 +27,16 @@ export class Babylonjs_framework_physics extends Babylonjs_framework_module{
 		//console.log(this.sphere.physicsImpostor);
 		//this.sphere.physicsImpostor.setDeltaPosition(new BABYLON.Vector3(0,5,0));
 
-		this.sphere.physicsImpostor.registerOnPhysicsCollide(this.ground.physicsImpostor, function(main, collided) {
+		//this.sphere.physicsImpostor.registerOnPhysicsCollide(this.ground.physicsImpostor, function(main, collided) {
     		//main.object.material.diffuseColor = new BABYLON.Color3(Math.random(), Math.random(), Math.random());
 			//console.log("hit");
-		});
+		//});
 	}
 
     //init oimo.js physics
 	init_physics(){
-		this.scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
+		//this.scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
+        this.scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.CannonJSPlugin());
 	}
 
     parse_physcis(){
