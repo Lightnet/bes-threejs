@@ -68,8 +68,12 @@ export class Threejs_game extends Threejs_framework{
     }
 
     setup(){
+        this.bablephysics = true;
         this.initPhysics();
+        this.camera.position.set(0,100,50);
+
         this.controlOrbit = new THREE.OrbitControls( this.camera );
+
         this.hideloadingscreen();
         //console.log(window.width);
         //console.log(screen.width);
@@ -77,7 +81,7 @@ export class Threejs_game extends Threejs_framework{
         //this.createBaseHUD();
 
         //this.createbasescene();
-        this.create_terrain02();
+        this.create_terrain03();
         //this.createinterface();
     }
 
