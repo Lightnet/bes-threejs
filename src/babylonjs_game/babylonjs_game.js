@@ -27,6 +27,7 @@ import {Babylonjs_game_battle} from './babylonjs_game_battle';
 import {Babylonjs_game_parse} from './babylonjs_game_parse';
 import {Babylonjs_game_terrain} from './babylonjs_game_terrain';
 
+
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;

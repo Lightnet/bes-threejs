@@ -9,11 +9,12 @@
 
 import {Threejs_framework} from '../threejs_framework/threejs_framework';
 
-
 import {Threejs_game_css3d} from './threejs_game_css3d';
 import {Threejs_game_terrain} from './threejs_game_terrain';
 import {Threejs_game_scene} from './threejs_game_scene';
 import {Threejs_game_hud} from './threejs_game_hud';
+import {Threejs_game_controller} from './threejs_game_controller';
+import {Threejs_game_character} from './threejs_game_character';
 
 
 // Converts from degrees to radians.
@@ -46,10 +47,20 @@ export class Threejs_game extends Threejs_framework{
         if(!args){
             args = {};
         }
+
+        this.character = null;
+        this.controllerid = 0;
+		this.keys={left:0,right:0,forward:0,back:0};
+		this.moveVector = THREE.Vector3(0,0,0)
+        this.tbv30 = new Ammo.btVector3();
+        console.log(this.tbv30);
+
         new Threejs_game_css3d(this);
         new Threejs_game_terrain(this);
         new Threejs_game_scene(this);
         new Threejs_game_hud(this);
+        new Threejs_game_controller(this);
+        new Threejs_game_character(this);
 
     }
 
@@ -70,6 +81,7 @@ export class Threejs_game extends Threejs_framework{
     setup(){
         this.bablephysics = true;
         this.initPhysics();
+        this.create_input();
         this.camera.position.set(0,20,512);
         this.camera.lookAt(new THREE.Vector3(0,0,0));
 
@@ -83,8 +95,9 @@ export class Threejs_game extends Threejs_framework{
 
         //this.createbasescene();
         this.create_terrain03();
+        this.simple_pawn();
         //this.createinterface();
+
+
     }
-
-
 }

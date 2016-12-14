@@ -125,10 +125,9 @@ export class Threejs_game_terrain extends Threejs_game_module{
         this.camera.position.z = 10;
     }
 
-
     //world
     create_terrain03(){
-
+        var self = this;
         var light = new THREE.HemisphereLight( 0xeeeeee, 0x888888, 1 );
         light.position.set( 0, 20, 0 );
         this.scene.add( light );
@@ -153,9 +152,7 @@ export class Threejs_game_terrain extends Threejs_game_module{
             //vertices[ j + 2 ] = Math.random(0,1);
         }
 
-
         var plane = new THREE.Mesh( geometry,material );
-
         //plane.update = function(){
             //plane.geometry.attributes.position.needsUpdate = true;
             //var vertices = plane.geometry.attributes.position.array;
@@ -191,54 +188,6 @@ export class Threejs_game_terrain extends Threejs_game_module{
         var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
         this.world.addRigidBody( groundBody );
 
-        // SPHERE
-        var threeObject = null;
-        var shape = null;
-
-        var objectSize = 3;
-        var margin = 0.05;
-
-        var radius = 1 + Math.random() * objectSize;
-        threeObject = new THREE.Mesh( new THREE.SphereGeometry( radius, 20, 20 ), this.createObjectMaterial() );
-        shape = new Ammo.btSphereShape( radius );
-        shape.setMargin( margin );
-
-        //threeObject.position.set( ( Math.random() - 0.5 ) * terrainWidth * 0.6, terrainMaxHeight + objectSize + 2, ( Math.random() - 0.5 ) * terrainDepth * 0.6 );
-        //threeObject.position.set( 64, terrainMaxHeight + objectSize + 2, 64);
-        threeObject.position.set( 0, terrainMaxHeight + objectSize + 2, 0);
-
-        var mass = objectSize * 5;
-        var localInertia = new Ammo.btVector3( 0, 0, 0 );
-        shape.calculateLocalInertia( mass, localInertia );
-        var transform = new Ammo.btTransform();
-        transform.setIdentity();
-        var pos = threeObject.position;
-        transform.setOrigin( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
-        var motionState = new Ammo.btDefaultMotionState( transform );
-        var rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, shape, localInertia );
-        var body = new Ammo.btRigidBody( rbInfo );
-
-        threeObject.userData.physicsBody = body;
-
-        this.scene.add( threeObject );
-        //dynamicObjects.push( threeObject );
-        this.world.addRigidBody( body );
-
-        var transformAux1 = new Ammo.btTransform();
-
-        threeObject.update= function(){
-            var objPhys = threeObject.userData.physicsBody;
-            var ms = objPhys.getMotionState();
-            if ( ms ) {
-
-                ms.getWorldTransform( transformAux1 );
-                var p = transformAux1.getOrigin();
-                var q = transformAux1.getRotation();
-                threeObject.position.set( p.x(), p.y(), p.z() );
-                threeObject.quaternion.set( q.x(), q.y(), q.z(), q.w() );
-                //console.log("update?");
-            }
-        }
     }
 
     createObjectMaterial() {
@@ -277,7 +226,7 @@ export class Threejs_game_terrain extends Threejs_game_module{
             for ( var i = 0; i < terrainWidth; i ++ ) {
                 // write 32-bit float data to memory
                 Ammo.HEAPF32[ammoHeightData + p2 >> 2] = heightData[ p ];
-                console.log(heightData[ p ]);
+                //console.log(heightData[ p ]);
                 p ++;
                 // 4 bytes/float
                 p2 += 4;
