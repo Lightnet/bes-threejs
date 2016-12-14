@@ -148,7 +148,7 @@ export class Threejs_game_terrain extends Threejs_game_module{
         var heightData = [];
         var vertices = geometry.attributes.position.array;
         for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
-            vertices[ j + 1 ] = Math.random(0,1);
+            vertices[ j + 1 ] = Math.floor(Math.random() * 10);
             heightData.push(vertices[ j + 1 ]);
             //vertices[ j + 2 ] = Math.random(0,1);
         }
@@ -179,7 +179,7 @@ export class Threejs_game_terrain extends Threejs_game_module{
         var groundShape;
         groundShape = this.createTerrainShape( heightData );
         //var groundShape = new Ammo.btBoxShape( new Ammo.btVector3(128, 0.1, 128 ) );
-        console.log(groundShape);
+        //console.log(groundShape);
 
         var groundTransform = new Ammo.btTransform();
         groundTransform.setIdentity();
@@ -204,7 +204,8 @@ export class Threejs_game_terrain extends Threejs_game_module{
         shape.setMargin( margin );
 
         //threeObject.position.set( ( Math.random() - 0.5 ) * terrainWidth * 0.6, terrainMaxHeight + objectSize + 2, ( Math.random() - 0.5 ) * terrainDepth * 0.6 );
-        threeObject.position.set( 0, terrainMaxHeight + objectSize + 2, -64);
+        //threeObject.position.set( 64, terrainMaxHeight + objectSize + 2, 64);
+        threeObject.position.set( 0, terrainMaxHeight + objectSize + 2, 0);
 
         var mass = objectSize * 5;
         var localInertia = new Ammo.btVector3( 0, 0, 0 );
