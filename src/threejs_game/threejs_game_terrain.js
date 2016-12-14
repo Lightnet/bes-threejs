@@ -204,7 +204,7 @@ export class Threejs_game_terrain extends Threejs_game_module{
         shape.setMargin( margin );
 
         //threeObject.position.set( ( Math.random() - 0.5 ) * terrainWidth * 0.6, terrainMaxHeight + objectSize + 2, ( Math.random() - 0.5 ) * terrainDepth * 0.6 );
-        threeObject.position.set( 0, terrainMaxHeight + objectSize + 2, 0);
+        threeObject.position.set( 0, terrainMaxHeight + objectSize + 2, -64);
 
         var mass = objectSize * 5;
         var localInertia = new Ammo.btVector3( 0, 0, 0 );
@@ -246,8 +246,8 @@ export class Threejs_game_terrain extends Threejs_game_module{
     }
 
     createTerrainShape(heightData) {
-        var terrainWidthExtents = 100;
-        var terrainDepthExtents = 100;
+        var terrainWidthExtents = 128;
+        var terrainDepthExtents = 128;
         //var terrainWidth = 128;
         //var terrainDepth = 128;
         var terrainWidth = 5;

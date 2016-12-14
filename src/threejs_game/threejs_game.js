@@ -70,7 +70,8 @@ export class Threejs_game extends Threejs_framework{
     setup(){
         this.bablephysics = true;
         this.initPhysics();
-        this.camera.position.set(0,100,50);
+        this.camera.position.set(0,20,512);
+        this.camera.lookAt(new THREE.Vector3(0,0,0));
 
         this.controlOrbit = new THREE.OrbitControls( this.camera );
 
