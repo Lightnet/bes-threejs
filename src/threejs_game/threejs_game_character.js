@@ -79,6 +79,7 @@ export class Threejs_game_character extends Threejs_game_module{
 
         var rotate = 0;
 
+
         threeObject.update= function(){
             var objPhys = threeObject.userData.physicsBody;
             var ms = objPhys.getMotionState();
@@ -86,11 +87,11 @@ export class Threejs_game_character extends Threejs_game_module{
                 ms.getWorldTransform( transformAux1 );
                 var p = transformAux1.getOrigin();
                 var q = transformAux1.getRotation();
-                threeObject.position.set( p.x(), p.y(), p.z() );
+                //threeObject.position.set( p.x(), p.y(), p.z() );
                 //threeObject.quaternion.set( q.x(), q.y(), q.z(), q.w() );
                 //console.log("update?");
             }
-
+            var bmove = false;
 
             if(self.character !=null){
                 //console.log(self.keys.left);
@@ -100,33 +101,18 @@ export class Threejs_game_character extends Threejs_game_module{
                 var vecface;
                 //self.camera.useQuaternion = true;
 
-                if(rotate > 360){
-                    rotate = 0;
-                }
+                if(rotate > 360){rotate = 0;}
+                if(rotate < 0){rotate = 360;}
+                //if(self.keys.rotate_left){rotate -= 0.1;}
+                //if(self.keys.rotate_right){rotate += 0.1;}
 
-                if(rotate < 0){
-                    rotate = 360;
-                }
-
-                if(self.keys.rotate_left){
-                    rotate += 0.1;
-                }
-
-                if(self.keys.rotate_right){
-                    rotate -= 0.1;
-                }
-
-                //rotate = rotate + 0.01;
-                //console.log(rotate);
-                var constant = rotate;
                 var elapsedTime = 1;
                 var radius = 10;
 
-                self.camera.position.x = threeObject.position.x + radius * Math.cos( constant * elapsedTime );
+                self.camera.position.x = threeObject.position.x + radius * Math.cos( rotate * elapsedTime );
                 self.camera.position.y = threeObject.position.y + 5;
-                self.camera.position.z = threeObject.position.z + radius * Math.sin( constant * elapsedTime );
+                self.camera.position.z = threeObject.position.z + radius * Math.sin( rotate * elapsedTime );
                 self.camera.lookAt( threeObject.position );
-
 
                 /*
                 if(self.controlOrbit !=null){
@@ -141,7 +127,7 @@ export class Threejs_game_character extends Threejs_game_module{
                 }
                 */
 
-                var speed = 5;
+                var speed = 1;
 
                 if(self.keys.left){
                     threeObject.rotation.y = theta - Math.PI/2 ;
@@ -149,12 +135,14 @@ export class Threejs_game_character extends Threejs_game_module{
                     vecface = new THREE.Vector3( 0, 0, -1).applyAxisAngle( axis, theta - Math.PI/2 );
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
-                    //threeObject.position.x += vecface.x;
-                    //threeObject.position.z += vecface.z;
+                    threeObject.position.x += vecface.x;
+                    threeObject.position.z += vecface.z;
 
                     self.tbv30.setValue(vecface.x,0,vecface.z);
-                    threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                    threeObject.dirvec = vecface;
+                    //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
                     //self.camera.translateX(  -10 );
+                    bmove = true;
                 }
                 if(self.keys.right){
                     threeObject.rotation.y = theta + Math.PI/2 ;
@@ -162,25 +150,31 @@ export class Threejs_game_character extends Threejs_game_module{
                     vecface = new THREE.Vector3( 0, 0, -1).applyAxisAngle( axis, theta + Math.PI/2 );
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
-                    //threeObject.position.x += vecface.x;
-                    //threeObject.position.z += vecface.z;
+                    threeObject.position.x += vecface.x;
+                    threeObject.position.z += vecface.z;
 
                     self.tbv30.setValue(vecface.x,0,vecface.z);
-                    threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                    threeObject.dirvec = vecface;
+                    //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
                     //self.camera.translateX(  10 );
+                    bmove = true;
                 }
                 if(self.keys.forward){
                     threeObject.rotation.y = theta + Math.PI ;
+
 
                     vecface = new THREE.Vector3( 0, 0, 1).applyAxisAngle( axis, theta );
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
                     //console.log(vecface);
-                    //threeObject.position.x += vecface.x;
-                    //threeObject.position.z += vecface.z;
+                    threeObject.position.x += vecface.x;
+                    threeObject.position.z += vecface.z;
 
+                    console.log(vecface);
+                    threeObject.dirvec = vecface;
                     self.tbv30.setValue(vecface.x,0,vecface.z);
-                    threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                    //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                    bmove = true;
                 }
                 if(self.keys.back){
                     threeObject.rotation.y = theta;
@@ -188,16 +182,47 @@ export class Threejs_game_character extends Threejs_game_module{
                     vecface = new THREE.Vector3( 0, 0, -1).applyAxisAngle( axis, theta );
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
-                    //threeObject.position.x += vecface.x;
-                    //threeObject.position.z += vecface.z;
+                    threeObject.position.x += vecface.x;
+                    threeObject.position.z += vecface.z;
+                    threeObject.dirvec = vecface;
 
-                    self.tbv30.setValue(vecface.x,0,vecface.z);
-                    threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
-
+                    //self.tbv30.setValue(vecface.x,0,vecface.z);
+                    //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                    bmove = true;
                 }
+
+                if(!bmove){
+                    self.tbv30.setValue(0,0,0);
+                    //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                }
+                threeObject.dirrotate = theta;
+
+
                 theta = null;
             }
         }
+        var raycaster = new THREE.Raycaster();
+        raycaster.far = 2;
+        console.log(raycaster);
+        //raycaster.distance = 5;
+
+        threeObject.interact= function(){
+            if(threeObject.dirvec ==null){
+                threeObject.dirvec = new THREE.Vector3(0, 0, -1);
+                console.log(threeObject.dirvec);
+            }
+
+            raycaster.set(threeObject.position, threeObject.dirvec);
+
+            var intersects = raycaster.intersectObjects( self.scene.children );
+            console.log(intersects);
+            if (intersects.length>0){
+                console.log("Intersected object:", intersects.length);
+                console.log(intersects[ 0 ]);
+                intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
+            }
+        }
+
         this.character = threeObject;
     }
 }

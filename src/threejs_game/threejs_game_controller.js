@@ -23,10 +23,10 @@ export class Threejs_game_controller extends Threejs_game_module{
 		function handleKeyDown(evt){
             //console.log(evt.keyCode);
             if (evt.keyCode==69){//E
-                if(self.model !=null){
-                    console.log(self.model);
-                    if(typeof self.model.interact === 'function'){
-                        self.model.interact();
+                if(self.character !=null){
+                    //console.log(self.character);
+                    if(typeof self.character.interact === 'function'){
+                        self.character.interact();
                     }
                 }
             }
@@ -78,5 +78,4 @@ export class Threejs_game_controller extends Threejs_game_module{
 			}
 		}
 	}
-
 }

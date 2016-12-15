@@ -190,6 +190,71 @@ export class Threejs_game_terrain extends Threejs_game_module{
 
     }
 
+    //world
+    create_terrain04(){
+        var self = this;
+        var light = new THREE.HemisphereLight( 0xeeeeee, 0x888888, 1 );
+        light.position.set( 0, 20, 0 );
+        this.scene.add( light );
+        this.scene.add( new THREE.AxisHelper( 20 ) );
+
+        var geometry = new THREE.PlaneBufferGeometry( 128, 128,4,4 );
+        geometry.rotateX( - Math.PI / 2 );
+        var material = new THREE.MeshPhongMaterial( {
+            color: 0xff0000,
+            shading: THREE.FlatShading,
+            polygonOffset: true,
+            polygonOffsetFactor: 1, // positive value pushes polygon further away
+            polygonOffsetUnits: 1,
+            side: THREE.DoubleSide,
+            wireframe: true
+        });
+        var heightData = [];
+        var vertices = geometry.attributes.position.array;
+        for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
+            //vertices[ j + 1 ] = Math.floor(Math.random() * 10);
+            heightData.push(vertices[ j + 1 ]);
+            //vertices[ j + 2 ] = Math.random(0,1);
+        }
+
+        var plane = new THREE.Mesh( geometry,material );
+        //plane.update = function(){
+            //plane.geometry.attributes.position.needsUpdate = true;
+            //var vertices = plane.geometry.attributes.position.array;
+            //for ( var i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
+                //vertices[ j + 1 ] = Math.random(0,1);
+			//}
+        //};
+
+        this.scene.add( plane );
+        this.camera.position.z = 10;
+
+        var terrainWidthExtents = 100;
+        var terrainDepthExtents = 100;
+        var terrainWidth = 128;
+        var terrainDepth = 128;
+        var terrainHalfWidth = terrainWidth / 2;
+        var terrainHalfDepth = terrainDepth / 2;
+        var terrainMaxHeight = 8;
+        var terrainMinHeight = -2;
+
+        var groundShape;
+        groundShape = this.createTerrainShape( heightData );
+        //var groundShape = new Ammo.btBoxShape( new Ammo.btVector3(128, 0.1, 128 ) );
+        //console.log(groundShape);
+
+        var groundTransform = new Ammo.btTransform();
+        groundTransform.setIdentity();
+        // Shifts the terrain, since bullet re-centers it on its bounding box.
+        groundTransform.setOrigin( new Ammo.btVector3( 0, ( terrainMaxHeight + terrainMinHeight ) / 2, 0 ) );
+        var groundMass = 0;
+        var groundLocalInertia = new Ammo.btVector3( 0, 0, 0 );
+        var groundMotionState = new Ammo.btDefaultMotionState( groundTransform );
+        var groundBody = new Ammo.btRigidBody( new Ammo.btRigidBodyConstructionInfo( groundMass, groundMotionState, groundShape, groundLocalInertia ) );
+        this.world.addRigidBody( groundBody );
+
+    }
+
     createObjectMaterial() {
         var c = Math.floor( Math.random() * ( 1 << 24 ) );
         return new THREE.MeshPhongMaterial( { color: c } );

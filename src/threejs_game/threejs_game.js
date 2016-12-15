@@ -94,9 +94,20 @@ export class Threejs_game extends Threejs_framework{
         //this.createBaseHUD();
 
         //this.createbasescene();
-        this.create_terrain03();
+        //this.create_terrain03();
+        this.create_terrain04();
         this.simple_pawn();
         //this.createinterface();
+
+        var geometry = new THREE.BoxGeometry( 2, 2, 2 );
+		var material = new THREE.MeshBasicMaterial( { color: 0x00ffff } );
+		var cube = new THREE.Mesh( geometry, material );
+        cube.position.set(0,13,5);
+        //cube.update =function(){
+            //cube.rotation.x += 0.1;
+            //cube.rotation.y += 0.1;
+        //};
+		this.scene.add( cube );
 
 
     }
