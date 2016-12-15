@@ -31,6 +31,14 @@ export class Threejs_game_controller extends Threejs_game_module{
                 }
             }
 
+            if (evt.keyCode==81){//Q
+				self.keys.rotate_left=1;
+				//console.log("left");
+			}
+            if (evt.keyCode==69){//E
+				self.keys.rotate_right=1;
+			}
+
             if (evt.keyCode==65){//A
 				self.keys.left=1;
 				//console.log("left");
@@ -50,6 +58,12 @@ export class Threejs_game_controller extends Threejs_game_module{
 		}
 
 		function handleKeyUp(evt){
+            if (evt.keyCode==81){//Q
+				self.keys.rotate_left=0;
+			}
+            if (evt.keyCode==69){//E
+				self.keys.rotate_right=0;
+			}
 			if (evt.keyCode==65){
 				self.keys.left=0;
 			}

@@ -77,6 +77,8 @@ export class Threejs_game_character extends Threejs_game_module{
         console.log(self.controlOrbit);
         var axis = new THREE.Vector3( 0, 1, 0 );
 
+        var rotate = 0;
+
         threeObject.update= function(){
             var objPhys = threeObject.userData.physicsBody;
             var ms = objPhys.getMotionState();
@@ -89,18 +91,55 @@ export class Threejs_game_character extends Threejs_game_module{
                 //console.log("update?");
             }
 
+
             if(self.character !=null){
                 //console.log(self.keys.left);
                 vecdir = self.camera.getWorldDirection();
                 vecdir.normalize();
                 var theta = Math.atan2(vecdir.x,vecdir.z);
                 var vecface;
+                //self.camera.useQuaternion = true;
 
+                if(rotate > 360){
+                    rotate = 0;
+                }
+
+                if(rotate < 0){
+                    rotate = 360;
+                }
+
+                if(self.keys.rotate_left){
+                    rotate += 0.1;
+                }
+
+                if(self.keys.rotate_right){
+                    rotate -= 0.1;
+                }
+
+                //rotate = rotate + 0.01;
+                //console.log(rotate);
+                var constant = rotate;
+                var elapsedTime = 1;
+                var radius = 10;
+
+                self.camera.position.x = threeObject.position.x + radius * Math.cos( constant * elapsedTime );
+                self.camera.position.y = threeObject.position.y + 5;
+                self.camera.position.z = threeObject.position.z + radius * Math.sin( constant * elapsedTime );
+                self.camera.lookAt( threeObject.position );
+
+
+                /*
                 if(self.controlOrbit !=null){
                     if(threeObject !=null){
-                        self.controlOrbit.target.set(threeObject.position.x, threeObject.position.y, threeObject.position.z);
+                        //self.controlOrbit.target.set(threeObject.position.x, threeObject.position.y, threeObject.position.z);
+                        self.controlOrbit.target.copy(threeObject.position);
+                        self.controlOrbit.maxDistance = 10;
+                        //self.controlOrbit.enableDamping = true;
+                        //self.controlOrbit.enableDamping = true;
+                        self.controlOrbit.autoRotate = false;
                     }
                 }
+                */
 
                 var speed = 5;
 

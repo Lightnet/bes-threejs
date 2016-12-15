@@ -50,7 +50,7 @@ export class Threejs_game extends Threejs_framework{
 
         this.character = null;
         this.controllerid = 0;
-		this.keys={left:0,right:0,forward:0,back:0};
+		this.keys={left:0,right:0,forward:0,back:0,rotate_right:0,rotate_left:0};
 		this.moveVector = THREE.Vector3(0,0,0)
         this.tbv30 = new Ammo.btVector3();
         console.log(this.tbv30);
@@ -85,7 +85,7 @@ export class Threejs_game extends Threejs_framework{
         this.camera.position.set(0,20,512);
         this.camera.lookAt(new THREE.Vector3(0,0,0));
 
-        this.controlOrbit = new THREE.OrbitControls( this.camera );
+        //this.controlOrbit = new THREE.OrbitControls( this.camera );
 
         this.hideloadingscreen();
         //console.log(window.width);
