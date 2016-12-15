@@ -45,8 +45,6 @@ export class Threejs_game_character extends Threejs_game_module{
 
         //=======================================
 
-
-
         shape = new Ammo.btSphereShape( radius );
         shape.setMargin( margin );
 
@@ -57,6 +55,8 @@ export class Threejs_game_character extends Threejs_game_module{
         var mass = objectSize * 5;
         var localInertia = new Ammo.btVector3( 0, 0, 0 );
         shape.calculateLocalInertia( mass, localInertia );
+
+        //console.log(shape);
         var transform = new Ammo.btTransform();
         transform.setIdentity();
         var pos = threeObject.position;
@@ -64,6 +64,9 @@ export class Threejs_game_character extends Threejs_game_module{
         var motionState = new Ammo.btDefaultMotionState( transform );
         var rbInfo = new Ammo.btRigidBodyConstructionInfo( mass, motionState, shape, localInertia );
         var body = new Ammo.btRigidBody( rbInfo );
+        console.log(body);
+        body.setFriction(1);
+        body.setDamping(0.8, 1.0);
 
         threeObject.userData.physicsBody = body;
 
@@ -87,11 +90,12 @@ export class Threejs_game_character extends Threejs_game_module{
                 ms.getWorldTransform( transformAux1 );
                 var p = transformAux1.getOrigin();
                 var q = transformAux1.getRotation();
-                //threeObject.position.set( p.x(), p.y(), p.z() );
+                threeObject.position.set( p.x(), p.y(), p.z() );
                 //threeObject.quaternion.set( q.x(), q.y(), q.z(), q.w() );
                 //console.log("update?");
             }
             var bmove = false;
+            var bphysicscontrol = true;
 
             if(self.character !=null){
                 //console.log(self.keys.left);
@@ -103,8 +107,8 @@ export class Threejs_game_character extends Threejs_game_module{
 
                 if(rotate > 360){rotate = 0;}
                 if(rotate < 0){rotate = 360;}
-                //if(self.keys.rotate_left){rotate -= 0.1;}
-                //if(self.keys.rotate_right){rotate += 0.1;}
+                if(self.keys.rotate_left){rotate -= 0.1;}
+                if(self.keys.rotate_right){rotate += 0.1;}
 
                 var elapsedTime = 1;
                 var radius = 10;
@@ -128,6 +132,13 @@ export class Threejs_game_character extends Threejs_game_module{
                 */
 
                 var speed = 1;
+                if(!bphysicscontrol){
+                    speed = 1;
+                }else{
+                    speed = 10;
+                }
+
+                //var speed = 10;
 
                 if(self.keys.left){
                     threeObject.rotation.y = theta - Math.PI/2 ;
@@ -135,8 +146,10 @@ export class Threejs_game_character extends Threejs_game_module{
                     vecface = new THREE.Vector3( 0, 0, -1).applyAxisAngle( axis, theta - Math.PI/2 );
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
-                    threeObject.position.x += vecface.x;
-                    threeObject.position.z += vecface.z;
+                    if(!bphysicscontrol){
+                        threeObject.position.x += vecface.x;
+                        threeObject.position.z += vecface.z;
+                    }
 
                     self.tbv30.setValue(vecface.x,0,vecface.z);
                     threeObject.dirvec = vecface;
@@ -150,8 +163,10 @@ export class Threejs_game_character extends Threejs_game_module{
                     vecface = new THREE.Vector3( 0, 0, -1).applyAxisAngle( axis, theta + Math.PI/2 );
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
-                    threeObject.position.x += vecface.x;
-                    threeObject.position.z += vecface.z;
+                    if(!bphysicscontrol){
+                        threeObject.position.x += vecface.x;
+                        threeObject.position.z += vecface.z;
+                    }
 
                     self.tbv30.setValue(vecface.x,0,vecface.z);
                     threeObject.dirvec = vecface;
@@ -167,10 +182,11 @@ export class Threejs_game_character extends Threejs_game_module{
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
                     //console.log(vecface);
-                    threeObject.position.x += vecface.x;
-                    threeObject.position.z += vecface.z;
-
-                    console.log(vecface);
+                    if(!bphysicscontrol){
+                        threeObject.position.x += vecface.x;
+                        threeObject.position.z += vecface.z;
+                    }
+                    //console.log(vecface);
                     threeObject.dirvec = vecface;
                     self.tbv30.setValue(vecface.x,0,vecface.z);
                     //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
@@ -182,18 +198,25 @@ export class Threejs_game_character extends Threejs_game_module{
                     vecface = new THREE.Vector3( 0, 0, -1).applyAxisAngle( axis, theta );
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
-                    threeObject.position.x += vecface.x;
-                    threeObject.position.z += vecface.z;
+                    if(!bphysicscontrol){
+                        threeObject.position.x += vecface.x;
+                        threeObject.position.z += vecface.z;
+                    }
                     threeObject.dirvec = vecface;
-
-                    //self.tbv30.setValue(vecface.x,0,vecface.z);
+                    self.tbv30.setValue(vecface.x,0,vecface.z);
                     //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
                     bmove = true;
                 }
 
-                if(!bmove){
-                    self.tbv30.setValue(0,0,0);
-                    //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                if(bphysicscontrol){
+                    if(!bmove){
+                        self.tbv30.setValue(0,0,0);
+                        //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                    }
+                    if(bmove){
+                        console.log("move?");
+                        threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+                    }
                 }
                 threeObject.dirrotate = theta;
 
@@ -203,7 +226,7 @@ export class Threejs_game_character extends Threejs_game_module{
         }
         var raycaster = new THREE.Raycaster();
         raycaster.far = 2;
-        console.log(raycaster);
+        //console.log(raycaster);
         //raycaster.distance = 5;
 
         threeObject.interact= function(){

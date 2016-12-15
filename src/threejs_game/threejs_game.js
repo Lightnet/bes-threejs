@@ -78,12 +78,33 @@ export class Threejs_game extends Threejs_framework{
         }
     }
 
+
+
+    simulate(dt) {
+        this.updatePhysics();
+    }
+
+    start_physics(){
+        var self = this;
+        var last = Date.now();
+        function mainLoop() {
+            var now = Date.now();
+            self.simulate(now - last);
+            last = now;
+        }
+
+        if (this.interval) clearInterval(this.interval);
+        this.interval = setInterval(mainLoop, 1000/60);
+    }
+
     setup(){
         this.bablephysics = true;
         this.initPhysics();
         this.create_input();
         this.camera.position.set(0,20,512);
         this.camera.lookAt(new THREE.Vector3(0,0,0));
+
+        this.start_physics();
 
         //this.controlOrbit = new THREE.OrbitControls( this.camera );
 

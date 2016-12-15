@@ -174,9 +174,9 @@ export class Threejs_framework_scene extends Threejs_framework_module{
             }
         }
 
-		if (this.bablephysics == true) {
-            this.updatePhysics();
-        }
+		//if (this.bablephysics == true) {
+            //this.updatePhysics();
+        //}
 
 		if(this.renderercss3d !=null){
 			this.renderercss3d.render( this.scenecss3d, this.cameracss3d );

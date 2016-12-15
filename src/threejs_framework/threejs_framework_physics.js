@@ -24,38 +24,12 @@ export class Threejs_framework_physics extends Threejs_framework_module{
 		//this.createCannonScene();
 	}
 
-	updateCannonPhysics() {
+	updateCannonPhysics(deta) {
 		if ((typeof this.world == 'undefined') || (this.world == null)) {
 			return;
 		}
 		if (typeof CANNON != undefined) {
-			//var timeStep = 1.0 / 60.0; // seconds
-			//this.world.step(timeStep);
-			//timeStep = null;
-			//world.gravity.set(0,0,-9.82);
 			this.world.step(this.timeSteptimeStep);
-			//https://github.com/schteppe/cannon.js/issues/188
-			//var result = [];
-			//this.world.narrowphase.getContacts([bodyA], [bodyB], this.world, result, [], [], []);
-			//var overlaps = result.length > 0;
-			//console.log(this.bodies.length);
-			/*
-			for (var i = 0; i < this.bodies.length; i++) {
-				var mesh = this.meshs[i];
-				var body = this.bodies[i];
-				//console.log(body.sleeping);
-				//if(!body.sleeping){
-				//console.log(body.position.x);
-				//check if mesh and body is not null
-				if((body != null)&&(mesh != null)){
-					//console.log(mesh.position);
-					//console.log(body.position);
-					mesh.position.copy(body.position);
-
-					mesh.quaternion.copy(body.quaternion);
-				}
-			}
-			*/
 		}
 	}
 
@@ -79,54 +53,12 @@ export class Threejs_framework_physics extends Threejs_framework_module{
 		}
 	}
 
-	updateAmmoPhysics() {
+	updateAmmoPhysics(deta) {
 		if ((typeof this.world == 'undefined') || (this.world == null)) {
 			return;
 		}
 		if (typeof Ammo != undefined) {
 			this.world.stepSimulation(1 / 60, 10);
-			/*
-			var i, dp = this.dp, num = dp.getNumManifolds(), manifold, num_contacts, j, pt;
-			for (i = 0; i < num; i++) {
-				manifold = dp.getManifoldByIndexInternal(i);
-				num_contacts = manifold.getNumContacts();
-				if (num_contacts === 0) {
-					continue;
-				}
-				for (j = 0; j < num_contacts; j++) {
-					pt = manifold.getContactPoint(j);
-				}
-			}
-			var tbv30 = new Ammo.btVector3();
-			for (var ii = 0; ii < this.bodies.length; ii++) {
-				var mesh = this.meshs[ii];
-				var body = this.bodies[ii];
-				//console.log(body.sleeping);
-				if (body.getMotionState()) {
-					//get location or position
-					body.getMotionState().getWorldTransform(this.trans);
-					//console.log("world pos = " + [this.trans.getOrigin().x().toFixed(2), this.trans.getOrigin().y().toFixed(2), this.trans.getOrigin().z().toFixed(2)]);
-					if(mesh !=null){
-						//console.log(mesh);
-						mesh.position.set(this.trans.getOrigin().x().toFixed(2), this.trans.getOrigin().y().toFixed(2), this.trans.getOrigin().z().toFixed(2));
-						mesh.rotation.set(this.trans.getRotation().x().toFixed(2), this.trans.getRotation().y().toFixed(2), this.trans.getRotation().z().toFixed(2), this.trans.getRotation().w().toFixed(2));
-					}
-
-					if (this.trans.getOrigin().y().toFixed(2) < -100) {
-						var x = 150;
-						var z = -100 + Math.random() * 200;
-						var y = 100 + Math.random() * 1000;
-						body.setLinearVelocity(tbv30);
-						body.setAngularVelocity(tbv30);
-						var transform = body.getCenterOfMassTransform();
-						console.log(transform);
-						transform.setOrigin(new Ammo.btVector3(x, y, z));
-						console.log("reset?");
-					}
-				}
-			}
-			tbv30 = null;
-			*/
 		}
 	}
 
@@ -149,51 +81,31 @@ export class Threejs_framework_physics extends Threejs_framework_module{
 		}
 	}
 
-	updateOimoPhysics() {
+	updateOimoPhysics(deta) {
 		//https://github.com/lo-th/Oimo.js/blob/gh-pages/test_moving.html
 		if ((typeof this.world == 'undefined') || (this.world == null)) {
 			return;
 		}
 		this.world.step();
-		//this.infos.innerHTML = this.world.performance.show();
-		/*
-		for (var i = 0; i < this.bodies.length; i++) {
-			var mesh = this.meshs[i];
-			var body = this.bodies[i];
-			if (!body.sleeping) {
-				mesh.position.copy(body.getPosition());
-				//console.log(mesh.position);
-				mesh.quaternion.copy(body.getQuaternion());
-				//console.log(body.numContacts);
-				//if (body.numContacts > 0) {
-				//}
-				if (mesh.position.y < -100) {
-					var x = 150;
-					var z = -100 + Math.random() * 200;
-					var y = 100 + Math.random() * 1000;
-					body.resetPosition(x, y, z);
-				}
-			}
-		}
-		*/
 	}
 
 	destroyOimoPhysics() {
         console.log('destroyOimoPhysics');
     }
 
-	updatePhysics() {
+	updatePhysics(deta) {
+        //console.log("p");
 		if ((typeof this.world == 'undefined') || (this.world == null)) {
 			return;
 		}
 		if (this.setPhysicsType[this.physicsIndex] == 'Oimo.js') {
-			this.updateOimoPhysics();
+			this.updateOimoPhysics(deta);
 		}
 		if (this.setPhysicsType[this.physicsIndex] == 'Cannon.js') {
-			this.updateCannonPhysics();
+			this.updateCannonPhysics(deta);
 		}
 		if (this.setPhysicsType[this.physicsIndex] == 'Ammo.js') {
-			this.updateAmmoPhysics();
+			this.updateAmmoPhysics(deta);
 		}
 	}
 
