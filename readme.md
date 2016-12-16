@@ -4,17 +4,17 @@ Created by: Lightnet
 
 License: cc (creative commons)
 
-There are multiples Licenses this project areas.
+There are multiples Licenses for the project areas.
 
-Scripting Languages: This run on mixed javascript basics and Babeljs es6. To run pure javascript base for server and client development in nodejs and web client.
+Scripting Languages: This run on mixed javascript basics and Babel.js es6. To run pure javascript base for server and client development in nodejs and web client.
 
-Information: The web game develop run on es6 javascript with babeljs compiler tool. It not for production that is currently in develop phase. Current for dungeon map and editor for role playing game design.
+Information: The web game develop run on es6 javascript with babel.js compiler tool from nodejs with npm. It not for production that is currently in develop phase. Current for dungeon map and editor for role playing game design.
 
 To develop open world 3D model editor for game master and freedom to craft objects and script them.(Idea)
 
 Atom.io Editor packages helper:
- * gulp-manager
  * bottom-dock
+ * gulp-manager
 
 Current Projects:
  * Threejs (work in progress)

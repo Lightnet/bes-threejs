@@ -14,8 +14,6 @@ export class Threejs_game_physics extends Threejs_game_module{
         super(args);
     }
 
-
-
     create_boxshape(args){
         args = args || {};
         var shape;
@@ -46,8 +44,6 @@ export class Threejs_game_physics extends Threejs_game_module{
         body.setDamping(0.2, 1.0);
 
         return body;
-
-
     }
 
     //SPHERE

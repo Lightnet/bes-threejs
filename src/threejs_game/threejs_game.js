@@ -28,6 +28,7 @@ Math.degrees = function(radians) {
 };
 
 //RFC Type 4 (random) schema
+/*
 var uuid = function() {
     var buf = new Uint32Array(4);
     window.crypto.getRandomValues(buf);
@@ -39,6 +40,7 @@ var uuid = function() {
         return v.toString(16);
     });
 };
+*/
 
 export class Threejs_game extends Threejs_framework{
     constructor(args){
@@ -121,9 +123,7 @@ export class Threejs_game extends Threejs_framework{
                 //console.log("update?");
             }
         }
-
         this.world.addRigidBody( body );
-
     }
 
     setup(){
@@ -135,17 +135,18 @@ export class Threejs_game extends Threejs_framework{
         this.start_physics();
         //this.controlOrbit = new THREE.OrbitControls( this.camera );
         this.hideloadingscreen();
-
         //console.log(window.width);
         //console.log(screen.width);
         console.log("setup");
         //this.createBaseHUD();
+        this.create_raycast_hud();
+        
+        this.createhud();
         //this.createbasescene();
         //this.create_terrain03();
         this.create_terrain04();
         this.simple_pawn();
         //this.createinterface();
-
         var geometry = new THREE.BoxGeometry( 2, 2, 2 );
 		var material = new THREE.MeshBasicMaterial( { color: 0x00ffff } );
 		var cube = new THREE.Mesh( geometry, material );
