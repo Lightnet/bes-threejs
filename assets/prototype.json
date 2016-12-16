@@ -1,0 +1,42 @@
+{
+	"name":"prototype",
+	"version":"",
+	"date":"0/0/2016",
+	"tags": [],
+    "scripts": [],
+    "assets": [],
+    "entities": [
+        {
+            "uuid": "FA577F2E-B435-439D-B612-085E295A695C",
+            "name": "BoxGeometry",
+            "type": "Mesh",
+            "parent": "B1E79603-A80E-4CE5-9C5E-34B223CEECF9",
+            "children": [],
+            "geometrytype": "cube",
+            "parameters": {
+                "width": 1,
+                "height": 1,
+                "depth": 1,
+                "widthSegments": 1,
+                "heightSegments": 1,
+                "depthSegments": 1
+            },
+            "position": {
+                "x": 2,
+                "y": 0.5,
+                "z": 0
+            },
+            "rotation": {
+                "x": 0,
+                "y": 0.5,
+                "z": 0,
+                "_order": "XYZ"
+            },
+            "scaling": {
+                "x": 1,
+                "y": 1,
+                "z": 1
+            }
+        }
+    ]
+}
