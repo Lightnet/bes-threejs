@@ -54,11 +54,14 @@ export class Threejs_framework_physics extends Threejs_framework_module{
 	}
 
 	updateAmmoPhysics(deta) {
+        deta = deta || 1;
 		if ((typeof this.world == 'undefined') || (this.world == null)) {
 			return;
 		}
 		if (typeof Ammo != undefined) {
-			this.world.stepSimulation(1 / 60, 10);
+			//this.world.stepSimulation(1 / 60, 10);
+            this.world.stepSimulation(deta, 2);
+            //console.log(deta);
 		}
 	}
 

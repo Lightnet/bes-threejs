@@ -29,12 +29,12 @@ export class Threejs_game_character extends Threejs_game_module{
         var self = this;
         // SPHERE
         var threeObject = null;
-        var shape = null;
+        //var shape = null;
 
         var objectSize = 3;
-        var margin = 0.05;
+        //var margin = 0.05;
 
-        var radius = 1 + Math.random() * objectSize;
+        //var radius = 1 + Math.random() * objectSize;
         //threeObject = new THREE.Mesh( new THREE.SphereGeometry( radius, 20, 20 ), this.createObjectMaterial() );
         var geometry;
         geometry = new THREE.ConeBufferGeometry( 1, 2, 4 );
@@ -42,15 +42,15 @@ export class Threejs_game_character extends Threejs_game_module{
         geometry.rotateX( - Math.PI / 2 );
 
         threeObject = new THREE.Mesh( geometry, this.createObjectMaterial() );
-
+        threeObject.position.set( 0, terrainMaxHeight + objectSize + 2, 0);
         //=======================================
-
+        /*
         shape = new Ammo.btSphereShape( radius );
         shape.setMargin( margin );
 
         //threeObject.position.set( ( Math.random() - 0.5 ) * terrainWidth * 0.6, terrainMaxHeight + objectSize + 2, ( Math.random() - 0.5 ) * terrainDepth * 0.6 );
         //threeObject.position.set( 64, terrainMaxHeight + objectSize + 2, 64);
-        threeObject.position.set( 0, terrainMaxHeight + objectSize + 2, 0);
+        //threeObject.position.set( 0, terrainMaxHeight + objectSize + 2, 0);
 
         var mass = objectSize * 5;
         var localInertia = new Ammo.btVector3( 0, 0, 0 );
@@ -67,6 +67,9 @@ export class Threejs_game_character extends Threejs_game_module{
         console.log(body);
         body.setFriction(1);
         body.setDamping(0.8, 1.0);
+        */
+        var body = this.create_playershape({obj:threeObject});
+
 
         threeObject.userData.physicsBody = body;
 
@@ -77,7 +80,7 @@ export class Threejs_game_character extends Threejs_game_module{
         var transformAux1 = new Ammo.btTransform();
 
         var vecdir = new THREE.Vector3(); // create once and reuse it!
-        console.log(self.controlOrbit);
+        //console.log(self.controlOrbit);
         var axis = new THREE.Vector3( 0, 1, 0 );
 
         var rotate = 0;
@@ -176,8 +179,6 @@ export class Threejs_game_character extends Threejs_game_module{
                 }
                 if(self.keys.forward){
                     threeObject.rotation.y = theta + Math.PI ;
-
-
                     vecface = new THREE.Vector3( 0, 0, 1).applyAxisAngle( axis, theta );
                     vecface.normalize();
                     vecface.multiplyScalar(speed);
@@ -214,13 +215,12 @@ export class Threejs_game_character extends Threejs_game_module{
                         //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
                     }
                     if(bmove){
-                        console.log("move?");
+                        //console.log("move?");
+                        threeObject.userData.physicsBody.activate();
                         threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
                     }
                 }
                 threeObject.dirrotate = theta;
-
-
                 theta = null;
             }
         }
@@ -244,6 +244,25 @@ export class Threejs_game_character extends Threejs_game_module{
                 console.log(intersects[ 0 ]);
                 intersects[ 0 ].object.material.color.setHex( Math.random() * 0xffffff );
             }
+        }
+
+        threeObject.impulse = function(){
+            console.log("move?");
+            self.tbv30.setValue(0,100,0);
+            threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
+        }
+
+        threeObject.movephysics = function(){
+            //console.log("move?");
+            //self.tbv30.setValue(0,100,0);
+            var transform = new Ammo.btTransform();
+            transform.setIdentity();
+            transform.setOrigin( new Ammo.btVector3( threeObject.position.x, threeObject.position.y+0.1, threeObject.position.z ) );
+            console.log(threeObject.userData.physicsBody);
+            threeObject.userData.physicsBody.setWorldTransform(transform);
+
+
+            //threeObject.userData.physicsBody.setLinearVelocity(self.tbv30);
         }
 
         this.character = threeObject;

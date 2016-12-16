@@ -110,9 +110,7 @@ export class Threejs_game_terrain extends Threejs_game_module{
             //vertices[ j + 2 ] = Math.random(0,1);
         }
 
-
         var plane = new THREE.Mesh( geometry,material );
-
         //plane.update = function(){
             //plane.geometry.attributes.position.needsUpdate = true;
             //var vertices = plane.geometry.attributes.position.array;

@@ -21,7 +21,7 @@ export class Threejs_game_controller extends Threejs_game_module{
 		window.addEventListener("keydown", handleKeyDown, false);
 		window.addEventListener("keyup", handleKeyUp, false);
 		function handleKeyDown(evt){
-            //console.log(evt.keyCode);
+            console.log(evt.keyCode);
             //if (evt.keyCode==69){//E
             if (evt.keyCode==70){//E
                 if(self.character !=null){
@@ -31,14 +31,38 @@ export class Threejs_game_controller extends Threejs_game_module{
                     }
                 }
             }
+            if (evt.keyCode==90){//Z
+                if(self.character !=null){
+                    //console.log(self.character);
+                    //if(typeof self.character.impulse === 'function'){
+                        //self.character.impulse();
+                    //}
+                    //self.start_physics();
+                    //self.create_sphere_physics();
+                    self.character.movephysics();
+                }
+            }
+
+            if (evt.keyCode==88){//X
+                if(self.character !=null){
+                    //console.log(self.character);
+                    //if(typeof self.character.impulse === 'function'){
+                        //self.character.impulse();
+                    //}
+                    //self.start_physics();
+                    self.create_sphere_physics();
+                }
+            }
 
             if (evt.keyCode==67){//C
-                //if(self.character !=null){
+                if(self.character !=null){
                     //console.log(self.character);
-                    //if(typeof self.character.interact === 'function'){
-                        //self.character.interact();
+                    //if(typeof self.character.impulse === 'function'){
+                        //self.character.impulse();
                     //}
-                //}
+                    //self.start_physics();
+                    self.create_sphere_physics();
+                }
             }
 
             if (evt.keyCode==81){//Q
