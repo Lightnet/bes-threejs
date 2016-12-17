@@ -2,7 +2,7 @@
 
 ##3D Webgl:
 
- * https://lightnet.github.io/bes-threejs/threejs_requirejs_app.html
+ * (threeje requirejs app)[https://lightnet.github.io/bes-threejs/threejs_requirejs_app.html]
  * https://lightnet.github.io/bes-threejs/babylonjs_requirejs_app.html
 
 ### Authors and Contributors
