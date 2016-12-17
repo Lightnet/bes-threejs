@@ -1,8 +1,6 @@
 ### Welcome to bes-threejs GitHub.
 
- Note this is work in progress build for babel.js to role playing game dungeon and open world design. The design being work out for game play testing from turn base or to action types.
- 
- The design is currently open and dungeon world system. To have some module format.
+ This is work in progress build for babel.js in javascript to create role playing game dungeon and open world design web browser. The design being work out for game play testing from turn base or to action types. To have some module format.
 
 ##3D Webgl:
 
