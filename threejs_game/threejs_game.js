@@ -214,6 +214,9 @@ define(['exports', '../threejs_framework/threejs_framework', './threejs_game_css
                 //console.log(screen.width);
                 console.log("setup");
                 //this.createBaseHUD();
+                this.create_raycast_hud();
+
+                this.createhud();
                 //this.createbasescene();
                 //this.create_terrain03();
                 this.create_terrain04();
