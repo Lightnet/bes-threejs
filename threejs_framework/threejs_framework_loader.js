@@ -91,7 +91,7 @@ define(["exports", "./threejs_framework_module"], function (exports, _threejs_fr
                         callback();
                     };
                 }
-                script.src = "" + url;
+                script.src = this.jspath + url;
                 document.getElementsByTagName('head')[0].appendChild(script);
             }
         }, {
