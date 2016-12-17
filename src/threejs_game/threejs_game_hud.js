@@ -67,36 +67,45 @@ export class Threejs_game_hud extends Threejs_game_module{
             var material = new THREE.SpriteMaterial( { map: texture } );
 
             var spriteTL = new THREE.Sprite( material );
+
+            var spriteTLL = new THREE.Sprite( material );
             var material = spriteTL.material;
 			var imageWidth = material.map.image.width / 2;
 			var imageHeight = material.map.image.height / 2;
             var width = material.map.image.width;
 			var height = material.map.image.height;
-
+            console.log(width,":",height);
             spriteTL.scale.set( width, height, 1 );
+            spriteTLL.scale.set( width, height, 1 );
             var width = window.innerWidth / 2;
 			var height = window.innerHeight / 2;
             spriteTL.position.set( - width + imageWidth,   height - imageHeight, 0 ); // top left
+            spriteTLL.position.set( - width + imageWidth,   height - imageHeight - 50, 0 ); // top left
 
             self.scenehud.add( spriteTL );
 
+            self.scenehud.add( spriteTLL );
+
             console.log(spriteTL);
-            function onDocumentMouseDown(event){
-                //alert('hi');
-                console.log("click");
+            function onDocumentMouseDown(event){console.log("click");}
+            function onDocumentOver(event){console.log("onDocumentOver");
+                spriteTL.scale.set( 128+10, 128+10, 1 );
+            }
+            function onDocumentOut(event){console.log("onDocumentOut");
+                spriteTL.scale.set( 128, 128, 1 );
             }
 
-            function onDocumentOver(event){
-                //alert('hi');
-                console.log("onDocumentOver");
+            function onDocumentOver2(event){console.log("onDocumentOver");
+                spriteTLL.scale.set( 128+10, 128+10, 1 );
             }
-
-            function onDocumentOut(event){
-                //alert('hi');
-                console.log("onDocumentOut");
+            function onDocumentOut2(event){console.log("onDocumentOut");
+                spriteTLL.scale.set( 128, 128, 1 );
             }
+            spriteTLL.addEventListener("out", onDocumentOut2, false);
+            spriteTLL.addEventListener("over", onDocumentOver2, false);
 
-            spriteTL.addEventListener("mousedown", onDocumentMouseDown, false);
+
+            //spriteTL.addEventListener("mousedown", onDocumentMouseDown, false);
             spriteTL.addEventListener("click", onDocumentMouseDown, false);
 
             spriteTL.addEventListener("out", onDocumentOut, false);
