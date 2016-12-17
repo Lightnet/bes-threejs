@@ -86,8 +86,21 @@ export class Threejs_game_hud extends Threejs_game_module{
                 console.log("click");
             }
 
+            function onDocumentOver(event){
+                //alert('hi');
+                console.log("onDocumentOver");
+            }
+
+            function onDocumentOut(event){
+                //alert('hi');
+                console.log("onDocumentOut");
+            }
+
             spriteTL.addEventListener("mousedown", onDocumentMouseDown, false);
             spriteTL.addEventListener("click", onDocumentMouseDown, false);
+
+            spriteTL.addEventListener("out", onDocumentOut, false);
+            spriteTL.addEventListener("over", onDocumentOver, false);
         }
 
         var mapA = textureLoader.load( "assets/sprite0.png", createHUDSprites);
@@ -96,6 +109,8 @@ export class Threejs_game_hud extends Threejs_game_module{
     create_raycast_hud(){
         //https://threejs.org/docs/api/core/Raycaster.html
         var self = this;
+        var currentui = null;
+        var oldui = null;
 
         var raycaster = new THREE.Raycaster();
         var mouse = new THREE.Vector2();
@@ -105,6 +120,29 @@ export class Threejs_game_hud extends Threejs_game_module{
             // (-1 to +1) for both components
             mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
             mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+            raycaster.setFromCamera( mouse, self.camerahud );
+
+            var intersects = raycaster.intersectObjects( self.scenehud.children );
+            if(intersects.length > 0){
+                //console.log(intersects[0].object);
+                //https://threejs.org/docs/api/core/EventDispatcher.html
+                //intersects[0].object.dispatchEvent({ type: 'click', message: 'vroom vroom!' });
+                currentui = intersects[0].object;
+                //console.log("hit!");
+            }else{
+                currentui =null;
+            }
+            if(currentui != oldui){
+                console.log("current ui!");
+                if(oldui !=null){
+                    oldui.dispatchEvent({ type: 'out', message: 'vroom vroom!' });
+                }
+                oldui = currentui;
+                if(oldui !=null){
+                    oldui.dispatchEvent({ type: 'over', message: 'vroom vroom!' });
+                }
+            }
         }
 
         function raycast_mousedown(event){
