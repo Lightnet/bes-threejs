@@ -91,7 +91,7 @@ define(["exports", "./threejs_framework_module"], function (exports, _threejs_fr
                         callback();
                     };
                 }
-                script.src = url;
+                script.src = "" + url;
                 document.getElementsByTagName('head')[0].appendChild(script);
             }
         }, {
@@ -104,6 +104,7 @@ define(["exports", "./threejs_framework_module"], function (exports, _threejs_fr
 
                 for (var i = 0; i < scriptlist.length; i++) {
                     //threejsapi.addScript(mappdata.scripts[i]);
+                    console.log(scriptlist[i]);
                     this.loadjavascript(scriptlist[i], function () {
                         //initialization code
                         scriptcount++;
