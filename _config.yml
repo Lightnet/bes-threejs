@@ -1,0 +1,8 @@
+title: Bes-threejs
+description: Prototype threejs build for ES6 javascript with nodejs server and web browser game client app.
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
