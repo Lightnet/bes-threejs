@@ -39,7 +39,8 @@ export class Threejs_framework_loader extends Threejs_framework_module{
 	            callback();
 	        };
 	    }
-	    script.src = url;
+        //console.log(this.jspath + url);
+	    script.src = this.jspath + url;
 		document.getElementsByTagName('head')[0].appendChild(script);
 	}
 
@@ -51,6 +52,7 @@ export class Threejs_framework_loader extends Threejs_framework_module{
 
 		for(var i = 0; i < scriptlist.length;i++){
 			//threejsapi.addScript(mappdata.scripts[i]);
+            console.log(scriptlist[i]);
 			this.loadjavascript(scriptlist[i], function(){
 				//initialization code
 				scriptcount++;

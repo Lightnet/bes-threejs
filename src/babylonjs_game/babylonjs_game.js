@@ -39,6 +39,7 @@ Math.degrees = function(radians) {
 };
 
 //RFC Type 4 (random) schema
+/*
 var uuid = function() {
     var buf = new Uint32Array(4);
     window.crypto.getRandomValues(buf);
@@ -50,6 +51,7 @@ var uuid = function() {
         return v.toString(16);
     });
 };
+*/
 
 export class Babylonjs_game extends Babylonjs_framework{
 
@@ -191,6 +193,7 @@ export class Babylonjs_game extends Babylonjs_framework{
 
     //override function...
 	start_scenerender(){
+        /*
 		var self = this;
 		this.engine.runRenderLoop(function() {
             //console.log("hellow");
@@ -206,7 +209,43 @@ export class Babylonjs_game extends Babylonjs_framework{
                 }
 			}
 		});
+        */
 	}
+
+    canvasrender(){
+        console.log("render?");
+        var self = this;
+        this.engine.runRenderLoop(function() {
+            //console.log("hellow");
+			if(self.scene !=null){
+				self.scene.render();
+				for(var i =0; i < self.scene.meshes.length;i++){
+                    //console.log("hellow");
+					if(typeof self.scene.meshes[i].update === 'function'){
+						self.scene.meshes[i].update();
+					}
+				}
+                if(self.selectobject !=null){
+                }
+			}
+		});
+        /*
+		this.engine.runRenderLoop(function() {
+            //console.log("hellow");
+			if(self.scenes[self.scenename] !=null){
+				self.scenes[self.scenename].render();
+				for(var i =0; i < self.scenes[self.scenename].meshes.length;i++){
+                    //console.log("hellow");
+					if(typeof self.scenes[self.scenename].meshes[i].update === 'function'){
+						self.scenes[self.scenename].meshes[i].update();
+					}
+				}
+                if(self.selectobject !=null){
+                }
+			}
+		});
+        */
+    }
 
     init(){
 		super.init();
@@ -218,7 +257,8 @@ export class Babylonjs_game extends Babylonjs_framework{
 	setup_game(){
 		var self = this;
 		console.log("setup game!");
-        this.camera.attachControl(this.canvas, false);
+        this.canvasrender();
+        //this.camera.attachControl(this.canvas, false);
         var box1 = BABYLON.Mesh.CreateBox("box", 1.0, this.scene);
         //console.log("BABYLON.ActionManager");
         //console.log(BABYLON.ActionManager);
@@ -227,25 +267,25 @@ export class Babylonjs_game extends Babylonjs_framework{
         //input key
         //this.camera.attachControl(this.scene.getEngine().getRenderingCanvas());
         //working... some what
-        this.scene.actionManager = new BABYLON.ActionManager(this.scene);
-        this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyUpTrigger, parameter: "r" }, function (evt) {
+        //this.scene.actionManager = new BABYLON.ActionManager(this.scene);
+        //this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyUpTrigger, parameter: "r" }, function (evt) {
             //console.log("typing r...");
             //console.log(evt);
             //if (evt.sourceEvent.key == "r") {
             //}
-        }));
-        this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
+        //}));
+        //this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
             //console.log(" OnKeyUpTrigger typing...");
             //console.log(evt);
             //if (evt.sourceEvent.key == "r") {
             //}
-        }));
-        this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
+        //}));
+        //this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
             //console.log(" OnKeyDownTrigger typing...");
             //console.log(evt);
             //if (evt.sourceEvent.key == "r") {
             //}
-        }));
+        //}));
 
         //box1.actionManager = new BABYLON.ActionManager(this.scene);
         //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, function () {
@@ -279,7 +319,7 @@ export class Babylonjs_game extends Babylonjs_framework{
 		//this.scene.debugLayer.show(true);
 		//this.createbattle_prototype();
 		this.create_input();
-        this.create_gamepadinput();
+        //this.create_gamepadinput();
 		//this.create_movement();
 		//this.ScenePickObject();
 		//this.simple_scene();

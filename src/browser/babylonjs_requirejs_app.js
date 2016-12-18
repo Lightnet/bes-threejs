@@ -15,17 +15,17 @@ requirejs.config({
 // your application logic in there.
 //requirejs(['./app/babylonjs_game_boot']);
 var BABYLONJSAPI;
-function Call(){
+function CallAPI(){
     console.log(BABYLONJSAPI);
 }
 
 requirejs(['./app/babylonjs_game'],(app)=>{
-    console.log(app);
+    //console.log(app);
     var BGame = new app.Babylonjs_game();
-    console.log(BGame);
+    //console.log(BGame);
     BGame.init();
     BABYLONJSAPI = BGame;
-    Call();
+    CallAPI();
 });
 
 requirejs(['./app/gmodule'],(app)=>{
@@ -33,4 +33,4 @@ requirejs(['./app/gmodule'],(app)=>{
     //console.log(app.default);
 });
 
-console.log(BABYLONJSAPI);
+//console.log(BABYLONJSAPI);
