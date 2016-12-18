@@ -122,6 +122,7 @@ export class Babylonjs_game extends Babylonjs_framework{
 
         this.display_inventory = [];
         this.inventory = [];
+        this.scroll_inventory_y = 0;
 
         new Babylonjs_game_network(this);
         new Babylonjs_game_physics(this);
@@ -278,6 +279,22 @@ export class Babylonjs_game extends Babylonjs_framework{
         this.inventory.push(item0);
 
         item0 = new RPGItem({name:"Potion MP"});
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        var item0 = new RPGItem({name:"Potion HP"});
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        var item0 = new RPGItem({name:"Potion MP"});
+        this.inventory.push(item0);
+        this.inventory.push(item0);
+        var item0 = new RPGItem({name:"Potion"});
         this.inventory.push(item0);
     }
 
