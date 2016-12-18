@@ -12,6 +12,8 @@ import {Babylonjs_framework} from '../babylonjs_framework/babylonjs_framework';
 import {ObjectRPGID} from './ObjectRPGID';
 import {RPGStats} from './RPGStats';
 import {RPGStatus} from './RPGStatus';
+import {RPGItem} from './RPGItem';
+
 
 import {Babylonjs_game_network} from './babylonjs_game_network';
 import {Babylonjs_game_physics} from './babylonjs_game_physics';
@@ -117,6 +119,9 @@ export class Babylonjs_game extends Babylonjs_framework{
 
         this.scriptcount = 0;
         self.mappdata = {};
+
+        this.display_inventory = [];
+        this.inventory = [];
 
         new Babylonjs_game_network(this);
         new Babylonjs_game_physics(this);
@@ -254,10 +259,33 @@ export class Babylonjs_game extends Babylonjs_framework{
 		this.createscene_assets();
 	}
 
+    setup_gamedata(){
+        //list inventory
+        this.display_inventory[0] = null;
+        this.display_inventory[1] = null;
+        this.display_inventory[2] = null;
+        this.display_inventory[3] = null;
+        this.display_inventory[4] = null;
+        this.display_inventory[5] = null;
+        this.display_inventory[6] = null;
+        this.display_inventory[7] = null;
+        this.display_inventory[8] = null;
+        this.display_inventory[9] = null;
+
+        this.select_index_inventory = 0;
+
+        var item0 = new RPGItem({name:"Potion HP"});
+        this.inventory.push(item0);
+
+        item0 = new RPGItem({name:"Potion MP"});
+        this.inventory.push(item0);
+    }
+
 	setup_game(){
 		var self = this;
 		console.log("setup game!");
         this.canvasrender();
+        this.setup_gamedata();
         //this.camera.attachControl(this.canvas, false);
         var box1 = BABYLON.Mesh.CreateBox("box", 1.0, this.scene);
         //console.log("BABYLON.ActionManager");

@@ -126,6 +126,9 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
         var _width = (typeof args['width'] === 'number') ? args['width'] : 128; //rect size
         var _height = (typeof args['height'] === 'number') ? args['height'] : 32;
 
+        //console.log(typeof args['click']);
+        var _call = (typeof args['click'] === 'function') ? args['click'] : null;
+        var _bdrag = (typeof args['bdrag'] === 'boolean') ? args['bdrag'] : true;
         var _text = (typeof args['text'] === 'string') ? args['text'] : 'Drag';
 
         var panel = new BABYLON.Rectangle2D({
@@ -148,13 +151,20 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
             //console.log("PointerDown!");
             //console.log(d);
             //console.log(buttonRect);
-            panel.bdrag = true;
-            panel.dragpostion = d.primitivePointerPos;
+            if(_bdrag){
+                panel.bdrag = true;
+                panel.dragpostion = d.primitivePointerPos;
+            }
         }, BABYLON.PrimitivePointerInfo.PointerDown);
         // UP
         paneldrag.pointerEventObservable.add(function (d, s) {
             //console.log("PointerUp!");
-            panel.bdrag = false;
+            if(_bdrag){
+                panel.bdrag = false;
+            }
+            if(_call !=null){
+                _call(d);
+            }
         }, BABYLON.PrimitivePointerInfo.PointerUp);
         //console.log(this.engine);
         //this.screencanvas.size.height
@@ -163,9 +173,11 @@ export class Babylonjs_game_ui extends Babylonjs_game_module{
         paneldrag.pointerEventObservable.add(function (d, s) {
             //console.log(d.canvasPointerPos);
             //console.log(d.primitivePointerPos);
-            if(panel.bdrag){
-                panel.x = (d.canvasPointerPos.x - panel.dragpostion.x - _parent.x);
-                panel.y = -((self.screencanvas.size.height - ( d.canvasPointerPos.y + panel.dragpostion.y - _parent.y))+32);
+            if(_bdrag){
+                if(panel.bdrag){
+                    panel.x = (d.canvasPointerPos.x - panel.dragpostion.x - _parent.x);
+                    panel.y = -((self.screencanvas.size.height - ( d.canvasPointerPos.y + panel.dragpostion.y - _parent.y))+32);
+                }
             }
         }, BABYLON.PrimitivePointerInfo.PointerMove);
         paneldrag.actionManager.registerAction(new BABYLON.SetValueAction(BABYLON.ActionManager.OnPointerOutTrigger,panel, "bdrag", false));
