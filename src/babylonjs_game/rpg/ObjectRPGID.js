@@ -34,5 +34,8 @@ export class ObjectRPGID{
 		this.buyprice = args['buyprice'] || 0;
 		this.sellprice = args['sellprice'] || 0;
 		this.keywords = args['keywords'] || [];
+
+		this.stack = args['stack'] || 1;
+		this.maxstack = args['maxstack'] || 1;
 	}
 }

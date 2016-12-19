@@ -37,7 +37,6 @@ import {Babylonjs_game_battle} from './system/Babylonjs_game_battle';
 import {Babylonjs_game_parse} from './system/Babylonjs_game_parse';
 import {Babylonjs_game_terrain} from './terrain/Babylonjs_game_terrain';
 
-
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
@@ -319,6 +318,9 @@ export class Babylonjs_game extends Babylonjs_framework{
         this.inventory.push(item0);
         var item0 = new RPGItem({name:"Potion"});
         this.inventory.push(item0);
+
+        var item0 = new RPGItem({name:"Potion MP"});
+        this.inventory.push(item0);
     }
 
 	setup_game(){
@@ -326,8 +328,13 @@ export class Babylonjs_game extends Babylonjs_framework{
 		console.log("setup game!");
         this.canvasrender();
         this.setup_gamedata();
+
+        this.scenepick_editor();
+
+        //this.createinventoryHUD();
         //this.camera.attachControl(this.canvas, false);
         var box1 = BABYLON.Mesh.CreateBox("box", 1.0, this.scene);
+        this.showAxis(3, box1);
         //console.log("BABYLON.ActionManager");
         //console.log(BABYLON.ActionManager);
 
@@ -398,10 +405,26 @@ export class Babylonjs_game extends Babylonjs_framework{
         //this.simpleterrain04();
 
 
+        //this.spawn_player({y:32});
         this.spawn_player({y:32});
 
         //this.create_character();
         //this.loadmap_requestXML();
+
+        /*
+        var panel_group2d = new BABYLON.Group2D({
+            parent:this.screencanvas,
+            id:"panel_group2d"+"test",
+            marginAlignment: "h: left, v: top",
+            height:100,
+            width:100
+            //scale:0.6 //limited since backgroundRoundRadius effect render
+            //scale:1 //limited since backgroundRoundRadius effect render
+        });
+
+        var panel = this.create_R2D_Drag01(panel_group2d,{text:'DISPLAY',x:0,y:0,width:500});
+        */
+
 	}
 
 }

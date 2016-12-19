@@ -32,7 +32,7 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
 
         objphysics.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move:true, restitution: 0, mass:1, friction:10});
         //console.log(typeof args['x']);
-        objphysics.position.x = (typeof args['x'] === 'number') ? args['y'] : 4;
+        objphysics.position.x = (typeof args['x'] === 'number') ? args['x'] : 4;
         objphysics.position.y = (typeof args['y'] === 'number') ? args['y'] : 0.5;
         objphysics.position.z = (typeof args['z'] === 'number') ? args['z'] : 0;
         //console.log(args['x'],":",args['y'],":",args['z']);

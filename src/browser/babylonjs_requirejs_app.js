@@ -25,7 +25,7 @@ requirejs(['./app/babylonjs_game'],(app)=>{
     //console.log(BGame);
     BGame.init();
     BABYLONJSAPI = BGame;
-    CallAPI();
+    //CallAPI();
 });
 
 requirejs(['./app/system/gmodule'],(app)=>{

@@ -45,52 +45,54 @@ export class Babylonjs_game_hud_inventory extends Babylonjs_game_module{
             self.updateinventorydisplay();
         }});
 
-        this.display_inventory[0] = this.create_R2D_Drag02(panel,{text:'Item 00',x:10,y:-32*2,bdrag:false,click:(event)=>{
+        var width = 192;
+
+        this.display_inventory[0] = this.create_R2D_Drag02(panel,{text:'Item 00',x:10,y:-32*2,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 0;
             self.selectInventory();
         }});
-        this.display_inventory[1] = this.create_R2D_Drag02(panel,{text:'Item 01',x:10,y:-32*3,bdrag:false,click:(event)=>{
+        this.display_inventory[1] = this.create_R2D_Drag02(panel,{text:'Item 01',x:10,y:-32*3,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 1;
             self.selectInventory();
         }});
-        this.display_inventory[2] = this.create_R2D_Drag02(panel,{text:'Item 02',x:10,y:-32*4,bdrag:false,click:(event)=>{
+        this.display_inventory[2] = this.create_R2D_Drag02(panel,{text:'Item 02',x:10,y:-32*4,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 2;
             self.selectInventory();
         }});
-        this.display_inventory[3] = this.create_R2D_Drag02(panel,{text:'Item 03',x:10,y:-32*5,bdrag:false,click:(event)=>{
+        this.display_inventory[3] = this.create_R2D_Drag02(panel,{text:'Item 03',x:10,y:-32*5,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 3;
             self.selectInventory();
         }});
-        this.display_inventory[4] = this.create_R2D_Drag02(panel,{text:'Item 04',x:10,y:-32*6,bdrag:false,click:(event)=>{
+        this.display_inventory[4] = this.create_R2D_Drag02(panel,{text:'Item 04',x:10,y:-32*6,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 4;
             self.selectInventory();
         }});
-        this.display_inventory[5] = this.create_R2D_Drag02(panel,{text:'Item 05',x:10,y:-32*7,bdrag:false,click:(event)=>{
+        this.display_inventory[5] = this.create_R2D_Drag02(panel,{text:'Item 05',x:10,y:-32*7,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 5;
             self.selectInventory();
         }});
-        this.display_inventory[6] = this.create_R2D_Drag02(panel,{text:'Item 06',x:10,y:-32*8,bdrag:false,click:(event)=>{
+        this.display_inventory[6] = this.create_R2D_Drag02(panel,{text:'Item 06',x:10,y:-32*8,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 6;
             self.selectInventory();
         }});
-        this.display_inventory[7] = this.create_R2D_Drag02(panel,{text:'Item 07',x:10,y:-32*9,bdrag:false,click:(event)=>{
+        this.display_inventory[7] = this.create_R2D_Drag02(panel,{text:'Item 07',x:10,y:-32*9,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 7;
             self.selectInventory();
         }});
-        this.display_inventory[8] = this.create_R2D_Drag02(panel,{text:'Item 08',x:10,y:-32*10,bdrag:false,click:(event)=>{
+        this.display_inventory[8] = this.create_R2D_Drag02(panel,{text:'Item 08',x:10,y:-32*10,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 8;
             self.selectInventory();
         }});
-        this.display_inventory[9] = this.create_R2D_Drag02(panel,{text:'Item 09',x:10,y:-32*11,bdrag:false,click:(event)=>{
+        this.display_inventory[9] = this.create_R2D_Drag02(panel,{text:'Item 09',x:10,y:-32*11,width: width,bdrag:false,click:(event)=>{
             //console.log("click item!");
             self.select_index_inventory = 9;
             self.selectInventory();
@@ -102,6 +104,32 @@ export class Babylonjs_game_hud_inventory extends Babylonjs_game_module{
             //self.selectInventory();
         //}});
         this.inventory_ui = inventory_group2d;
+
+
+        this.create_R2D_Drag02(panel,{text:'Used',x:256,y:-32*1,bdrag:false, width: 50,click:(event)=>{
+            console.log("Used");
+            self.selectitem_used();
+        }});
+
+        this.create_R2D_Drag02(panel,{text:'Drop',x:256,y:-32*2,bdrag:false, width: 50,click:(event)=>{
+            console.log("Drop");
+            self.selectitem_drop();
+        }});
+
+        this.create_R2D_Drag02(panel,{text:'Equip',x:256,y:-32*3,bdrag:false, width: 50,click:(event)=>{
+            console.log("Equip");
+            self.selectitem_equip();
+        }});
+
+        this.create_R2D_Drag02(panel,{text:'Sort',x:256,y:-32*4,bdrag:false, width: 50,click:(event)=>{
+            console.log("Sort");
+            self.selectitem_sort();
+        }});
+
+        this.create_R2D_Drag02(panel,{text:'Scrap',x:256,y:-32*5,bdrag:false, width: 50,click:(event)=>{
+            console.log("Scrap");
+            self.selectitem_scrap();
+        }});
     }
 
     updateinventorydisplay(){
@@ -156,6 +184,26 @@ export class Babylonjs_game_hud_inventory extends Babylonjs_game_module{
             this.scroll_inventory_y = this.inventory.length - 10;
         }
         console.log(this.scroll_inventory_y);
+    }
+
+    selectitem_used(){
+        console.log("selectitem_used");
+    }
+
+    selectitem_drop(){
+        console.log("selectitem_drop");
+    }
+
+    selectitem_equip(){
+        console.log("selectitem_equip");
+    }
+
+    selectitem_sort(){
+        console.log("selectitem_sort");
+    }
+
+    selectitem_scrap(){
+        console.log("selectitem_scrap");
     }
 
 }

@@ -23,61 +23,42 @@ export class Babylonjs_game_hud extends Babylonjs_game_module{
         //console.log(this.screencanvas);
 	}
 
-    setupeditor(){
-        //console.log("setupeditor");
+    hidemenus(){
         var self = this;
-        var editor_group2d = new BABYLON.Group2D({
-            parent:this.screencanvas,
-            id:"screencanvas_group2d",
-            marginAlignment: "h: left, v: top"
-            //scale:0.6 //limited since backgroundRoundRadius effect render
-            //scale:1 //limited since backgroundRoundRadius effect render
-        });
+        if(self.inventory_ui !=null){
+            if(self.inventory_ui.isVisible){
+                self.inventory_ui.levelVisible = false;
+            }
+        }
+        if(self.skills_ui !=null){
+            if(self.skills_ui.isVisible){
+                self.skills_ui.levelVisible = false;
+            }
+        }
 
-        var panel = this.create_R2D_Drag01(editor_group2d,{text:'Drag Panel',x:10,y:-142});
+        if(self.map_ui !=null){
+            if(self.map_ui.isVisible){
+                self.map_ui.levelVisible = false;
+            }
+        }
 
-        //tab
-        this.create_R2D_Text01(panel,{text:"Object",balign:true,x:10,y:-32*1, width: 70});
-        this.create_R2D_Text01(panel,{text:"Transform",balign:true,x:84,y:-32*1, width: 70});
-        this.create_R2D_Text01(panel,{text:"Materials",balign:true,x:158,y:-32*1, width: 70});
-        this.create_R2D_Text01(panel,{text:"Scripts",balign:true,x:234,y:-32*1, width: 70});
-        this.create_R2D_Text01(panel,{text:"Animations",balign:true,x:308,y:-32*1, width: 70});
+        if(self.home_ui !=null){
+            if(self.home_ui.isVisible){
+                self.home_ui.levelVisible = false;
+            }
+        }
 
-        //props
-        var _obj = null;
-        this.create_R2D_Text01(panel,{text:"ID:",x:10,y:-32*2});
-        _obj = this.create_R2D_TextInput01(panel,{text:"None",x:34,y:-32*2,returnarray:true});
-        this.selectobject_text_id = _obj[1];
+        if(self.settings_ui !=null){
+            if(self.settings_ui.isVisible){
+                self.settings_ui.levelVisible = false;
+            }
+        }
 
-        this.create_R2D_Text01(panel,{text:"px",x:10,y:-32*3});
-        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*3,returnarray:true});
-        this.selectobject_text_px = _obj[1];
-        this.create_R2D_Text01(panel,{text:"py",x:10,y:-32*4});
-        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*4,returnarray:true});
-        this.selectobject_text_py = _obj[1];
-        this.create_R2D_Text01(panel,{text:"pz",x:10,y:-32*5});
-        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*5,returnarray:true});
-        this.selectobject_text_pz = _obj[1];
-
-        this.create_R2D_Text01(panel,{text:"rx",x:10,y:-32*6});
-        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*6,returnarray:true});
-        this.selectobject_text_rx = _obj[1];
-        this.create_R2D_Text01(panel,{text:"ry",x:10,y:-32*7});
-        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*7,returnarray:true});
-        this.selectobject_text_ry = _obj[1];
-        this.create_R2D_Text01(panel,{text:"rz",x:10,y:-32*8});
-        _obj = this.create_R2D_TextInput01(panel,{text:"0",x:34,y:-32*8,returnarray:true});
-        this.selectobject_text_rz = _obj[1];
-
-        this.create_R2D_Text01(panel,{text:"sx",x:10,y:-32*9});
-        _obj = this.create_R2D_TextInput01(panel,{text:"1",x:34,y:-32*9,returnarray:true});
-        this.selectobject_text_sx = _obj[1];
-        this.create_R2D_Text01(panel,{text:"sy",x:10,y:-32*10});
-        _obj = this.create_R2D_TextInput01(panel,{text:"1",x:34,y:-32*10,returnarray:true});
-        this.selectobject_text_sy = _obj[1];
-        this.create_R2D_Text01(panel,{text:"sz",x:10,y:-32*11});
-        _obj = this.create_R2D_TextInput01(panel,{text:"1",x:34,y:-32*11,returnarray:true});
-        this.selectobject_text_sz = _obj[1];
+        if(self.editor_ui !=null){
+            if(self.editor_ui.isVisible){
+                self.editor_ui.levelVisible = false;
+            }
+        }
     }
 
     create2DHUD(){
@@ -149,27 +130,71 @@ export class Babylonjs_game_hud extends Babylonjs_game_module{
 
         this.AddButton(screencanvas_group2d_RB, {id:"R2DEditor",text:"Editor",x:-36+(64*1)*-1,y:4,width: 52, height: 32}, ()=>{
             console.log("Editor..");
+            if(self.editor_ui == null){
+                self.setupeditor();
+            }else{
+                //console.log(self.editor_ui);
+                if(self.editor_ui.isVisible){
+                    //console.log(false);
+                    self.editor_ui.levelVisible = false;
+                }else{
+                    self.hidemenus();
+                    //console.log(true);
+                    self.editor_ui.levelVisible = true;
+                    self.updateinventorydisplay();
+                }
+            }
         });
 
 
         this.AddButton(screencanvas_group2d_RB, {id:"R2DSettings",text:"Settings",x:-36+(64*2)*-1,y:4,width: 52, height: 32}, ()=>{
             console.log("Settings..");
+            if(self.settings_ui == null){
+                //self.createinventoryHUD();
+            }else{
+                //console.log(self.inventory_ui);
+                if(self.settings_ui.isVisible){
+                    //console.log(false);
+                    self.settings_ui.levelVisible = false;
+                }else{
+                    self.hidemenus();
+                    //console.log(true);
+                    self.settings_ui.levelVisible = true;
+                    //self.updateinventorydisplay();
+                }
+            }
         });
 
         this.AddButton(screencanvas_group2d_RB, {id:"R2DMap",text:"Map",x:-36+(64*3)*-1,y:4,width: 52, height: 32}, ()=>{
-            console.log("map..");
+            //console.log("map..");
+            if(self.map_ui == null){
+                //self.createinventoryHUD();
+            }else{
+                //console.log(self.inventory_ui);
+                if(self.map_ui.isVisible){
+                    //console.log(false);
+                    self.map_ui.levelVisible = false;
+                }else{
+                    self.hidemenus();
+                    //console.log(true);
+                    self.map_ui.levelVisible = true;
+                    //self.updateinventorydisplay();
+                }
+            }
         });
 
         this.AddButton(screencanvas_group2d_RB, {id:"R2DSkills",text:"Skills",x:-36+(64*4)*-1,y:4,width: 52, height: 32}, ()=>{
             console.log("R2DSkills clicked!");
+
             if(self.skills_ui == null){
                 self.createskillsHUD();
             }else{
-                console.log(self.skills_ui);
+                //console.log(self.skills_ui);
                 if(self.skills_ui.isVisible){
                     //console.log(false);
                     self.skills_ui.levelVisible = false;
                 }else{
+                    self.hidemenus();
                     //console.log(true);
                     self.skills_ui.levelVisible = true;
                 }
@@ -181,11 +206,12 @@ export class Babylonjs_game_hud extends Babylonjs_game_module{
                 self.createinventoryHUD();
                 self.updateinventorydisplay();
             }else{
-                console.log(self.inventory_ui);
+                //console.log(self.inventory_ui);
                 if(self.inventory_ui.isVisible){
                     //console.log(false);
                     self.inventory_ui.levelVisible = false;
                 }else{
+                    self.hidemenus();
                     //console.log(true);
                     self.inventory_ui.levelVisible = true;
                     self.updateinventorydisplay();
@@ -195,6 +221,18 @@ export class Babylonjs_game_hud extends Babylonjs_game_module{
 
         this.AddButton(screencanvas_group2d_RB, {id:"R2DHome",text:"Home",x:-36+(64*6)*-1,y:4,width: 52, height: 32}, ()=>{
             console.log("home..");
+            if(self.home_ui == null){
+                self.createinventoryHUD();
+                self.updateinventorydisplay();
+            }else{
+                if(self.home_ui.isVisible){
+                    self.home_ui.levelVisible = false;
+                }else{
+                    self.hidemenus();
+                    self.home_ui.levelVisible = true;
+                    //self.updateinventorydisplay();
+                }
+            }
         });
 
         //this.setupeditor();
