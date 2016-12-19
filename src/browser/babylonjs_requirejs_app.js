@@ -28,7 +28,7 @@ requirejs(['./app/babylonjs_game'],(app)=>{
     CallAPI();
 });
 
-requirejs(['./app/gmodule'],(app)=>{
+requirejs(['./app/system/gmodule'],(app)=>{
     //console.log(app.default['value']);
     //console.log(app.default);
 });

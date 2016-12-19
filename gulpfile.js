@@ -169,3 +169,6 @@ gulp.task('buildassets',['assets','thirdparties']);
 
 //main entry call task or default task call
 gulp.task('default',['server','build','watch']);
+
+//main entry call task or default task call
+gulp.task('default2',['server','watch']);

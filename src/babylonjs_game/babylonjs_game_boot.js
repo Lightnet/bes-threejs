@@ -17,21 +17,15 @@ import {Babylonjs_game} from './babylonjs_game';
 //init
 var config = {};
 config = {mode:"editor"};
-
 var baylonjs_Game = new Babylonjs_game(config);
 console.log(baylonjs_Game);
 baylonjs_Game.init();
-
 require(['./app/gmodule'], function (gmodule) {
     console.log(window.Foo); // {someValue: 1}
     console.log(gmodule); // {someValue: 2}
     //console.log(window.Foo); // {someValue: 1}
     //console.log(gmodule); // {someValue: 2}
 });
-
-
-
-
 /*
 //example script
 var canvas = document.getElementById('renderCanvas');
@@ -48,13 +42,10 @@ var createScene = function(){
     var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
     return scene;
 }
-
 var scene = createScene();
-
 engine.runRenderLoop(function(){
     scene.render();
 });
-
 window.addEventListener('resize', function(){
    engine.resize();
 });

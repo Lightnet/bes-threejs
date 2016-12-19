@@ -9,25 +9,33 @@
 
 import {Babylonjs_framework} from '../babylonjs_framework/babylonjs_framework';
 
-import {ObjectRPGID} from './ObjectRPGID';
-import {RPGStats} from './RPGStats';
-import {RPGStatus} from './RPGStatus';
-import {RPGItem} from './RPGItem';
+import {ObjectRPGID} from './rpg/ObjectRPGID';
+import {RPGStats} from './rpg/RPGStats';
+import {RPGStatus} from './rpg/RPGStatus';
+import {RPGItem} from './rpg/RPGItem';
 
+import {Babylonjs_game_network} from './network/Babylonjs_game_network';
+import {Babylonjs_game_physics} from './physics/Babylonjs_game_physics';
+import {Babylonjs_game_load} from './load/Babylonjs_game_load';
+import {Babylonjs_game_scene} from './scene/Babylonjs_game_scene';
+import {Babylonjs_game_hud} from './hud/Babylonjs_game_hud';
+import {Babylonjs_game_hud_battle} from './hud/Babylonjs_game_hud_battle';
+import {Babylonjs_game_hud_inventory} from './hud/Babylonjs_game_hud_inventory';
+import {Babylonjs_game_hud_loot} from './hud/Babylonjs_game_hud_loot';
+import {Babylonjs_game_hud_skills} from './hud/Babylonjs_game_hud_skills';
+import {Babylonjs_game_hud_shop} from './hud/Babylonjs_game_hud_shop';
+import {Babylonjs_game_hud_storage} from './hud/Babylonjs_game_hud_storage';
+import {Babylonjs_game_hud_trade} from './hud/Babylonjs_game_hud_trade';
+import {Babylonjs_game_hud_market} from './hud/Babylonjs_game_hud_market';
 
-import {Babylonjs_game_network} from './babylonjs_game_network';
-import {Babylonjs_game_physics} from './babylonjs_game_physics';
-import {Babylonjs_game_load} from './babylonjs_game_load';
-import {Babylonjs_game_scene} from './babylonjs_game_scene';
-import {Babylonjs_game_hud} from './babylonjs_game_hud';
-import {Babylonjs_game_ui} from './babylonjs_game_ui';
-import {Babylonjs_game_editor} from './babylonjs_game_editor';
-import {Babylonjs_game_assets} from './babylonjs_game_assets';
-import {Babylonjs_game_character} from './babylonjs_game_character';
-import {Babylonjs_game_controller} from './babylonjs_game_controller';
-import {Babylonjs_game_battle} from './babylonjs_game_battle';
-import {Babylonjs_game_parse} from './babylonjs_game_parse';
-import {Babylonjs_game_terrain} from './babylonjs_game_terrain';
+import {Babylonjs_game_ui} from './ui/Babylonjs_game_ui';
+import {Babylonjs_game_editor} from './editor/Babylonjs_game_editor';
+import {Babylonjs_game_assets} from './system/Babylonjs_game_assets';
+import {Babylonjs_game_character} from './character/Babylonjs_game_character';
+import {Babylonjs_game_controller} from './controller/Babylonjs_game_controller';
+import {Babylonjs_game_battle} from './system/Babylonjs_game_battle';
+import {Babylonjs_game_parse} from './system/Babylonjs_game_parse';
+import {Babylonjs_game_terrain} from './terrain/Babylonjs_game_terrain';
 
 
 // Converts from degrees to radians.
@@ -129,13 +137,28 @@ export class Babylonjs_game extends Babylonjs_framework{
         new Babylonjs_game_parse(this);
         new Babylonjs_game_load(this);
         new Babylonjs_game_scene(this);
+
         new Babylonjs_game_hud(this);
+        new Babylonjs_game_hud_battle(this);
+        new Babylonjs_game_hud_inventory(this);
+        new Babylonjs_game_hud_loot(this);
+        new Babylonjs_game_hud_skills(this);
+        new Babylonjs_game_hud_shop(this);
+        new Babylonjs_game_hud_storage(this);
+        new Babylonjs_game_hud_trade(this);
+        new Babylonjs_game_hud_market(this);
+
+
         new Babylonjs_game_ui(this);
         new Babylonjs_game_editor(this);
         new Babylonjs_game_assets(this);
+
         new Babylonjs_game_character(this);
+
         new Babylonjs_game_controller(this);
+
         new Babylonjs_game_battle(this);
+
         new Babylonjs_game_terrain(this);
 
     }
