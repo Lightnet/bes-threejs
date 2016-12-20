@@ -146,7 +146,7 @@ export class Babylonjs_game_hud_inventory extends Babylonjs_game_module{
                 this.display_inventory[i].children[0].children[0].text = "Empty";
             }
         }
-        index =null;
+        index = null;
     }
 
     selectInventory(){

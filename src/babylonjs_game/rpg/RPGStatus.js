@@ -49,6 +49,9 @@ export class RPGStatus extends ObjectRPGID{
 		this.totalmagicattack = 0;
 		this.totalmagicdefense = 0;
 
+		this.bshop = false;
+		this.shop = [];
+
 		this.queryaction = ""; //attack, skill
 		this.target = null;
 		this.targets = null;

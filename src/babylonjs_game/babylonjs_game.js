@@ -101,6 +101,8 @@ export class Babylonjs_game extends Babylonjs_framework{
 		this.keys={letft:0,right:0,forward:0,back:0};
 		this.moveVector = new BABYLON.Vector3(0, 0, 0);
 
+        this.npc = null;
+
         this.leftstickmove = false;
         this.joyleftdir = new BABYLON.Vector3(0,0,0);
         this.joylefttrigger = 0;
@@ -284,11 +286,19 @@ export class Babylonjs_game extends Babylonjs_framework{
         this.inventory.push(item0);
     }
 
+    createshopmenu_variable(){
+        this.display_shop = [];
+        this.select_index_shop = 0;
+        this.scroll_shop_y = 0;
+    }
+
 	setup_game(){
 		var self = this;
 		console.log("setup game!");
         this.canvasrender();
         this.setup_gamedata();
+
+        this.createshopmenu_variable();
 
         this.scenepick_editor();
 
@@ -324,6 +334,22 @@ export class Babylonjs_game extends Babylonjs_framework{
         //}));
 
         //box1.actionManager = new BABYLON.ActionManager(this.scene);
+        //console.log(box1);
+        //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction("trigger", function () {
+            //alert('player clicked');
+            //console.log("trigger!");
+        //}));
+
+
+        //box1.actionManager.processTrigger("trigger",()=>{});
+
+        //setInterval(()=> {
+            //code for the drums playing goes here
+            //box1.actionManager.processTrigger("trigger",()=>{});
+        //},8000);
+
+
+
         //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, function () {
             //alert('player clicked');
         //}));
@@ -367,7 +393,11 @@ export class Babylonjs_game extends Babylonjs_framework{
 
 
         //this.spawn_player({y:32});
-        this.spawn_player({y:64});
+        var npc = this.spawn_player({y:64});
+        console.log(npc);
+        npc.status.bshop = true;
+        var item0 = new RPGItem({name:"Potion MP"});
+        npc.status.shop.push(item0);
 
 
         this.spawn_player({y:32,bplayer:true});

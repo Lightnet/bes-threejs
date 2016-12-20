@@ -128,7 +128,7 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
             var rayPick = new BABYLON.Ray(tmpmodel.objphysics.position, fdir,2);
             var meshFound = self.scene.pickWithRay(rayPick, function (item) {
                 //console.log(item.name);
-                console.log(item.objtype);
+                //console.log(item.objtype);
                 if(item.objtype == null){
                     return false;
                 }
@@ -140,6 +140,12 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
             });
             if (meshFound != null && meshFound.pickedPoint != null) {
                 console.log("found!");
+                //meshFound
+                console.log(meshFound.pickedMesh);
+                if(typeof meshFound.pickedMesh.interactmenu  === 'function' ){
+                    meshFound.pickedMesh.interactmenu();
+                }
+
                 hit.position = meshFound.pickedPoint;
           }else{
               //console.log("not found!");
@@ -147,6 +153,18 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
             rayPick=null;
             fdir=null;
         }
+
+        tmpmodel.interactmenu=function(){
+            //console.log(this);
+            if(this.status !=null){
+                self.npc = this.status;
+                if(this.status.bshop){
+                    self.checkshop();
+                }
+            }
+        }
+
+
 
         //var name = args['name'] || "none";
         //console.log(name)
