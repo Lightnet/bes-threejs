@@ -54,7 +54,8 @@ Gun.chain.value = function (cb, opt) {
 };
 
 // connecting to any peers array list
-var peers = ['http://localhost/gun'];
+//http://127.0.0.1:8080/gun.js
+var peers = ['http://127.0.0.1/gun'];
 var gun = Gun(peers);
 
 //gun.map(function(message, id) {

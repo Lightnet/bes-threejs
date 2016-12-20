@@ -99,7 +99,7 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
     					}, 0);
     				}
     			} else { // Show axis for the clicked mesh. I think the meshes with axis should have some flag that should be checked here
-    				clickMesh(lastMesh, pickInfo.pickedMesh);
+    				self.clickMesh(lastMesh, pickInfo.pickedMesh);
     				lastMesh = pickInfo.pickedMesh;
     			}
     		}

@@ -23,7 +23,7 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
         tmpmodel.isVisible = true;
         //var objphysics = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
         var objphysics = BABYLON.MeshBuilder.CreateSphere("indicator", {diameter: 1,diameterX:1}, this.scene);
-        //objphysics.isVisible = false;
+        objphysics.isVisible = false;
         tmpmodel.objphysics = objphysics;
         tmpmodel.objtype = "npc";
 
@@ -64,7 +64,7 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
                 //var currentAngle = 0;
                 //console.log(keys.left);
                 if(keys.left){
-                    console.log("left");
+                    //console.log("left");
                     currentAngle = diffAngle + (Math.PI/2);
                     needMove = true;
 				}
@@ -122,18 +122,24 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
 		}
 
         tmpmodel.interact=function(){
+            console.log("interact");
             //console.log("???" + model.facedir);
             var fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -2), BABYLON.Matrix.RotationY(tmpmodel.facedir));
             var rayPick = new BABYLON.Ray(tmpmodel.objphysics.position, fdir,2);
             var meshFound = self.scene.pickWithRay(rayPick, function (item) {
                 //console.log(item.name);
-                if (item.name.indexOf("box") == 0)
-                    return true;
-                else
+                console.log(item.objtype);
+                if(item.objtype == null){
                     return false;
+                }
+                if (item.objtype.indexOf("npc") == 0){
+                    return true;
+                }else{
+                    return false;
+                }
             });
             if (meshFound != null && meshFound.pickedPoint != null) {
-                //console.log("found!");
+                console.log("found!");
                 hit.position = meshFound.pickedPoint;
           }else{
               //console.log("not found!");
@@ -144,7 +150,6 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
 
         //var name = args['name'] || "none";
         //console.log(name)
-
         return tmpmodel;
     }
 }

@@ -8,6 +8,10 @@
 */
 import {Babylonjs_game_module} from '../system/Babylonjs_game_module';
 
+import {RPGStatus} from '../rpg/RPGStatus';
+import {RPGStats} from '../rpg/RPGStats';
+import {ObjectRPGID} from '../rpg/ObjectRPGID';
+
 export class Babylonjs_game_controller extends Babylonjs_game_module{
 
     constructor(args){
@@ -46,11 +50,18 @@ export class Babylonjs_game_controller extends Babylonjs_game_module{
 	}
 
     spawn_player(args){
+        args = args || {};
         var self = this;
+
+        var _status = new RPGStatus();
+        //var _status = new ObjectRPGID();
+        console.log(_status);
+
         if(args == null){args = {};};
         var _x = (typeof args['x'] === 'number') ? args['x'] : 0;
         var _y = (typeof args['y'] === 'number') ? args['y'] : 0.5;
         var _z = (typeof args['z'] === 'number') ? args['z'] : 0;
+        var bplayer = (typeof args['bplayer'] === 'boolean') ? args['bplayer'] : false;
         //console.log("create movement");
 		var self = this;
 		var camera = new BABYLON.ArcRotateCamera("arcCamera1",0,0,10,BABYLON.Vector3.Zero(),this.scene);
@@ -58,14 +69,23 @@ export class Babylonjs_game_controller extends Babylonjs_game_module{
         camera.attachControl(this.canvas,false);
         camera.setPosition(new BABYLON.Vector3(0,5,5));
 		this.scene.activeCamera.attachControl(self.canvas);
-		this.scene.activeCamera = camera;
-        this.thirdcamera = camera;
+        if(bplayer){
+            this.scene.activeCamera = camera;
+            this.thirdcamera = camera;
+        }
         var Material = new BABYLON.StandardMaterial("material", this.scene);
         Material.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
         var model = this.create_character({x:_x,y:_y,z:_z});
-        this.controllerid = model.id;
-        this.model = model;
+
+        model.status = _status;
+
+        if(bplayer){
+            this.controllerid = model.id;
+            this.model = model;
+        }
         camera.setTarget(model);
+
+        return model;
 	}
 
     create_input(){
@@ -78,7 +98,7 @@ export class Babylonjs_game_controller extends Babylonjs_game_module{
             //console.log(evt.keyCode);
             if (evt.keyCode==69){//E
                 if(self.model !=null){
-                    console.log(self.model);
+                    //console.log(self.model);
                     if(typeof self.model.interact === 'function'){
                         self.model.interact();
                     }

@@ -8,13 +8,16 @@
 */
 
 import {ObjectRPGID} from './ObjectRPGID';
+import {RPGStats} from './RPGStats';
 
-class RPGStatus extends ObjectRPGID{
+export class RPGStatus extends ObjectRPGID{
 	constructor(args){
 		super(args);
-		this.stats= new RPGStats();
+		args = args || {};
 
-		this.health = 5;
+		this.stats = new RPGStats();
+
+		this.health = args['health'] || 5;
 		this.maxhealth = 5;
 
 		this.magic = 0;
@@ -34,8 +37,8 @@ class RPGStatus extends ObjectRPGID{
 		this.speed = 1;
 		this.criticalhit = 1;
 
-		this.attack = 1;
-		this.defense = 0;
+		this.attack = args['attack'] || 1;
+		this.defense = args['defense'] || 0;
 
 		this.magicattack = 0;
 		this.magicdefense = 0;
@@ -63,17 +66,5 @@ class RPGStatus extends ObjectRPGID{
 		this.isturnfinish = false;
 		this.bskipturn = false;
 
-		if(args !=null){
-			if(args['attack'] !=null ){
-				this.attack = args['attack'];
-			}
-			if(args['defense'] !=null ){
-				this.defense = args['defense'];
-			}
-
-			if(args['health'] !=null){
-				this.health = args['health'];
-			}
-		}
 	}
 }

@@ -47,8 +47,10 @@ gulp.task('src', () => {
                         '!src/browser/*.js',
                         '!src/babylonjs_framework/*.js',
                         '!src/babylonjs_game/*.js',
+                        '!src/babylonjs_game/**/*.js',
                         '!src/threejs_framework/*.js',
-                        '!src/threejs_game/*.js'])
+                        '!src/threejs_game/*.js',
+                        '!src/threejs_game/**/*.js'])
         .pipe(babel({
             presets: ['es2015']
         }))
