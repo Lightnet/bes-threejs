@@ -1,4 +1,4 @@
-define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_game_module) {
+define(["exports", "../system/Babylonjs_game_module"], function (exports, _Babylonjs_game_module) {
     "use strict";
 
     Object.defineProperty(exports, "__esModule", {
@@ -74,7 +74,7 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
                 tmpmodel.isVisible = true;
                 //var objphysics = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
                 var objphysics = BABYLON.MeshBuilder.CreateSphere("indicator", { diameter: 1, diameterX: 1 }, this.scene);
-                //objphysics.isVisible = false;
+                objphysics.isVisible = false;
                 tmpmodel.objphysics = objphysics;
                 tmpmodel.objtype = "npc";
 
@@ -83,7 +83,7 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
 
                 objphysics.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move: true, restitution: 0, mass: 1, friction: 10 });
                 //console.log(typeof args['x']);
-                objphysics.position.x = typeof args['x'] === 'number' ? args['y'] : 4;
+                objphysics.position.x = typeof args['x'] === 'number' ? args['x'] : 4;
                 objphysics.position.y = typeof args['y'] === 'number' ? args['y'] : 0.5;
                 objphysics.position.z = typeof args['z'] === 'number' ? args['z'] : 0;
                 //console.log(args['x'],":",args['y'],":",args['z']);
@@ -115,7 +115,7 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
                         //var currentAngle = 0;
                         //console.log(keys.left);
                         if (keys.left) {
-                            console.log("left");
+                            //console.log("left");
                             currentAngle = diffAngle + Math.PI / 2;
                             needMove = true;
                         }
@@ -173,15 +173,30 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
                 };
 
                 tmpmodel.interact = function () {
+                    console.log("interact");
                     //console.log("???" + model.facedir);
                     var fdir = BABYLON.Vector3.TransformCoordinates(new BABYLON.Vector3(0, 0, -2), BABYLON.Matrix.RotationY(tmpmodel.facedir));
                     var rayPick = new BABYLON.Ray(tmpmodel.objphysics.position, fdir, 2);
                     var meshFound = self.scene.pickWithRay(rayPick, function (item) {
                         //console.log(item.name);
-                        if (item.name.indexOf("box") == 0) return true;else return false;
+                        //console.log(item.objtype);
+                        if (item.objtype == null) {
+                            return false;
+                        }
+                        if (item.objtype.indexOf("npc") == 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     });
                     if (meshFound != null && meshFound.pickedPoint != null) {
-                        //console.log("found!");
+                        console.log("found!");
+                        //meshFound
+                        console.log(meshFound.pickedMesh);
+                        if (typeof meshFound.pickedMesh.interactmenu === 'function') {
+                            meshFound.pickedMesh.interactmenu();
+                        }
+
                         hit.position = meshFound.pickedPoint;
                     } else {
                         //console.log("not found!");
@@ -190,13 +205,22 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
                     fdir = null;
                 };
 
+                tmpmodel.interactmenu = function () {
+                    //console.log(this);
+                    if (this.status != null) {
+                        self.npc = this.status;
+                        if (this.status.bshop) {
+                            self.checkshop();
+                        }
+                    }
+                };
+
                 //var name = args['name'] || "none";
                 //console.log(name)
-
                 return tmpmodel;
             }
         }]);
 
         return Babylonjs_game_character;
-    }(_babylonjs_game_module.Babylonjs_game_module);
+    }(_Babylonjs_game_module.Babylonjs_game_module);
 });

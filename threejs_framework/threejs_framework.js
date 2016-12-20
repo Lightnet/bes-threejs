@@ -76,7 +76,8 @@ define(['exports', './threejs_framework_network', './threejs_framework_loadingsc
 			this.scriptcount = 0;
 			this.loader = new THREE.XHRLoader();
 
-			this.jspath = 'https://lightnet.github.io/bes-threejs/';
+			//this.jspath = 'https://lightnet.github.io/bes-threejs/';
+			this.jspath = '';
 
 			this.scriptlist = ['js/libs/threex.domevents.js', 'js/loaders/FBXLoader.js', 'js/loaders/collada/Animation.js', 'js/loaders/collada/AnimationHandler.js', 'js/loaders/collada/KeyFrameAnimation.js', 'js/loaders/ColladaLoader.js', 'js/loaders/OBJLoader.js', 'js/controls/TrackballControls.js', 'js/controls/OrbitControls.js', 'js/controls/FirstPersonControls.js', 'js/renderers/CSS3DRenderer.js', 'js/shaders/CopyShader.js', 'js/postprocessing/EffectComposer.js', 'js/postprocessing/ClearPass.js', 'js/postprocessing/RenderPass.js', 'js/postprocessing/MaskPass.js', 'js/postprocessing/ShaderPass.js'];
 

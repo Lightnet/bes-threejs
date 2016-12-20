@@ -82,7 +82,7 @@ define(['exports', './babylonjs_framework_module'], function (exports, _babylonj
 				// target the camera to scene origin
 				camera.setTarget(BABYLON.Vector3.Zero());
 				// attach the camera to the canvas
-				//camera.attachControl(this.canvas, false);
+				camera.attachControl(this.canvas, false);
 				this.camera = camera;
 				// return the created scene
 				return scene;

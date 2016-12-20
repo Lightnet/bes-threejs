@@ -1,10 +1,10 @@
-define(['exports', './threejs_game_module'], function (exports, _threejs_game_module) {
+define(['exports', '../system/Babylonjs_game_module'], function (exports, _Babylonjs_game_module) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.Threejs_game_init = undefined;
+    exports.Babylonjs_game_hud_settings = undefined;
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -36,15 +36,15 @@ define(['exports', './threejs_game_module'], function (exports, _threejs_game_mo
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var Threejs_game_init = exports.Threejs_game_init = function (_Threejs_game_module) {
-        _inherits(Threejs_game_init, _Threejs_game_module);
+    var Babylonjs_game_hud_settings = exports.Babylonjs_game_hud_settings = function (_Babylonjs_game_modul) {
+        _inherits(Babylonjs_game_hud_settings, _Babylonjs_game_modul);
 
-        function Threejs_game_init(args) {
-            _classCallCheck(this, Threejs_game_init);
+        function Babylonjs_game_hud_settings(args) {
+            _classCallCheck(this, Babylonjs_game_hud_settings);
 
-            return _possibleConstructorReturn(this, (Threejs_game_init.__proto__ || Object.getPrototypeOf(Threejs_game_init)).call(this, args));
+            return _possibleConstructorReturn(this, (Babylonjs_game_hud_settings.__proto__ || Object.getPrototypeOf(Babylonjs_game_hud_settings)).call(this, args));
         }
 
-        return Threejs_game_init;
-    }(_threejs_game_module.Threejs_game_module);
+        return Babylonjs_game_hud_settings;
+    }(_Babylonjs_game_module.Babylonjs_game_module);
 });

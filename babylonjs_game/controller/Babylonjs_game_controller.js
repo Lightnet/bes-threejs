@@ -1,5 +1,5 @@
-define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_game_module) {
-    "use strict";
+define(['exports', '../system/Babylonjs_game_module', '../rpg/RPGStatus', '../rpg/RPGStats', '../rpg/ObjectRPGID'], function (exports, _Babylonjs_game_module, _RPGStatus, _RPGStats, _ObjectRPGID) {
+    'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -64,7 +64,7 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
         }
 
         _createClass(Babylonjs_game_controller, [{
-            key: "create_movement",
+            key: 'create_movement',
             value: function create_movement() {
                 //console.log("create movement");
                 var self = this;
@@ -96,15 +96,22 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
                 camera.setTarget(model);
             }
         }, {
-            key: "spawn_player",
+            key: 'spawn_player',
             value: function spawn_player(args) {
+                args = args || {};
                 var self = this;
+
+                var _status = new _RPGStatus.RPGStatus();
+                //var _status = new ObjectRPGID();
+                console.log(_status);
+
                 if (args == null) {
                     args = {};
                 };
                 var _x = typeof args['x'] === 'number' ? args['x'] : 0;
                 var _y = typeof args['y'] === 'number' ? args['y'] : 0.5;
                 var _z = typeof args['z'] === 'number' ? args['z'] : 0;
+                var bplayer = typeof args['bplayer'] === 'boolean' ? args['bplayer'] : false;
                 //console.log("create movement");
                 var self = this;
                 var camera = new BABYLON.ArcRotateCamera("arcCamera1", 0, 0, 10, BABYLON.Vector3.Zero(), this.scene);
@@ -112,17 +119,26 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
                 camera.attachControl(this.canvas, false);
                 camera.setPosition(new BABYLON.Vector3(0, 5, 5));
                 this.scene.activeCamera.attachControl(self.canvas);
-                this.scene.activeCamera = camera;
-                this.thirdcamera = camera;
+                if (bplayer) {
+                    this.scene.activeCamera = camera;
+                    this.thirdcamera = camera;
+                }
                 var Material = new BABYLON.StandardMaterial("material", this.scene);
                 Material.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
                 var model = this.create_character({ x: _x, y: _y, z: _z });
-                this.controllerid = model.id;
-                this.model = model;
+
+                model.status = _status;
+
+                if (bplayer) {
+                    this.controllerid = model.id;
+                    this.model = model;
+                }
                 camera.setTarget(model);
+
+                return model;
             }
         }, {
-            key: "create_input",
+            key: 'create_input',
             value: function create_input() {
                 var self = this;
 
@@ -134,7 +150,7 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
                     if (evt.keyCode == 69) {
                         //E
                         if (self.model != null) {
-                            console.log(self.model);
+                            //console.log(self.model);
                             if (typeof self.model.interact === 'function') {
                                 self.model.interact();
                             }
@@ -179,7 +195,7 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
                 }
             }
         }, {
-            key: "create_gamepadinput",
+            key: 'create_gamepadinput',
             value: function create_gamepadinput() {
                 var self = this;
                 var gamepadConnected = function gamepadConnected(gamepad) {
@@ -250,5 +266,5 @@ define(["exports", "./babylonjs_game_module"], function (exports, _babylonjs_gam
         }]);
 
         return Babylonjs_game_controller;
-    }(_babylonjs_game_module.Babylonjs_game_module);
+    }(_Babylonjs_game_module.Babylonjs_game_module);
 });

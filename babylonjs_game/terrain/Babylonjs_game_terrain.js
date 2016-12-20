@@ -1,4 +1,4 @@
-define(['exports', './babylonjs_game_module'], function (exports, _babylonjs_game_module) {
+define(['exports', '../system/Babylonjs_game_module'], function (exports, _Babylonjs_game_module) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -309,5 +309,5 @@ define(['exports', './babylonjs_game_module'], function (exports, _babylonjs_gam
         }]);
 
         return Babylonjs_game_terrain;
-    }(_babylonjs_game_module.Babylonjs_game_module);
+    }(_Babylonjs_game_module.Babylonjs_game_module);
 });

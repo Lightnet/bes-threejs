@@ -1,5 +1,10 @@
-define(["./ObjectRPGID"], function (_ObjectRPGID2) {
-		"use strict";
+define(['exports', './ObjectRPGID', './RPGStats'], function (exports, _ObjectRPGID2, _RPGStats) {
+		'use strict';
+
+		Object.defineProperty(exports, "__esModule", {
+				value: true
+		});
+		exports.RPGStatus = undefined;
 
 		function _classCallCheck(instance, Constructor) {
 				if (!(instance instanceof Constructor)) {
@@ -31,7 +36,7 @@ define(["./ObjectRPGID"], function (_ObjectRPGID2) {
 				if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 		}
 
-		var RPGStatus = function (_ObjectRPGID) {
+		var RPGStatus = exports.RPGStatus = function (_ObjectRPGID) {
 				_inherits(RPGStatus, _ObjectRPGID);
 
 				function RPGStatus(args) {
@@ -39,9 +44,11 @@ define(["./ObjectRPGID"], function (_ObjectRPGID2) {
 
 						var _this = _possibleConstructorReturn(this, (RPGStatus.__proto__ || Object.getPrototypeOf(RPGStatus)).call(this, args));
 
-						_this.stats = new RPGStats();
+						args = args || {};
 
-						_this.health = 5;
+						_this.stats = new _RPGStats.RPGStats();
+
+						_this.health = args['health'] || 5;
 						_this.maxhealth = 5;
 
 						_this.magic = 0;
@@ -61,8 +68,8 @@ define(["./ObjectRPGID"], function (_ObjectRPGID2) {
 						_this.speed = 1;
 						_this.criticalhit = 1;
 
-						_this.attack = 1;
-						_this.defense = 0;
+						_this.attack = args['attack'] || 1;
+						_this.defense = args['defense'] || 0;
 
 						_this.magicattack = 0;
 						_this.magicdefense = 0;
@@ -72,6 +79,9 @@ define(["./ObjectRPGID"], function (_ObjectRPGID2) {
 
 						_this.totalmagicattack = 0;
 						_this.totalmagicdefense = 0;
+
+						_this.bshop = false;
+						_this.shop = [];
 
 						_this.queryaction = ""; //attack, skill
 						_this.target = null;
@@ -90,18 +100,6 @@ define(["./ObjectRPGID"], function (_ObjectRPGID2) {
 						_this.isturnfinish = false;
 						_this.bskipturn = false;
 
-						if (args != null) {
-								if (args['attack'] != null) {
-										_this.attack = args['attack'];
-								}
-								if (args['defense'] != null) {
-										_this.defense = args['defense'];
-								}
-
-								if (args['health'] != null) {
-										_this.health = args['health'];
-								}
-						}
 						return _this;
 				}
 

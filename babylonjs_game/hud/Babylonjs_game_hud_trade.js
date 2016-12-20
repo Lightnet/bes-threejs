@@ -1,10 +1,10 @@
-define(['exports', './babylonjs_game_module'], function (exports, _babylonjs_game_module) {
+define(['exports', '../system/Babylonjs_game_module'], function (exports, _Babylonjs_game_module) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.Babylonjs_game_parse = undefined;
+    exports.Babylonjs_game_hud_trade = undefined;
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -36,15 +36,15 @@ define(['exports', './babylonjs_game_module'], function (exports, _babylonjs_gam
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var Babylonjs_game_parse = exports.Babylonjs_game_parse = function (_Babylonjs_game_modul) {
-        _inherits(Babylonjs_game_parse, _Babylonjs_game_modul);
+    var Babylonjs_game_hud_trade = exports.Babylonjs_game_hud_trade = function (_Babylonjs_game_modul) {
+        _inherits(Babylonjs_game_hud_trade, _Babylonjs_game_modul);
 
-        function Babylonjs_game_parse(args) {
-            _classCallCheck(this, Babylonjs_game_parse);
+        function Babylonjs_game_hud_trade(args) {
+            _classCallCheck(this, Babylonjs_game_hud_trade);
 
-            return _possibleConstructorReturn(this, (Babylonjs_game_parse.__proto__ || Object.getPrototypeOf(Babylonjs_game_parse)).call(this, args));
+            return _possibleConstructorReturn(this, (Babylonjs_game_hud_trade.__proto__ || Object.getPrototypeOf(Babylonjs_game_hud_trade)).call(this, args));
         }
 
-        return Babylonjs_game_parse;
-    }(_babylonjs_game_module.Babylonjs_game_module);
+        return Babylonjs_game_hud_trade;
+    }(_Babylonjs_game_module.Babylonjs_game_module);
 });

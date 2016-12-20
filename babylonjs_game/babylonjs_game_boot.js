@@ -19,18 +19,15 @@ define(["./babylonjs_game"], function (_babylonjs_game) {
     //init
     var config = {};
     config = { mode: "editor" };
-
     var baylonjs_Game = new _babylonjs_game.Babylonjs_game(config);
     console.log(baylonjs_Game);
     baylonjs_Game.init();
-
     require(['./app/gmodule'], function (gmodule) {
         console.log(window.Foo); // {someValue: 1}
         console.log(gmodule); // {someValue: 2}
         //console.log(window.Foo); // {someValue: 1}
         //console.log(gmodule); // {someValue: 2}
     });
-
     /*
     //example script
     var canvas = document.getElementById('renderCanvas');
@@ -47,13 +44,10 @@ define(["./babylonjs_game"], function (_babylonjs_game) {
         var ground = BABYLON.Mesh.CreateGround('ground1', 6, 6, 2, scene);
         return scene;
     }
-    
     var scene = createScene();
-    
     engine.runRenderLoop(function(){
         scene.render();
     });
-    
     window.addEventListener('resize', function(){
        engine.resize();
     });

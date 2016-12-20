@@ -1,10 +1,10 @@
-define(['exports', './babylonjs_game_module'], function (exports, _babylonjs_game_module) {
+define(['exports', './ObjectRPGID'], function (exports, _ObjectRPGID2) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-    exports.Babylonjs_game_physics = undefined;
+    exports.RPGSkill = undefined;
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -36,15 +36,15 @@ define(['exports', './babylonjs_game_module'], function (exports, _babylonjs_gam
         if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
     }
 
-    var Babylonjs_game_physics = exports.Babylonjs_game_physics = function (_Babylonjs_game_modul) {
-        _inherits(Babylonjs_game_physics, _Babylonjs_game_modul);
+    var RPGSkill = exports.RPGSkill = function (_ObjectRPGID) {
+        _inherits(RPGSkill, _ObjectRPGID);
 
-        function Babylonjs_game_physics(args) {
-            _classCallCheck(this, Babylonjs_game_physics);
+        function RPGSkill(args) {
+            _classCallCheck(this, RPGSkill);
 
-            return _possibleConstructorReturn(this, (Babylonjs_game_physics.__proto__ || Object.getPrototypeOf(Babylonjs_game_physics)).call(this, args));
+            return _possibleConstructorReturn(this, (RPGSkill.__proto__ || Object.getPrototypeOf(RPGSkill)).call(this, args));
         }
 
-        return Babylonjs_game_physics;
-    }(_babylonjs_game_module.Babylonjs_game_module);
+        return RPGSkill;
+    }(_ObjectRPGID2.ObjectRPGID);
 });
