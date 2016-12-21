@@ -13,5 +13,6 @@ export class RPGCondition extends ObjectRPGID{
 	constructor(args){
 		super();
 		this.params = [];
+		this.objtype = "condition";
 	}
 }

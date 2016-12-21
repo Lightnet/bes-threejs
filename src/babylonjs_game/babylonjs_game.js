@@ -35,18 +35,22 @@ import {Babylonjs_game_character} from './character/Babylonjs_game_character';
 import {Babylonjs_game_controller} from './controller/Babylonjs_game_controller';
 import {Babylonjs_game_battle} from './system/Babylonjs_game_battle';
 import {Babylonjs_game_parse} from './system/Babylonjs_game_parse';
+import {Babylonjs_game_loadsave} from './system/Babylonjs_game_loadsave';
+import {Babylonjs_game_gundb} from './system/Babylonjs_game_gundb';
+
+
 import {Babylonjs_game_terrain} from './terrain/Babylonjs_game_terrain';
 
 import {Babylonjs_game_jqueryui} from './jqueryui/Babylonjs_game_jqueryui';
 
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
-  return degrees * Math.PI / 180;
+    return degrees * Math.PI / 180;
 };
 
 // Converts from radians to degrees.
 Math.degrees = function(radians) {
-  return radians * 180 / Math.PI;
+    return radians * 180 / Math.PI;
 };
 
 //RFC Type 4 (random) schema
@@ -64,51 +68,56 @@ var uuid = function() {
 };
 */
 
-export class Babylonjs_game extends Babylonjs_framework{
+export class Babylonjs_game extends Babylonjs_framework {
 
-    constructor(args){
+    constructor(args) {
         super(args);
 
         this.materials = [];
-		this.textures = [];
-		this.meshes = [];
-		this.models = [];
+        this.textures = [];
+        this.meshes = [];
+        this.models = [];
 
-		this.characters = [];
-		this.dimensionstorage = [];
+        this.characters = [];
+        this.dimensionstorage = [];
 
-		this.companions = [];//those who join in your party that travel together
-		this.squads = [];
+        this.companions = []; //those who join in your party that travel together
+        this.squads = [];
 
-		this.friends = [];//battle mode?
-		this.foes = [];//battle mode?
+        this.friends = []; //battle mode?
+        this.foes = []; //battle mode?
 
-		this.turns = [];
-		this.parties = []; //who in the party //battle mode?
-		this.enemies = []; //threat if player attack or in battle actions //battle mode?
-		this.npcs = []; //local villagers
+        this.turns = [];
+        this.parties = []; //who in the party //battle mode?
+        this.enemies = []; //threat if player attack or in battle actions //battle mode?
+        this.npcs = []; //local villagers
 
-		this.scene_battle;
-		this.scene_dimension_homebase;
-		this.scene_global_map;
-		this.scene_world_map;
-		this.scene_local_map;
+        this.scene_battle;
+        this.scene_dimension_homebase;
+        this.scene_global_map;
+        this.scene_world_map;
+        this.scene_local_map;
 
-		this.sceneassets;
-		this.assetsManager;
-		this.config_assets;
-		//controls
-		this.controllerid = 0;
+        this.sceneassets;
+        this.assetsManager;
+        this.config_assets;
+        //controls
+        this.controllerid = 0;
         this.bcontroller = true;
-		this.keys={letft:0,right:0,forward:0,back:0};
-		this.moveVector = new BABYLON.Vector3(0, 0, 0);
+        this.keys = {
+            letft: 0,
+            right: 0,
+            forward: 0,
+            back: 0
+        };
+        this.moveVector = new BABYLON.Vector3(0, 0, 0);
 
         this.npc = null;
 
         this.leftstickmove = false;
-        this.joyleftdir = new BABYLON.Vector3(0,0,0);
+        this.joyleftdir = new BABYLON.Vector3(0, 0, 0);
         this.joylefttrigger = 0;
-        this.joyrightdir = new BABYLON.Vector3(0,0,0);
+        this.joyrightdir = new BABYLON.Vector3(0, 0, 0);
         this.joyrighttrigger = 0;
 
         //EDITOR props
@@ -140,6 +149,7 @@ export class Babylonjs_game extends Babylonjs_framework{
         new Babylonjs_game_physics(this);
         new Babylonjs_game_parse(this);
         new Babylonjs_game_load(this);
+        new Babylonjs_game_loadsave(this);
         new Babylonjs_game_scene(this);
 
         new Babylonjs_game_hud(this);
@@ -151,7 +161,6 @@ export class Babylonjs_game extends Babylonjs_framework{
         new Babylonjs_game_hud_storage(this);
         new Babylonjs_game_hud_trade(this);
         new Babylonjs_game_hud_market(this);
-
 
         new Babylonjs_game_ui(this);
         new Babylonjs_game_editor(this);
@@ -167,27 +176,28 @@ export class Babylonjs_game extends Babylonjs_framework{
 
         new Babylonjs_game_jqueryui(this);
 
+        new Babylonjs_game_gundb(this);
+
     }
 
-    ScenePickObject(){
+    ScenePickObject() {
         var self = this;
-		//When pointer down event is raised
-	    this.scene.onPointerDown = function (evt, pickResult) {
-	        // if the click hits the ground object, we change the impact position
-	        if (pickResult.hit) {
+        //When pointer down event is raised
+        this.scene.onPointerDown = function(evt, pickResult) {
+            // if the click hits the ground object, we change the impact position
+            if (pickResult.hit) {
                 //console.log(pickResult);
                 self.selectobject = pickResult.pickedMesh;
                 self.updateselectobject();
-	            //impact.position.x = pickResult.pickedPoint.x;
-	            //impact.position.y = pickResult.pickedPoint.y;
-				//console.log("HIT"+pickResult.pickedPoint);
-	        }
-	    };
-	}
-
+                //impact.position.x = pickResult.pickedPoint.x;
+                //impact.position.y = pickResult.pickedPoint.y;
+                //console.log("HIT"+pickResult.pickedPoint);
+            }
+        };
+    }
 
     //override function...
-	start_scenerender(){
+    start_scenerender() {
         /*
 		var self = this;
 		this.engine.runRenderLoop(function() {
@@ -205,25 +215,24 @@ export class Babylonjs_game extends Babylonjs_framework{
 			}
 		});
         */
-	}
+    }
 
-    canvasrender(){
+    canvasrender() {
         console.log("render?");
         var self = this;
         this.engine.runRenderLoop(function() {
             //console.log("hellow");
-			if(self.scene !=null){
-				self.scene.render();
-				for(var i =0; i < self.scene.meshes.length;i++){
+            if (self.scene != null) {
+                self.scene.render();
+                for (var i = 0; i < self.scene.meshes.length; i++) {
                     //console.log("hellow");
-					if(typeof self.scene.meshes[i].update === 'function'){
-						self.scene.meshes[i].update();
-					}
-				}
-                if(self.selectobject !=null){
+                    if (typeof self.scene.meshes[i].update === 'function') {
+                        self.scene.meshes[i].update();
+                    }
                 }
-			}
-		});
+                if (self.selectobject != null) {}
+            }
+        });
         /*
 		this.engine.runRenderLoop(function() {
             //console.log("hellow");
@@ -242,14 +251,15 @@ export class Babylonjs_game extends Babylonjs_framework{
         */
     }
 
-    init(){
-		super.init();
-		console.log("init [babylonjs_game]");
+    init() {
+        super.init();
+        console.log("init [babylonjs_game]");
         this.createspacecavnas2D();
-		this.createscene_assets();
-	}
+        this.createscene_assets();
+        this.init_gundb();
+    }
 
-    setup_gamedata(){
+    setup_gamedata() {
         //list inventory
         this.display_inventory[0] = null;
         this.display_inventory[1] = null;
@@ -264,41 +274,41 @@ export class Babylonjs_game extends Babylonjs_framework{
 
         this.select_index_inventory = 0;
 
-        var item0 = new RPGItem({name:"Potion HP"});
+        var item0 = new RPGItem({name: "Potion HP"});
         this.inventory.push(item0);
 
-        item0 = new RPGItem({name:"Potion MP"});
+        item0 = new RPGItem({name: "Potion MP"});
         this.inventory.push(item0);
         this.inventory.push(item0);
         this.inventory.push(item0);
         this.inventory.push(item0);
         this.inventory.push(item0);
         this.inventory.push(item0);
-        var item0 = new RPGItem({name:"Potion HP"});
+        var item0 = new RPGItem({name: "Potion HP"});
         this.inventory.push(item0);
         this.inventory.push(item0);
         this.inventory.push(item0);
         this.inventory.push(item0);
         this.inventory.push(item0);
-        var item0 = new RPGItem({name:"Potion MP"});
+        var item0 = new RPGItem({name: "Potion MP"});
         this.inventory.push(item0);
         this.inventory.push(item0);
-        var item0 = new RPGItem({name:"Potion"});
+        var item0 = new RPGItem({name: "Potion"});
         this.inventory.push(item0);
 
-        var item0 = new RPGItem({name:"Potion MP"});
+        var item0 = new RPGItem({name: "Potion MP"});
         this.inventory.push(item0);
     }
 
-    createshopmenu_variable(){
+    createshopmenu_variable() {
         this.display_shop = [];
         this.select_index_shop = 0;
         this.scroll_shop_y = 0;
     }
 
-    setup_game(){
+    setup_game() {
         var self = this;
-		console.log("setup game!");
+        console.log("setup game!");
         this.canvasrender();
         this.setup_gamedata();
         this.createshopmenu_variable();
@@ -310,29 +320,30 @@ export class Babylonjs_game extends Babylonjs_framework{
 
         this.create_window_jqui();
 
-        this.init_physics();
-		this.create2DHUD();
 
-		this.create_input();
+
+        this.init_physics();
+        this.create2DHUD();
+
+        this.create_input();
         //this.create_gamepadinput();
 
-        this.simpleterrain03();
-        var npc = this.spawn_player({y:64});
-        console.log(npc);
-        npc.status.bshop = true;
-        var item0 = new RPGItem({name:"Potion MP"});
-        npc.status.shop.push(item0);
+        //this.simpleterrain04();
+        var terrain = this.createterrain({wireframe:true,x:0,y:0,z:0});
+        console.log(terrain);
 
-
-        this.spawn_player({y:32,bplayer:true});
-
-
+        //var npc = this.spawn_player({y: 64});
+        //console.log(npc);
+        //npc.status.bshop = true;
+        //var item0 = new RPGItem({name: "Potion MP"});
+        //npc.status.shop.push(item0);
+        //this.spawn_player({y: 32, bplayer: true});
 
     }
 
-	setup_game00(){
-		var self = this;
-		console.log("setup game!");
+    setup_game00() {
+        var self = this;
+        console.log("setup game!");
         this.canvasrender();
         this.setup_gamedata();
         this.createshopmenu_variable();
@@ -350,77 +361,77 @@ export class Babylonjs_game extends Babylonjs_framework{
         //working... some what
         //this.scene.actionManager = new BABYLON.ActionManager(this.scene);
         //this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyUpTrigger, parameter: "r" }, function (evt) {
-            //console.log("typing r...");
-            //console.log(evt);
-            //if (evt.sourceEvent.key == "r") {
-            //}
+        //console.log("typing r...");
+        //console.log(evt);
+        //if (evt.sourceEvent.key == "r") {
+        //}
         //}));
         //this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
-            //console.log(" OnKeyUpTrigger typing...");
-            //console.log(evt);
-            //if (evt.sourceEvent.key == "r") {
-            //}
+        //console.log(" OnKeyUpTrigger typing...");
+        //console.log(evt);
+        //if (evt.sourceEvent.key == "r") {
+        //}
         //}));
         //this.scene.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyDownTrigger, function (evt) {
-            //console.log(" OnKeyDownTrigger typing...");
-            //console.log(evt);
-            //if (evt.sourceEvent.key == "r") {
-            //}
+        //console.log(" OnKeyDownTrigger typing...");
+        //console.log(evt);
+        //if (evt.sourceEvent.key == "r") {
+        //}
         //}));
         //box1.actionManager = new BABYLON.ActionManager(this.scene);
         //console.log(box1);
         //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction("trigger", function () {
-            //alert('player clicked');
-            //console.log("trigger!");
+        //alert('player clicked');
+        //console.log("trigger!");
         //}));
         //box1.actionManager.processTrigger("trigger",()=>{});
         //setInterval(()=> {
-            //code for the drums playing goes here
-            //box1.actionManager.processTrigger("trigger",()=>{});
+        //code for the drums playing goes here
+        //box1.actionManager.processTrigger("trigger",()=>{});
         //},8000);
         //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, function () {
-            //alert('player clicked');
+        //alert('player clicked');
         //}));
         //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnKeyUpTrigger, function (evt) {
-            //console.log(" scene typing...");
-            //if (evt.sourceEvent.key == "r") {
-            //}
+        //console.log(" scene typing...");
+        //if (evt.sourceEvent.key == "r") {
+        //}
         //}));
         //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnKeyUpTrigger, parameter: "r" }, function (evt) {
-            //console.log("typing r...");
-            //if (evt.sourceEvent.key == "r") {
-            //}
+        //console.log("typing r...");
+        //if (evt.sourceEvent.key == "r") {
+        //}
         //}));
-		//console.log(this.engine);
+        //console.log(this.engine);
         //console.log(this.scene);
-		//console.log(BABYLON);
+        //console.log(BABYLON);
         this.init_physics();
-		this.create2DHUD();
+        this.create2DHUD();
         //this.setupeditor();
         //this.create2D_BattleHUD();
         //this.createinventoryHUD();
         //this.createstorageUI();
         //this.createlootUI();
-		//BABYLON.DebugLayer().show();
-		//this.scene.debugLayer.show(false);
-		//this.scene.debugLayer.show(true);
-		//this.createbattle_prototype();
-		this.create_input();
+        //BABYLON.DebugLayer().show();
+        //this.scene.debugLayer.show(false);
+        //this.scene.debugLayer.show(true);
+        //this.createbattle_prototype();
+        this.create_input();
         //this.create_gamepadinput();
-		//this.create_movement();
-		//this.ScenePickObject();
-		//this.simple_scene();
+        //this.create_movement();
+        //this.ScenePickObject();
+        //this.simple_scene();
         //this.simpleterrain()
         //this.simpleterrain01();
         this.simpleterrain03();
         //this.simpleterrain04();
         //this.spawn_player({y:32});
-        var npc = this.spawn_player({y:64});
+        var npc = this.spawn_player({y: 64});
         console.log(npc);
         npc.status.bshop = true;
-        var item0 = new RPGItem({name:"Potion MP"});
+        var item0 = new RPGItem({name: "Potion MP"});
         npc.status.shop.push(item0);
-        this.spawn_player({y:32,bplayer:true});
+        this.spawn_player({y: 32, bplayer: true});
         //console.log(player);
         //this.create_character();
         //this.loadmap_requestXML();
@@ -437,6 +448,6 @@ export class Babylonjs_game extends Babylonjs_framework{
         var panel = this.create_R2D_Drag01(panel_group2d,{text:'DISPLAY',x:0,y:0,width:500});
         */
 
-	}
+    }
 
 }

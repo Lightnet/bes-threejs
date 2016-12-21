@@ -13,6 +13,7 @@ import {RPGStats} from './RPGStats';
 export class RPGStatus extends ObjectRPGID{
 	constructor(args){
 		super(args);
+		this.objtype = "status";
 		args = args || {};
 
 		this.stats = new RPGStats();

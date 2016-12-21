@@ -17,7 +17,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
     create_window_jqui(){
         console.log("window?");
         //this.create_assets_jqui();
-        this.create_sceneobject_jqui();
+        //this.create_sceneobject_jqui();
         //this.create_codeeditor_jqui();
     }
 

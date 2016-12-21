@@ -9,9 +9,9 @@
 
 import {ObjectRPGID} from './ObjectRPGID';
 
-export class RPGMaterial extends ObjectRPGID{
+export class RPGTerrain extends ObjectRPGID{
     constructor(args){
 		super(args);
-        this.objtype = "material";
+        this.objtype = "terrain";
     }
 }

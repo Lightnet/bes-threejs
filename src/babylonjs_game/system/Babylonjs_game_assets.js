@@ -10,6 +10,7 @@ import {Babylonjs_game_module} from './Babylonjs_game_module';
 
 
 //RFC Type 4 (random) schema
+/*
 var uuid = function() {
     var buf = new Uint32Array(4);
     window.crypto.getRandomValues(buf);
@@ -21,7 +22,7 @@ var uuid = function() {
         return v.toString(16);
     });
 };
-
+*/
 export class Babylonjs_game_assets extends Babylonjs_game_module{
 
     constructor(args){
@@ -91,10 +92,10 @@ export class Babylonjs_game_assets extends Babylonjs_game_module{
             //console.log(this.models[i].mesh.name," : ",_name);
 			if(this.models[i].mesh.name == _name){
                 //console.log("match????");
-				var mid = uuid();//random id generator
+				var mid = this.uuid();//random id generator
 				//model = this.meshes[i].clone(mid,null,true);
 				model = this.models[i].mesh.clone("mesh"+mid);
-				var mid = uuid();//random id generator
+				var mid = this.uuid();//random id generator
 				model.position = new BABYLON.Vector3(0, 0, 3);
 				model.skeleton = this.models[i].mesh.skeleton.clone("skeleton"+mid);
 				//model.skeleton = this.models[i].skeleton.clone("skeleton"+mid);

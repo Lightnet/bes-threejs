@@ -28,6 +28,7 @@ else
 		port:80,
         database:"",
 		bdatabase:true,
+        blocaldatabase:true,
 		token:"",
 		btoken:true,
 		tokentype:""
@@ -133,12 +134,18 @@ const leveldown = require('leveldown');
 //const levelDB = levelup('data', {
     //db: leveldown,
 //});
-
-//'mongodb://<dbuser>:<dbpassword>@ds139438.mlab.com:39438/rpggdb'
-//'localhost/my-database'
-const levelDB = levelup(config.database,{
-    db: require('mongodown')
-});
+var levelDB;
+if(config.blocaldatabase){//'mongodb://<dbuser>:<dbpassword>@ds139438.mlab.com:39438/rpggdb'//'localhost/my-database'
+    levelDB = levelup('localhost/my-database',{
+        db: require('mongodown')
+    });
+    console.log("local database");
+}else{
+    levelDB = levelup(config.database,{
+        db: require('mongodown')
+    });
+    console.log("host database");
+}
 
 // create a new gun instance
 //https://github.com/amark/gun/issues/139
