@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+	<head>
+		<title> threejs </title>
+		<script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
+
+	</head>
+	<body>
+
+		<textarea id="editor"></textarea>
+
+		<script>
+tinymce.init({
+  selector: '#editor',
+  menubar: false,
+  // enable title field in the Image dialog
+  image_title: false,
+  // enable automatic uploads of images represented by blob or data URIs
+  automatic_uploads: false,
+  toolbar: 'undo redo | code | BtnSave',
+  setup: function (editor) {
+    editor.addButton('BtnSave', {
+      text: 'Save',
+      icon: false,
+      onclick: function () {
+		  console.log("save?");
+        //editor.insertContent('&nbsp;<b>It\'s my button!</b>&nbsp;');
+      }
+    });
+  }
+});
+
+//setTimeout(()=>{
+	//tinymce.activeEditor.execCommand('mceInsertContent', false, " <b>bolded text</b> ");
+//}, 2000);
+
+//console.log(tinymce.get("#editor"));
+//tinymce.get("editor").execCommand('mceInsertContent',false,'use your output content');
+
+//console.log(tinymce.activeEditor);
+//tinymce.editors[0].execCommand('mceInsertContent', false, 'your content');
+//tinymce.activeEditor.execCommand('mceInsertContent', false, 'your content');
+//console.log(editor);
+//editor.insertContent('&nbsp;<b>It\'s my button!</b>&nbsp;');
+		</script>
+	</body>
+</html>

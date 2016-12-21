@@ -19,7 +19,7 @@ function CallAPI(){
     console.log(BABYLONJSAPI);
 }
 
-requirejs(['./app/babylonjs_game'],(app)=>{
+requirejs(['./app/Babylonjs_game'],(app)=>{
     //console.log(app);
     var BGame = new app.Babylonjs_game();
     //console.log(BGame);

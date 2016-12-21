@@ -162,15 +162,33 @@ gulp.task('watch', () =>{
     gulp.watch('src/threejs_game/**/*.js', ['es6-amd-threejs-game']);
 });
 
+gulp.task('watch-babylonjs', () =>{
+    gulp.watch('src/browser/**/*.js', ['src_browser']);
+    gulp.watch(['src/babylonjs_framework/*.js','src/babylonjs_framework/**/*.js'], ['es6-amd-babylonjs']);
+    gulp.watch(['src/babylonjs_game/*.js','src/babylonjs_game/**/*.js'], ['es6-amd-babylonjs-game']);
+});
+
 gulp.task('build',['html','lib','src','src_browser','es6-amd-babylonjs','es6-amd-babylonjs-game','es6-amd-threejs','es6-amd-threejs-game'] ,() =>{
 
 });
 
 gulp.task('buildassets',['assets','thirdparties']);
 
-
 //main entry call task or default task call
 gulp.task('default',['server','build','watch']);
 
 //main entry call task or default task call
 gulp.task('default2',['server','watch']);
+
+gulp.task('html-babylonjs', () =>{
+    //return gulp.src(['src/html/*.html'])
+    return gulp.src([
+        'src/html/babylonjs_requirejs_app.html',
+        'src/html/babylonjs_requirejs_main.html',
+        'src/html/gundb.html',
+        'src/html/network.html'
+    ])
+    .pipe(gulp.dest('public'));
+});
+
+gulp.task('_default-babylonjs',['server','html-babylonjs','watch-babylonjs']);

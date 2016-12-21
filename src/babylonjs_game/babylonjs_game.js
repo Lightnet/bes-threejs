@@ -37,6 +37,8 @@ import {Babylonjs_game_battle} from './system/Babylonjs_game_battle';
 import {Babylonjs_game_parse} from './system/Babylonjs_game_parse';
 import {Babylonjs_game_terrain} from './terrain/Babylonjs_game_terrain';
 
+import {Babylonjs_game_jqueryui} from './jqueryui/Babylonjs_game_jqueryui';
+
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
@@ -162,6 +164,8 @@ export class Babylonjs_game extends Babylonjs_framework{
         new Babylonjs_game_battle(this);
 
         new Babylonjs_game_terrain(this);
+
+        new Babylonjs_game_jqueryui(this);
 
     }
 
@@ -292,24 +296,55 @@ export class Babylonjs_game extends Babylonjs_framework{
         this.scroll_shop_y = 0;
     }
 
-	setup_game(){
+    setup_game(){
+        var self = this;
+		console.log("setup game!");
+        this.canvasrender();
+        this.setup_gamedata();
+        this.createshopmenu_variable();
+        this.scenepick_editor();
+        //this.createinventoryHUD();
+        var box1 = BABYLON.Mesh.CreateBox("box", 1.0, this.scene);
+        this.showAxis(3, box1);
+        var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), this.scene);
+
+        this.create_window_jqui();
+
+        this.init_physics();
+		this.create2DHUD();
+
+		this.create_input();
+        //this.create_gamepadinput();
+
+        this.simpleterrain03();
+        var npc = this.spawn_player({y:64});
+        console.log(npc);
+        npc.status.bshop = true;
+        var item0 = new RPGItem({name:"Potion MP"});
+        npc.status.shop.push(item0);
+
+
+        this.spawn_player({y:32,bplayer:true});
+
+
+
+    }
+
+	setup_game00(){
 		var self = this;
 		console.log("setup game!");
         this.canvasrender();
         this.setup_gamedata();
-
         this.createshopmenu_variable();
-
         this.scenepick_editor();
-
         //this.createinventoryHUD();
         //this.camera.attachControl(this.canvas, false);
         var box1 = BABYLON.Mesh.CreateBox("box", 1.0, this.scene);
         this.showAxis(3, box1);
         //console.log("BABYLON.ActionManager");
         //console.log(BABYLON.ActionManager);
-
         var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), this.scene);
+        this.create_window_jqui();
         //input key
         //this.camera.attachControl(this.scene.getEngine().getRenderingCanvas());
         //working... some what
@@ -332,24 +367,17 @@ export class Babylonjs_game extends Babylonjs_framework{
             //if (evt.sourceEvent.key == "r") {
             //}
         //}));
-
         //box1.actionManager = new BABYLON.ActionManager(this.scene);
         //console.log(box1);
         //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction("trigger", function () {
             //alert('player clicked');
             //console.log("trigger!");
         //}));
-
-
         //box1.actionManager.processTrigger("trigger",()=>{});
-
         //setInterval(()=> {
             //code for the drums playing goes here
             //box1.actionManager.processTrigger("trigger",()=>{});
         //},8000);
-
-
-
         //box1.actionManager.registerAction(new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickUpTrigger, function () {
             //alert('player clicked');
         //}));
@@ -363,7 +391,6 @@ export class Babylonjs_game extends Babylonjs_framework{
             //if (evt.sourceEvent.key == "r") {
             //}
         //}));
-
 		//console.log(this.engine);
         //console.log(this.scene);
 		//console.log(BABYLON);
@@ -372,10 +399,8 @@ export class Babylonjs_game extends Babylonjs_framework{
         //this.setupeditor();
         //this.create2D_BattleHUD();
         //this.createinventoryHUD();
-
         //this.createstorageUI();
         //this.createlootUI();
-
 		//BABYLON.DebugLayer().show();
 		//this.scene.debugLayer.show(false);
 		//this.scene.debugLayer.show(true);
@@ -385,27 +410,20 @@ export class Babylonjs_game extends Babylonjs_framework{
 		//this.create_movement();
 		//this.ScenePickObject();
 		//this.simple_scene();
-
         //this.simpleterrain()
         //this.simpleterrain01();
         this.simpleterrain03();
         //this.simpleterrain04();
-
-
         //this.spawn_player({y:32});
         var npc = this.spawn_player({y:64});
         console.log(npc);
         npc.status.bshop = true;
         var item0 = new RPGItem({name:"Potion MP"});
         npc.status.shop.push(item0);
-
-
         this.spawn_player({y:32,bplayer:true});
         //console.log(player);
-
         //this.create_character();
         //this.loadmap_requestXML();
-
         /*
         var panel_group2d = new BABYLON.Group2D({
             parent:this.screencanvas,
@@ -416,7 +434,6 @@ export class Babylonjs_game extends Babylonjs_framework{
             //scale:0.6 //limited since backgroundRoundRadius effect render
             //scale:1 //limited since backgroundRoundRadius effect render
         });
-
         var panel = this.create_R2D_Drag01(panel_group2d,{text:'DISPLAY',x:0,y:0,width:500});
         */
 

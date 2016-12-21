@@ -6,7 +6,7 @@
 
     Information: Please read the readme.md file for more information.
 */
-import {Babylonjs_game_module} from './babylonjs_game_module';
+import {Babylonjs_game_module} from '../system/babylonjs_game_module';
 
 export class Babylonjs_game_init extends Babylonjs_game_module{
 
