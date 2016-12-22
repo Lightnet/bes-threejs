@@ -31,6 +31,20 @@ export class Babylonjs_game_gundb extends Babylonjs_game_module{
 
     init_gundb(){
 
+        Gun.chain.live = function(cb, opt){
+          return this.on(function(val, field){
+            delete val._;
+            cb.call(this, val, field);
+          }, opt);
+        }
+
+        Gun.chain.value = function(cb, opt){
+          return this.val(function(val, field){
+            delete val._;
+            cb.call(this, val, field);
+          }, opt);
+        }
+
         Gun.chain.each = function () {
           var each = this.map();
           return this.val.apply(each, arguments)
@@ -40,12 +54,13 @@ export class Babylonjs_game_gundb extends Babylonjs_game_module{
         this.gun = Gun(this.peers);
         var gun = this.gun;
 
+        //gun.get('greetings').each(function (example) {
+          //console.log(example)
+        //});
 
 
 
-        gun.get('greetings').each(function (example) {
-          console.log(example)
-        })
+        
     }
 
 }

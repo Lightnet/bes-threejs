@@ -218,7 +218,7 @@ export class Babylonjs_game extends Babylonjs_framework {
     }
 
     canvasrender() {
-        console.log("render?");
+        //console.log("render?");
         var self = this;
         this.engine.runRenderLoop(function() {
             //console.log("hellow");
