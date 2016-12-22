@@ -113,6 +113,7 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
 
     //BABYLONJSAPI.LoadSceneMap();
     LoadSceneMap(){
+        //console.log(RPGTerrain.getClass());
         //this.gun.get('scene');
         var self = this;
         this.gun.get('scene').value(function(data){

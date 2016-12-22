@@ -10,9 +10,15 @@
 import {ObjectRPGID} from './ObjectRPGID';
 
 export class RPGCondition extends ObjectRPGID{
+
+	static getClass() {
+      return 'RPGCondition';
+    }
+
 	constructor(args){
 		super();
 		this.params = [];
 		this.objtype = "condition";
+		this.nameClass = "RPGCondition";
 	}
 }

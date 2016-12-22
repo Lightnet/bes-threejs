@@ -10,8 +10,14 @@
 import {ObjectRPGID} from './ObjectRPGID';
 
 export class RPGMaterial extends ObjectRPGID{
+
+    static getClass() {
+      return 'RPGMaterial';
+    }
+
     constructor(args){
 		super(args);
         this.objtype = "material";
+        this.nameClass = "RPGMaterial";
     }
 }

@@ -10,8 +10,14 @@
 import {ObjectRPGID} from './ObjectRPGID';
 
 export class RPGCamera extends ObjectRPGID{
+
+    static getClass() {
+      return 'RPGCamera';
+    }
+
     constructor(args){
 		super(args);
         this.objtype = "camera";
+        this.nameClass = "RPGCamera";
     }
 }

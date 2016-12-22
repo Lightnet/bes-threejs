@@ -20,11 +20,17 @@ function uuid() {
 }
 
 export class ObjectRPGID{
+
+	static getClass() {
+      return 'ObjectRPGID';
+    }
+
 	constructor(args){
 		args = args || {};
 		//args[''] ||
 		this.gundbid = args['gundbid'] || "";
 		this.uuid = args['uuid'] || uuid();
+		this.nameClass = "ObjectRPGID";
 
 		this.hashid = args['hashid'] || "";
 		this.id = args['id'] || "";

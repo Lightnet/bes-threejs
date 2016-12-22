@@ -14,6 +14,7 @@ export class RPGStatus extends ObjectRPGID{
 	constructor(args){
 		super(args);
 		this.objtype = "status";
+		this.nameClass = "RPGStatus";
 		args = args || {};
 
 		this.stats = new RPGStats();

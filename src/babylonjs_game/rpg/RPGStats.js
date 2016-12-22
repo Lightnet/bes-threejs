@@ -9,7 +9,14 @@
 
 export class RPGStats{
 
+	static getClass() {
+      return 'RPGStats';
+    }
+
 	constructor(args){
+
+		this.nameClass = "RPGStats";
+
 		this.str = 0;
 		this.vit = 0;
 		this.dex = 0;

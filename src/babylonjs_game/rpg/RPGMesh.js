@@ -10,8 +10,14 @@
 import {ObjectRPGID} from './ObjectRPGID';
 
 export class RPGMesh extends ObjectRPGID{
+
+    static getClass() {
+      return 'RPGMesh';
+    }
+
     constructor(args){
 		super(args);
         this.objtype = "mesh";
+        this.nameClass = "RPGMesh";
     }
 }
