@@ -15,6 +15,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
     }
 
     create_window_jqui(){
+
         //console.log("window?");
         this.create_assets_jqui();
         this.create_scene_jqui();
@@ -25,6 +26,14 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         this.create_terrain_jqui();
 
         this.create_navmenu();
+
+        //var re_number = /[+-]?[0-9]+(?:\.[0-9]+)?/g;
+        //add listener if key is press
+        //jQuery('.numbersOnly').keyup(function () {
+            //this.value = this.value.replace(/[^0-9\.]/g,'');
+            //this.value = this.value.replace(re_number,'');
+        //});
+
     }
 
 
@@ -237,12 +246,33 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
     create_terrain_jqui(){
         var _div = document.createElement("div");
         _div.id = "terrain";
+        _div.innerHTML += `Camera Position: <input id="terrain_camera" type="checkbox">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `x:<input id="terrain_x" class="numbersOnly" value="0">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `y:<input id="terrain_y" class="numbersOnly" value="0">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `z:<input id="terrain_z" class="numbersOnly" value="0">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `<button onclick="BABYLONJSAPI.ui_createterrain();">Create Terrain</button>`;
+
         document.getElementsByTagName('body')[0].appendChild(_div);
 
         $(function(){
             $("#terrain").dialog();
             $("#terrain").dialog('close');
         });
+    }
+
+    //BABYLONJSAPI.ui_createterrain();
+    ui_createterrain(){
+        console.log("test click!");
+        var pos_x = document.getElementById("terrain_x").value;
+        //console.log(pos_x);
+        var pos_y = document.getElementById("terrain_y").value;
+        var pos_z = document.getElementById("terrain_z").value;
+
+        this.createterrain({x:pos_x,y:pos_y,z:pos_z});
     }
 
     create_shape_jqui(){
