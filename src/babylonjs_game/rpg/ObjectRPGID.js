@@ -38,7 +38,7 @@ export class ObjectRPGID{
 		this.description = args['description'] || "none";
         this.objtype = args['objtype'] || "none";
 
-		this.parameters = args['parameters'] || {};
+		this.params = args['params'] || {};
 
 		this.binteract = args['binteract'] || false;
 		this.bused = args['bused'] || false;

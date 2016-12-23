@@ -35,55 +35,73 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
     //BABYLONJSAPI.SaveSceneMap();
 
     check_gunsceneobj(uuid,cb){
+        //console.log("------------------- start");
         var self = this;
         this.gun.get('scene').value(function(data){
+            var bfound = false;
+            var count = 0;
+            function checkid(state,id){
+                if( ((Object.keys(data).length -1)  == count)&&(state == false)&&(bfound == false)){
+                    //console.log("not found checks");
+                    cb(false);
+                }
+            }
             for(var o in data){
                 if(data[o] !=null){
                     if(data[o]['#'] !=null){
-                        console.log(data[o]['#']);
-                        self.gun.get(data[o]['#']).value(function(data){
-                            console.log(data);
-                            if(data['uuid'] !=null){
-                                if(data['uuid'] == uuid){
-                                    return cb(false);
+                        //console.log(data[o]['#']);
+                        self.gun.get(data[o]['#']).value(function(objdata){
+                            //console.log(objdata);
+                            if(objdata['uuid'] !=null){
+                                if(objdata['uuid'] == uuid){
+                                    //return cb(true, data[o]['#']);
+                                    bfound = true;
+                                    //console.log("found!");
+                                    //return checkid(true,data[o]['#']);
+                                    return cb(true, data[o]['#']);
                                 }
                             }
                         });
                     }
+                    checkid(false);
                 }
+                count++;
             }
-            return cb(false);
+            //return cb(bfound);
+            //console.log("END GUN CHECK...");
             //console.log(data[1]);
         });
-        return cb(false);
+        //return cb(false);
+        //console.log("------------------- end");
     }
 
     //BABYLONJSAPI.SaveSceneMap();
-    SaveObject(args){
-        //console.log(typeof args);
-        //console.log(args , ":" ,RPGTerrain);
-        if(args instanceof RPGMesh){
+    SaveObject(obj){
+        //console.log(typeof obj);
+        //console.log(obj , ":" ,RPGTerrain);
+        //console.log(obj);
+
+        if(obj instanceof RPGMesh){
             console.log("match!RPGMesh");
-        }else if(args instanceof RPGTerrain){
+        }else if(obj instanceof RPGTerrain){
             console.log("match!RPGTerrain");
         }else{
             console.log("not match!");
         }
-
-        console.log("...");
-
         //console.log("saving object data????");
-        this.check_gunsceneobj(args['uuid'],(bfind)=>{
+        this.check_gunsceneobj(obj['uuid'],(bfind,id)=>{
+            //console.log("....CALLS");
+            var gscene = this.gun.get('scene');
 
             if(bfind){
-                console.log("set object scene");
-                var gscene = this.gun.get('scene');
-                //gscene.put(args);
+                console.log("set object scene[update]");
+                if(id !=null){
+                    gscene.path(id).put(obj);
+                }
             }else{
-                console.log("save object scene");
-                var gscene = this.gun.get('scene');
-                //console.log(args);
-                gscene.set(args);
+                console.log("save object scene[insert]");
+                //console.log(obj);
+                gscene.set(obj);
             }
             //console.log("finish save???");
         });
@@ -96,17 +114,46 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
 
     //BABYLONJSAPI.SaveSceneMap();
     SaveSceneMap(){
-        console.log(this.scene.meshes);
+        //console.log(this.scene.meshes);
         for(var i = 0; i < this.scene.meshes.length;i++){
             if(this.scene.meshes[i].rpgobj !=null){
                 console.log("found! rpgobj");
-                console.log(this.scene.meshes[i].rpgobj);
+                //console.log(this.scene.meshes[i].rpgobj);
                 this.SaveObject(this.scene.meshes[i].rpgobj);
             }
             if(this.scene.meshes[i].status !=null){
                 console.log("found! status");
                 this.SaveCharacter(this.scene.meshes[i].status);
             }
+        }
+    }
+
+    prase_gobject(obj){
+        //this.scene.meshes
+        var bfound = false;
+        for(var i = 0; i < this.scene.meshes.length;i++){
+            if(this.scene.meshes[i].rpgobj !=null){
+                if(this.scene.meshes[i].rpgobj.uuid == obj['uuid']){
+                    bfound = true;
+                    break;
+                }
+            }
+        }
+        if(bfound == false){
+            //console.log(obj);
+            if(obj.nameClass !=null){
+                if(obj.nameClass == RPGTerrain.getClass()){
+                    console.log("found! RPGTerrain");
+                    this.createterrain(obj);
+                }
+
+                if(obj.nameClass == RPGMesh.getClass()){
+                    console.log("found! RPGMesh");
+                }
+            }
+        }else{
+            console.log("update object scene?");
+
         }
     }
 
@@ -123,7 +170,8 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                     if(data[o]['#'] != null){
                         console.log(data[o]['#']);
                         self.gun.get(data[o]['#']).value(function(data){
-                            console.log(data);
+                            self.prase_gobject(data);
+                            //console.log(data);
                             //if(data instanceof RPGMesh){
                                 //console.log("match!RPGMesh");
                             //}else if(data instanceof RPGTerrain){
@@ -140,13 +188,12 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
 
     //BABYLONJSAPI.DeleteSceneMap();
     DeleteSceneMap(){
-        //this.gun.get('scene').each(function (data) {
-          //console.log(data);
+        this.gun.get('scene').each(function (data) {
+          console.log(data);
           //if(data)
-        //});
+        });
 
-        //var gscene = this.gun.get('scene');
+        var gscene = this.gun.get('scene');
         //gscene.get('EK3GlvzlK1Pi0Sg2hhhdZC5H').put(null);
-        //gscene.get('2OlhVWJKmQy6RwbTlBtA3sjz').put(null);
     }
 }

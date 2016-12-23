@@ -329,8 +329,8 @@ export class Babylonjs_game extends Babylonjs_framework {
         //this.create_gamepadinput();
 
         //this.simpleterrain04();
-        var terrain = this.createterrain({wireframe:true,x:0,y:0,z:0});
-        console.log(terrain);
+        //var terrain = this.createterrain({wireframe:true,x:0,y:0,z:0});
+        //console.log(terrain);
 
         //var npc = this.spawn_player({y: 64});
         //console.log(npc);

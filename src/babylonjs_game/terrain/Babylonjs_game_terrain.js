@@ -21,6 +21,8 @@ export class Babylonjs_game_terrain extends Babylonjs_game_module{
         //http://www.babylonjs-playground.com/#PF032
         //http://www.html5gamedevs.com/topic/23973-editing-height-map-terrain/
 
+        //args['y'] = 1;
+
         var _x = args['x'] || 0;
         var _y = args['y'] || 0;
         var _z = args['z'] || 0;
@@ -49,7 +51,7 @@ export class Babylonjs_game_terrain extends Babylonjs_game_module{
         //ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, restitution: 0.9, mass:0, friction:1});
         //ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.PlaneImpostor, restitution: 0.9, mass:0, friction:1});
         ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.MeshImpostor, restitution: 0.9, mass:0, friction:1});
-
+        console.log(ground);
         return ground;
     }
 
