@@ -16,9 +16,93 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
 
     create_window_jqui(){
         //console.log("window?");
-        //this.create_assets_jqui();
-        //this.create_sceneobject_jqui();
-        //this.create_codeeditor_jqui();
+        this.create_assets_jqui();
+        this.create_scene_jqui();
+        this.create_character_jqui();
+        this.create_sceneobject_jqui();
+        this.create_codeeditor_jqui();
+        this.create_worldsettings_jqui();
+        this.create_terrain_jqui();
+
+        this.create_navmenu();
+    }
+
+
+
+    create_navmenu(){
+        var _div = document.createElement("div");
+        _div.id = "TopRight";
+        _div.style.position = "absolute";
+        _div.style.top = 0;
+        _div.style.left = 0;
+
+        var strhtml = `<ul id="navmenu">`;
+        strhtml += `<li>`;
+        //strhtml += `<div><span class="ui-icon ui-icon-disk"></span>Save</div>`;
+        strhtml += `<div><span class="ui-icon ui-icon-plus"></span>Menu</div>`;
+        strhtml += `<ul>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="$('#assets').dialog('open');"><span class="ui-icon ui-icon-newwin"></span>Assets</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="$('#scene').dialog('open');"><span class="ui-icon ui-icon-newwin"></span>Scene</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="$('#character').dialog('open');"><span class="ui-icon ui-icon-newwin"></span>Character</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="$('#sceneobject').dialog('open');"><span class="ui-icon ui-icon-newwin"></span>Scene Object</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="$('#scripts').dialog('open');"><span class="ui-icon ui-icon-newwin"></span>Scripts</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="$('#codeeditor').dialog('open');"><span class="ui-icon ui-icon-newwin"></span>Script Editor</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="$('#shape').dialog('open');"><span class="ui-icon ui-icon-newwin"></span>Shape</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="$('#terrain').dialog('open');"><span class="ui-icon ui-icon-newwin"></span>Terrain</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `</ul>`;
+
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="BABYLONJSAPI.SaveSceneMap();"><span class="ui-icon ui-icon-plus"></span>Save Scene</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="BABYLONJSAPI.LoadSceneMap();"><span class="ui-icon ui-icon-plus"></span>Load Scene</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="BABYLONJSAPI.ClearSceneMap();"><span class="ui-icon ui-icon-plus"></span>Clear Scene</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `<li>`;
+        strhtml += `<div onclick="BABYLONJSAPI.DeleteSceneMap();"><span class="ui-icon ui-icon-plus"></span>Delete Scene</div>`;
+        strhtml += `</li>`;
+
+        strhtml += `</ul>`;
+
+        _div.innerHTML = strhtml;
+        document.getElementsByTagName('body')[0].appendChild(_div);
+
+        $(function(){
+            $("#navmenu").menu();
+        });
+
     }
 
     create_worldsettings_jqui(){
@@ -28,6 +112,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
 
         $(function(){
             $("#worldsettings").dialog();
+            $("#worldsettings").dialog('close');
         });
     }
 
@@ -38,6 +123,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
 
         $(function(){
             $("#assets").dialog();
+            $("#assets").dialog('close');
         });
     }
 
@@ -48,6 +134,18 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
 
         $(function(){
             $("#scene").dialog();
+            $("#scene").dialog('close');
+        });
+    }
+
+    create_character_jqui(){
+        var _div = document.createElement("div");
+        _div.id = "character";
+        document.getElementsByTagName('body')[0].appendChild(_div);
+
+        $(function(){
+            $("#character").dialog();
+            $("#character").dialog('close');
         });
     }
 
@@ -101,6 +199,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         $(function(){
             $("#sceneobject").dialog();
             $("#accordion_sceneobject").accordion();
+            $("#sceneobject").dialog('close');
         });
     }
 
@@ -112,6 +211,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
 
         $(function(){
             $("#codeeditor").dialog();
+            $("#codeeditor").dialog('close');
         });
 
 
@@ -132,6 +232,27 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
             });
           }
         });
+    }
 
+    create_terrain_jqui(){
+        var _div = document.createElement("div");
+        _div.id = "terrain";
+        document.getElementsByTagName('body')[0].appendChild(_div);
+
+        $(function(){
+            $("#terrain").dialog();
+            $("#terrain").dialog('close');
+        });
+    }
+
+    create_shape_jqui(){
+        var _div = document.createElement("div");
+        _div.id = "shape";
+        document.getElementsByTagName('body')[0].appendChild(_div);
+
+        $(function(){
+            $("#shape").dialog();
+            $("#shape").dialog('close');
+        });
     }
 }

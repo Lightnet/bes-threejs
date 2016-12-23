@@ -196,4 +196,13 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
         var gscene = this.gun.get('scene');
         //gscene.get('EK3GlvzlK1Pi0Sg2hhhdZC5H').put(null);
     }
+
+    ClearSceneMap(){
+        console.log("clear scene...");
+        for(var i = 0; i < this.scene.meshes.length;i++){
+            if(this.scene.meshes[i].rpgobj !=null){
+                console.log(this.scene.meshes[i].dispose());
+            }
+        }
+    }
 }
