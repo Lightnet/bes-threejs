@@ -24,6 +24,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         this.create_codeeditor_jqui();
         this.create_worldsettings_jqui();
         this.create_terrain_jqui();
+        this.create_shape_jqui();
 
         this.create_navmenu();
 
@@ -275,14 +276,41 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         this.createterrain({x:pos_x,y:pos_y,z:pos_z});
     }
 
+    //BABYLONJSAPI.ui_selectshape();
     create_shape_jqui(){
         var _div = document.createElement("div");
         _div.id = "shape";
+        _div.innerHTML += `Camera Position: <input id="terrain_camera" type="checkbox">`;
+        _div.innerHTML += `<br>`;
+
+        var options = `<select id="sceneshape" onclick="BABYLONJSAPI.ui_selectshape()">`;
+        options += `<option value="Box">Box</option>`;
+        options += `<option value="Cylinder">Cylinder</option>`;
+        options += `<option value="Sphere">Sphere</option>`;
+        options += `<option value="Plane">Plane</option>`;
+        options += `</select>`;
+        _div.innerHTML += options;
+
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `x:<input id="shape_x" class="numbersOnly" value="0">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `y:<input id="shape_y" class="numbersOnly" value="0">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `z:<input id="shape_z" class="numbersOnly" value="0">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `<button onclick="BABYLONJSAPI.();">Create Shape</button>`;
+
+        _div.innerHTML += ``;
         document.getElementsByTagName('body')[0].appendChild(_div);
 
         $(function(){
             $("#shape").dialog();
             $("#shape").dialog('close');
         });
+    }
+
+    ui_selectshape(){
+        var selectsceneshape = document.getElementById("sceneshape").value;
+        console.log(selectsceneshape);
     }
 }
