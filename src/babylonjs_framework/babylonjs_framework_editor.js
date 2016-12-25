@@ -33,11 +33,12 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
 
 			if(args['geometrytype'] !=null){
 				if(args['geometrytype'] == 'cube'){
-					_obj = this.parse_createbox(args);
+					_obj = this.parse_createcube(args);
 	            }
 
 				if(args['geometrytype'] == 'sphere'){
-	                _obj = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
+	                //_obj = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
+                    _obj = this.parse_createsphere(args);
 	            }
 
 	            if(args['geometrytype'] == 'ground'){
@@ -53,7 +54,8 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
 	            }
 
 	            if(args['geometrytype'] == 'cylinder'){
-	                _obj = BABYLON.Mesh.CreateCylinder("cylinder", 3, 3, 3, 6, 1, this.scene, false, BABYLON.Mesh.DEFAULTSIDE);
+	                //_obj = BABYLON.Mesh.CreateCylinder("cylinder", 3, 3, 3, 6, 1, this.scene, false, BABYLON.Mesh.DEFAULTSIDE);
+                    _obj = this.parse_createcylinder(args);
 	            }
 
 	            if(args['geometrytype'] == 'torus'){
@@ -89,6 +91,24 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
 	            if(args['tiledhround'] != null){
 	                //_obj = BABYLON.Mesh.CreateTiledGround("Tiled Ground", -3, -3, 3, 3, subdivisions, precision, scene, false);
 	            }
+
+                if(args['position'] !=null){
+                    _obj.position.x = args['position']['x'] || 0;
+                    _obj.position.y = args['position']['y'] || 0;
+                    _obj.position.z = args['position']['z'] || 0;
+                }
+                if(args['rotation'] != null){
+                    _obj.rotation.x = args['rotation']['x'] || 0;
+                    _obj.rotation.y = args['rotation']['y'] || 0;
+                    _obj.rotation.z = args['rotation']['z'] || 0;
+                }
+
+                if(args['scaling'] !=null){
+                    _obj.scaling.x = args['scaling']['x'] || 1;
+                    _obj.scaling.y = args['scaling']['y'] || 1;
+                    _obj.scaling.z = args['scaling']['z'] || 1;
+                }
+
 			}
 
         }else{
@@ -99,34 +119,43 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
         return _obj;
     }
 
-	parse_createbox(args){
-		console.log("found");
-		console.log(args);
+	parse_createcube(args){
+		//console.log("found");
+		//console.log(args);
 		var _obj = null;
 		var params = {};
 		//if(args['box'] != null){
 			//var _obj = BABYLON.MeshBuilder.CreateBox("ground", {height:1,width:20,depth:20}, this.scene);
 			//args = args['box'];
-			params.height = (typeof args['parameters']['height'] === 'number') ? args['parameters']['height'] : 1;
-			params.width = (typeof args['parameters']['width'] === 'number') ? args['parameters']['width'] : 1;
-			params.depth = (typeof args['parameters']['depth'] === 'number') ? args['parameters']['depth'] : 1;
-			var _obj = BABYLON.MeshBuilder.CreateBox("ground",params, this.scene);
-			_obj.position.x = (typeof args['position']['x'] === 'number') ? args['position']['x'] : 0;
-			_obj.position.y = (typeof args['position']['y'] === 'number') ? args['position']['y'] : 0;
-			_obj.position.z = (typeof args['position']['z'] === 'number') ? args['position']['z'] : 0;
-
-			_obj.rotation.x = (typeof args['rotation']['x'] === 'number') ? args['rotation']['x'] : 0;
-			_obj.rotation.y = (typeof args['rotation']['y'] === 'number') ? args['rotation']['y'] : 0;
-			_obj.rotation.z = (typeof args['rotation']['z'] === 'number') ? args['rotation']['z'] : 0;
-
-			_obj.scaling.x = (typeof args['scaling']['x'] === 'number') ? args['scaling']['x'] : 1;
-			_obj.scaling.y = (typeof args['scaling']['y'] === 'number') ? args['scaling']['y'] : 1;
-			_obj.scaling.z = (typeof args['scaling']['z'] === 'number') ? args['scaling']['z'] : 1;
-
-			console.log(_obj);
-
+			params.height = args['parameters']['height'] || 1;
+			params.width = args['parameters']['width'] || 1;
+			params.depth = args['parameters']['depth'] || 1;
+            //console.log(params);
+			var _obj = BABYLON.MeshBuilder.CreateBox("box",params, this.scene);
+            //console.log(args['position']);
 		//}
 		return _obj;
 	}
+
+    parse_createsphere(args){
+        var params = {};
+        var _obj = null;
+        //params.diameterTop = args['parameters']['diameter'] || 1;
+        params.diameter = args['parameters']['diameter'] || 1;
+        _obj =  BABYLON.MeshBuilder.CreateSphere('sphere', params, this.scene);
+        return _obj;
+    }
+
+    parse_createcylinder(args){
+        var params = {};
+        var _obj = null;
+        params.diameterTop = args['parameters']['diameterTop'] || 1;
+        //params.diameter = args['parameters']['diameter'] || 1;
+        params.tessellation = Number(args['parameters']['tessellation'] || 4);
+        console.log(params);
+        _obj =  BABYLON.MeshBuilder.CreateCylinder('Cylinder', params, this.scene);
+        //_obj = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
+        return _obj;
+    }
 
 }

@@ -283,14 +283,28 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         _div.innerHTML += `Camera Position: <input id="terrain_camera" type="checkbox">`;
         _div.innerHTML += `<br>`;
 
-        var options = `<select id="sceneshape" onclick="BABYLONJSAPI.ui_selectshape()">`;
-        options += `<option value="Box">Box</option>`;
-        options += `<option value="Cylinder">Cylinder</option>`;
-        options += `<option value="Sphere">Sphere</option>`;
-        options += `<option value="Plane">Plane</option>`;
+        var options = `<select id="sceneshape" onclick="BABYLONJSAPI.ui_selectshape();">`;
+        options += `<option value="cube">Cube</option>`;
+        options += `<option value="cylinder">Cylinder</option>`;
+        options += `<option value="sphere">Sphere</option>`;
+        options += `<option value="plane">Plane</option>`;
         options += `</select>`;
         _div.innerHTML += options;
 
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `height:<input id="shape_height" class="numbersOnly" value="1">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `width:<input id="shape_width" class="numbersOnly" value="1">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `depth:<input id="shape_depth" class="numbersOnly" value="1">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `diameter:<input id="shape_diameter" class="numbersOnly" value="1" style="display:none;">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `segments:<input id="shape_segments" class="numbersOnly" value="1" style="display:none;">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `diameterTop:<input id="shape_diameterTop" class="numbersOnly" value="1" style="display:none;">`;
+        _div.innerHTML += `<br>`;
+        _div.innerHTML += `tessellation:<input id="shape_tessellation" class="numbersOnly" value="4" style="display:none;">`;
         _div.innerHTML += `<br>`;
         _div.innerHTML += `x:<input id="shape_x" class="numbersOnly" value="0">`;
         _div.innerHTML += `<br>`;
@@ -298,19 +312,101 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         _div.innerHTML += `<br>`;
         _div.innerHTML += `z:<input id="shape_z" class="numbersOnly" value="0">`;
         _div.innerHTML += `<br>`;
-        _div.innerHTML += `<button onclick="BABYLONJSAPI.();">Create Shape</button>`;
+        _div.innerHTML += `<button onclick="BABYLONJSAPI.ui_createshape();">Create Shape</button>`;
 
         _div.innerHTML += ``;
         document.getElementsByTagName('body')[0].appendChild(_div);
 
         $(function(){
             $("#shape").dialog();
-            $("#shape").dialog('close');
+            //$("#shape").dialog('close');
         });
     }
 
     ui_selectshape(){
-        var selectsceneshape = document.getElementById("sceneshape").value;
-        console.log(selectsceneshape);
+        //https://doc.babylonjs.com/tutorials/Mesh_CreateXXX_Methods_With_Options_Parameter#box
+        this.selectsceneshape = document.getElementById("sceneshape").value || 'cube';
+        console.log(document.getElementById("shape_height").style.display);
+        document.getElementById("shape_height").style.display = "none";
+        document.getElementById("shape_width").style.display = "none";
+        document.getElementById("shape_depth").style.display = "none";
+        document.getElementById("shape_diameter").style.display = "none";
+        document.getElementById("shape_segments").style.display = "none";
+        document.getElementById("shape_diameterTop").style.display = "none";
+        document.getElementById("shape_tessellation").style.display = "none";
+
+        if(this.selectsceneshape == 'cube'){
+            document.getElementById("shape_height").style.display = "inline";
+            document.getElementById("shape_width").style.display = "inline";
+            document.getElementById("shape_depth").style.display = "inline";
+        }
+
+        if(this.selectsceneshape == 'sphere'){
+            document.getElementById("shape_diameter").style.display = "inline";
+        }
+
+        if(this.selectsceneshape == 'cylinder'){
+            //document.getElementById("shape_diameterTop").style.display = "inline";
+            document.getElementById("shape_diameter").style.display = "inline";
+            document.getElementById("shape_tessellation").style.display = "inline";
+        }
+    }
+
+    ui_createshape(){
+        this.selectsceneshape = document.getElementById("sceneshape").value || 'box';
+
+        this.shape_x = document.getElementById("shape_x").value || 1;
+        this.shape_y = document.getElementById("shape_y").value || 1;
+        this.shape_z = document.getElementById("shape_z").value || 1;
+
+        if(this.selectsceneshape == "cube"){
+            var shape_height = document.getElementById("shape_height").value;
+            var shape_width = document.getElementById("shape_width").value;
+            var shape_depth = document.getElementById("shape_depth").value;
+            this.parse_object({geometrytype:'cube',
+                                parameters:{
+                                    height:shape_height,
+                                    width:shape_width,
+                                    depth:shape_depth},
+                                position:{
+                                    x:this.shape_x,
+                                    y:this.shape_y,
+                                    z:this.shape_z
+                                }
+                                });
+        }
+
+        if(this.selectsceneshape == "sphere"){
+            this.parse_object({geometrytype:'sphere',
+                                parameters:{
+                                    diameter: document.getElementById("shape_diameter").value
+                                },
+                                position:{
+                                    x:this.shape_x,
+                                    y:this.shape_y,
+                                    z:this.shape_z
+                                }
+                                });
+
+        }
+
+        if(this.selectsceneshape == "cylinder"){
+            this.parse_object({geometrytype:'cylinder',
+                                parameters:{
+                                    //diameterTop: document.getElementById("shape_diameterTop").value,
+                                    diameter: document.getElementById("shape_diameter").value,
+                                    tessellation: document.getElementById("shape_tessellation").value
+                                },
+                                position:{
+                                    x:this.shape_x,
+                                    y:this.shape_y,
+                                    z:this.shape_z
+                                }
+                                });
+
+        }
+
+        //console.log(this.selectsceneshape);
+        console.log("add shape to scene!");
     }
 }
