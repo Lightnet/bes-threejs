@@ -26,7 +26,7 @@ export class ObjectRPGID{
     }
 
 	constructor(args){
-		args = args || {};
+		args = args || {rotation:{},scale:{}};
 		//args[''] ||
 		this.gundbid = args['gundbid'] || "";
 		this.uuid = args['uuid'] || uuid();
@@ -38,7 +38,7 @@ export class ObjectRPGID{
 		this.description = args['description'] || "none";
         this.objtype = args['objtype'] || "none";
 
-		this.params = args['params'] || {};
+		this.parameters = args['parameters'] || {};
 
 		this.binteract = args['binteract'] || false;
 		this.bused = args['bused'] || false;
@@ -56,8 +56,46 @@ export class ObjectRPGID{
 
 		this.stack = args['stack'] || 1;
 		this.maxstack = args['maxstack'] || 1;
+
 		this.x = args['x'] || 0;
 		this.y = args['y'] || 0;
 		this.z = args['z'] || 0;
+
+		if(args['position'] != null){
+			this.position = {
+			"x" : args['position']['x'] || 0,
+			"y" : args['position']['y'] || 0,
+			"z" : args['position']['z'] || 0
+			};
+			console.log("??????");
+		}else{
+			console.log("DEAFFULT");
+			this.position = {"x": 0,"y" : 0,"z" : 0};
+		}
+
+		if(args['rotation'] != null){
+			this.rotation = {
+			x : args['rotation']['x'] || 0,
+			y : args['rotation']['y'] || 0,
+			z : args['rotation']['z'] || 0
+			};
+		}else{
+			this.rotation = {x : 0,y : 0,z : 0};
+		}
+
+		if(args['scaling'] != null){
+			this.scaling = {
+				x : args['scaling']['x'] || 0,
+				y : args['scaling']['y'] || 0,
+				z : args['scaling']['z'] || 0
+			};
+		}else{
+			this.scaling = {
+				x : 0,
+				y : 0,
+				z : 0
+			};
+		}
+
 	}
 }

@@ -8,9 +8,12 @@
 */
 import {Babylonjs_game_module} from './Babylonjs_game_module';
 
-
 import {RPGTerrain} from '../rpg/RPGTerrain';
 import {RPGMesh} from '../rpg/RPGMesh';
+
+import {RPGCube} from '../rpg/RPGCube';
+import {RPGSphere} from '../rpg/RPGSphere';
+import {RPGCylinder} from '../rpg/RPGCylinder';
 
 
 //RFC Type 4 (random) schema
@@ -79,15 +82,23 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
     SaveObject(obj){
         //console.log(typeof obj);
         //console.log(obj , ":" ,RPGTerrain);
-        //console.log(obj);
+        console.log(obj);
 
         if(obj instanceof RPGMesh){
-            console.log("match!RPGMesh");
+            console.log("match! RPGMesh");
         }else if(obj instanceof RPGTerrain){
-            console.log("match!RPGTerrain");
+            console.log("match! RPGTerrain");
+        }else if(obj instanceof RPGCube){
+            console.log("match! RPGCube");
+        }else if(obj instanceof RPGSphere){
+            console.log("match! RPGSphere");
+        }else if(obj instanceof RPGCylinder){
+            console.log("match! RPGCylinder");
         }else{
-            console.log("not match!");
+            console.log("Not match getClass!");
+            return;
         }
+
         //console.log("saving object data????");
         this.check_gunsceneobj(obj['uuid'],(bfind,id)=>{
             //console.log("....CALLS");
@@ -96,7 +107,7 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
             if(bfind){
                 console.log("set object scene[update]");
                 if(id !=null){
-                    gscene.path(id).put(obj);
+                    gscene.path(id).put(JSON.stringify(obj));
                 }
             }else{
                 console.log("save object scene[insert]");
@@ -150,6 +161,23 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                 if(obj.nameClass == RPGMesh.getClass()){
                     console.log("found! RPGMesh");
                 }
+
+                if(obj.nameClass == RPGCube.getClass()){
+                    console.log("found! RPGCube");
+                    console.log(obj);
+                    this.parse_object(obj);
+                }
+
+                if(obj.nameClass == RPGSphere.getClass()){
+                    console.log("found! RPGSphere");
+                    this.parse_object(obj);
+                }
+
+                if(obj.nameClass == RPGCylinder.getClass()){
+                    console.log("found! RPGCylinder");
+                    this.parse_object(obj);
+                }
+
             }
         }else{
             console.log("update object scene?");

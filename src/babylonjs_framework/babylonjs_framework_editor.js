@@ -15,6 +15,7 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
     }
 
     //http://doc.babylonjs.com/classes/2.4/Mesh
+    /*
     parse_object(args){
         var _obj;
         if(args !=null){
@@ -66,14 +67,14 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
 	                _obj = BABYLON.Mesh.CreateTorusKnot("knot", 2, 0.5, 128, 64, 2, 3, this.scene, false, BABYLON.Mesh.DEFAULTSIDE);
 	            }
 	            if(args['geometrytype'] == 'lines'){
-	                /*
-	                _obj = BABYLON.Mesh.CreateLines("lines", [
-	                    new BABYLON.Vector3(-10, 0, 0),
-	                    new BABYLON.Vector3(10, 0, 0),
-	                    new BABYLON.Vector3(0, 0, -10),
-	                    new BABYLON.Vector3(0, 0, 10)
-	                ], scene);
-	                */
+
+	                //_obj = BABYLON.Mesh.CreateLines("lines", [
+	                    //new BABYLON.Vector3(-10, 0, 0),
+	                    //new BABYLON.Vector3(10, 0, 0),
+	                    //new BABYLON.Vector3(0, 0, -10),
+	                    //new BABYLON.Vector3(0, 0, 10)
+	                //], scene);
+
 	            }
 
 	            if(args['dashedLines'] != null){
@@ -132,6 +133,7 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
 			params.depth = args['parameters']['depth'] || 1;
             //console.log(params);
 			var _obj = BABYLON.MeshBuilder.CreateBox("box",params, this.scene);
+            _obj.rpgobj = new RPGCube(args);
             //console.log(args['position']);
 		//}
 		return _obj;
@@ -143,6 +145,7 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
         //params.diameterTop = args['parameters']['diameter'] || 1;
         params.diameter = args['parameters']['diameter'] || 1;
         _obj =  BABYLON.MeshBuilder.CreateSphere('sphere', params, this.scene);
+        _obj.rpgobj = new RPGSphere(args);
         return _obj;
     }
 
@@ -155,7 +158,8 @@ export class Babylonjs_framework_editor extends Babylonjs_framework_module{
         console.log(params);
         _obj =  BABYLON.MeshBuilder.CreateCylinder('Cylinder', params, this.scene);
         //_obj = BABYLON.Mesh.CreateSphere('sphere1', 16, 2, this.scene);
+        _obj.rpgobj = new RPGCylinder(args);
         return _obj;
     }
-
+    */
 }

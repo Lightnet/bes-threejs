@@ -310,6 +310,7 @@ export class Babylonjs_game extends Babylonjs_framework {
         var self = this;
         console.log("setup game!");
         this.canvasrender();
+
         this.setup_gamedata();
         this.createshopmenu_variable();
         this.scenepick_editor();

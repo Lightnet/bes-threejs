@@ -5,6 +5,7 @@ requirejs.config({
     baseUrl: 'lib',
     paths: {
         babylonjs_framework: '../babylonjs_framework',
+        //babylonjs_game: '../babylonjs_game',
         app: '../babylonjs_game'
     }
 });
@@ -28,9 +29,9 @@ requirejs(['./app/Babylonjs_game'],(app)=>{
     //CallAPI();
 });
 
-requirejs(['./app/system/gmodule'],(app)=>{
+//requirejs(['./app/system/gmodule'],(app)=>{
     //console.log(app.default['value']);
     //console.log(app.default);
-});
+//});
 
 //console.log(BABYLONJSAPI);
