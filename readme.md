@@ -12,6 +12,13 @@ Information: The web game develop scripted on es6 javascript with babel.js compi
 
 To develop open world 3D model editor for game master and freedom to craft objects and script them.(Idea)
 
+Required:
+ * nodejs 7.0.0
+ * MongoDB
+
+Notes:
+ * Working in progress on gunDB with mongoDB for editor testing and game play builds.
+
 Atom.io Editor packages helper:
  * bottom-dock
  * gulp-manager
@@ -30,7 +37,7 @@ Current Projects:
   * Role Playing Game (work in progress)
   * Editor (work in progress)
   * module systsem (work in progress)
- * GunDB (work in progress)(not build into game  yet still testing and editor builds)
+ * GunDB (work in progress)
 
 Dev Folders:
  * src (server)
@@ -40,14 +47,11 @@ Dev Folders:
  * src/bayblonjs_game (web browser)
  * src/threejs_framework (web browser)
  * src/threejs_game (web browser)
- 
+
 Demo Builds:
- 
+
   * [threejs requirejs app](https://lightnet.github.io/bes-threejs/threejs_requirejs_app.html)
   * [babylonjs requirejs app](https://lightnet.github.io/bes-threejs/babylonjs_requirejs_app.html)
-
-Required:
- * nodejs 7.0.0
 
  Please note there are other softwares and other packages that current need to run for headless server and build the packages from nodejs with gulp.
 
@@ -60,4 +64,3 @@ Install Packages:
 Type gulp in the current command line. Make sure you install '-g' for global execute run build. For development build.
 
 For more information readmedetail.md. (outdate)
-
