@@ -97,6 +97,14 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                     //gscene.path(id).put(JSON.stringify(obj));
                     console.log(id);
                     gscene.path(id).put(obj);
+
+                    for(var i in obj){
+                        if(typeof obj[i] == 'object'){
+                            console.log(i);
+                            //pathing for object child of object
+                            gscene.path(id).path(i).put(obj[i]);
+                        }
+                    }
                 }
             }else{
                 console.log("save object scene[insert]");

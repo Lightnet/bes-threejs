@@ -236,7 +236,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
                 if(self.selectobject !=null){
                     self.selectobject.position.x = Number($(this).val());
                     if(self.selectobject.rpgobj !=null){
-                        self.selectobject.rpgobj.x = Number($(this).val());
+                        self.selectobject.rpgobj.position.x = Number($(this).val());
                     }
                 }
             });
@@ -256,7 +256,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
                 if(self.selectobject !=null){
                     self.selectobject.position.y = Number($(this).val());
                     if(self.selectobject.rpgobj !=null){
-                        self.selectobject.rpgobj.y = Number($(this).val());
+                        self.selectobject.rpgobj.position.y = Number($(this).val());
                     }
                 }
             });
@@ -275,7 +275,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
                 if(self.selectobject !=null){
                     self.selectobject.position.z = Number($(this).val());
                     if(self.selectobject.rpgobj !=null){
-                        self.selectobject.rpgobj.z = Number($(this).val());
+                        self.selectobject.rpgobj.position.z = Number($(this).val());
                     }
                 }
             });

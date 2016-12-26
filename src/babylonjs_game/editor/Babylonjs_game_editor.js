@@ -417,13 +417,6 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
             $("#obj_pz").spinner("value",self.selectobject.position.z);
 
 
-
-
-
-
-
-
-
             /*
             if(self.selectobject_text_id !=null){
                 self.selectobject_text_id.text = self.selectobject.id;
