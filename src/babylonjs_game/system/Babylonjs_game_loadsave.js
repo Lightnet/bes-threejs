@@ -15,21 +15,6 @@ import {RPGCube} from '../rpg/RPGCube';
 import {RPGSphere} from '../rpg/RPGSphere';
 import {RPGCylinder} from '../rpg/RPGCylinder';
 
-
-//RFC Type 4 (random) schema
-/*
-var uuid = function() {
-    var buf = new Uint32Array(4);
-    window.crypto.getRandomValues(buf);
-    var idx = -1;
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        idx++;
-        var r = (buf[idx>>3] >> ((idx%8)*4))&15;
-        var v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
-};
-*/
 export class Babylonjs_game_loadsave extends Babylonjs_game_module{
     constructor(args){
         super(args);
@@ -41,11 +26,13 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
         //console.log("------------------- start");
         var self = this;
         this.gun.get('scene').value(function(data){
+
+            console.log("check scene?" + Object.keys(data).length);
             var bfound = false;
             var count = 0;
             function checkid(state,id){
-                if( ((Object.keys(data).length -1)  == count)&&(state == false)&&(bfound == false)){
-                    //console.log("not found checks");
+                if( ((Object.keys(data).length -1) == count)&&(state == false)&&(bfound == false)){
+                    console.log("not found object!");
                     cb(false);
                 }
             }
@@ -66,8 +53,8 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                             }
                         });
                     }
-                    checkid(false);
                 }
+                checkid(false);
                 count++;
             }
             //return cb(bfound);
@@ -85,13 +72,13 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
         console.log(obj);
 
         if(obj instanceof RPGMesh){
-            console.log("match! RPGMesh");
+            //console.log("match! RPGMesh");
         }else if(obj instanceof RPGTerrain){
-            console.log("match! RPGTerrain");
+            //console.log("match! RPGTerrain");
         }else if(obj instanceof RPGCube){
-            console.log("match! RPGCube");
+            //console.log("match! RPGCube");
         }else if(obj instanceof RPGSphere){
-            console.log("match! RPGSphere");
+            //console.log("match! RPGSphere");
         }else if(obj instanceof RPGCylinder){
             console.log("match! RPGCylinder");
         }else{
@@ -107,14 +94,15 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
             if(bfind){
                 console.log("set object scene[update]");
                 if(id !=null){
-                    gscene.path(id).put(JSON.stringify(obj));
+                    //gscene.path(id).put(JSON.stringify(obj));
+                    gscene.path(id).put(obj);
                 }
             }else{
                 console.log("save object scene[insert]");
                 //console.log(obj);
                 gscene.set(obj);
             }
-            //console.log("finish save???");
+            console.log("object save?");
         });
     }
 
@@ -154,22 +142,22 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
             //console.log(obj);
             if(obj.nameClass !=null){
                 if(obj.nameClass == RPGTerrain.getClass()){
-                    console.log("found! RPGTerrain");
+                    //console.log("found! RPGTerrain");
                     this.createterrain(obj);
                 }
 
                 if(obj.nameClass == RPGMesh.getClass()){
-                    console.log("found! RPGMesh");
+                    //console.log("found! RPGMesh");
                 }
 
                 if(obj.nameClass == RPGCube.getClass()){
-                    console.log("found! RPGCube");
-                    console.log(obj);
+                    //console.log("found! RPGCube");
+                    //console.log(obj);
                     this.parse_object(obj);
                 }
 
                 if(obj.nameClass == RPGSphere.getClass()){
-                    console.log("found! RPGSphere");
+                    //console.log("found! RPGSphere");
                     this.parse_object(obj);
                 }
 
@@ -188,27 +176,14 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
 
     //BABYLONJSAPI.LoadSceneMap();
     LoadSceneMap(){
-        //console.log(RPGTerrain.getClass());
+        console.log("LOAD SCENE MAP");
         //this.gun.get('scene');
         var self = this;
-        this.gun.get('scene').value(function(data){
+        this.gun.get('scene').valueobj(function(data){
             for(var o in data){
-                //console.log(data[o]);
+                console.log(data[o]);
                 if(data[o] !=null){
-                    if(data[o]['#'] != null){
-                        console.log(data[o]['#']);
-                        self.gun.get(data[o]['#']).value(function(data){
-                            self.prase_gobject(data);
-                            //console.log(data);
-                            //if(data instanceof RPGMesh){
-                                //console.log("match!RPGMesh");
-                            //}else if(data instanceof RPGTerrain){
-                                //console.log("match!RPGTerrain");
-                            //}else{
-                                //console.log("not match!");
-                            //}
-                        });
-                    }
+                    self.prase_gobject(data[o]);
                 }
             }
         });

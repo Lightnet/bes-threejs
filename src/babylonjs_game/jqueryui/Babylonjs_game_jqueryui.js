@@ -319,7 +319,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
 
         $(function(){
             $("#shape").dialog();
-            //$("#shape").dialog('close');
+            $("#shape").dialog('close');
         });
     }
 

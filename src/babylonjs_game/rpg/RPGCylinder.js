@@ -18,7 +18,7 @@ export class RPGCylinder extends ObjectRPGID{
     constructor(args){
 		super(args);
         this.objtype = "mesh";
-        this.nameClass = "RPCylinder";
+        this.nameClass = "RPGCylinder";
         this.geometrytype = 'cylinder';
     }
 }

@@ -152,6 +152,7 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
     parse_createcylinder(args){
         var params = {};
         var _obj = null;
+        console.log("parse_createcylinder");
         //params.diameterTop = args['parameters']['diameterTop'] || 1;
         params.diameter = args['parameters']['diameter'] || 1;
         params.tessellation = Number(args['parameters']['tessellation'] || 4);

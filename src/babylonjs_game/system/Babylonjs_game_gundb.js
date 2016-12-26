@@ -50,6 +50,45 @@ export class Babylonjs_game_gundb extends Babylonjs_game_module{
           return this.val.apply(each, arguments)
         }
 
+        function gunObjDataAssign(self,data){
+            for(var i in data){
+                if(typeof data[i] === 'object'){
+                    if(data[i] !=null){
+                        var id = data[i]['#'];
+                        data[i] = {}; //clear id hash
+                        self.get(id).val((objdata)=>{
+                            delete objdata._;
+                            data[i] = objdata;
+                            gunObjDataAssign(self,objdata);
+                        });
+                    }
+                }
+            }
+        }
+
+        Gun.chain.valueobj = function (cb, opt) {
+          return this.val(function (val, field) {
+              if(val !=null){
+                  delete val._;
+              }
+              gunObjDataAssign(this,val);
+              cb.call(this, val, field);
+          }, opt);
+        };
+
+        Gun.chain.liveobj = function (cb, opt) {
+          return this.on(function (val, field) {
+            delete val._;
+            gunObjDataAssign(this,val);
+            cb.call(this, val, field);
+          }, opt);
+        };
+
+        Gun.chain.eachobj = function () {
+          var each = this.map();
+          return this.valueobj.apply(each, arguments);
+        };
+
         this.peers = ['http://127.0.0.1/gun'];
         this.gun = Gun(this.peers);
         var gun = this.gun;
@@ -60,7 +99,7 @@ export class Babylonjs_game_gundb extends Babylonjs_game_module{
 
 
 
-        
+
     }
 
 }

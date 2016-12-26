@@ -18,6 +18,10 @@
 		</style>
 	</head>
 	<body>
+
+		<ul></ul>
+
+
 		<script>
 			window.addEventListener('DOMContentLoaded', function () {
 				Gun.chain.image = function (img) {
@@ -64,49 +68,44 @@
 				  }, opt);
 				};
 
-				function ObjCheckAssign(self,data){
+				function gunObjDataAssign(self,data){
 					for(var i in data){
 						if(typeof data[i] === 'object'){
-							//console.log("found!");
 							if(data[i] !=null){
-								self.get(data[i]['#']).val((objdata)=>{
+								var id = data[i]['#'];
+								data[i] = {}; //clear id hash
+								self.get(id).val((objdata)=>{
 									delete objdata._;
 									data[i] = objdata;
-									ObjCheckAssign(self,objdata);
+									gunObjDataAssign(self,objdata);
 								});
 							}
 						}
 					}
 				}
 
-				Gun.chain.table = function (cb, opt) {
+				Gun.chain.valueobj = function (cb, opt) {
 				  return this.val(function (val, field) {
-				    delete val._;
-					//console.log(Gun);
-					//console.log(this);
-					//this.get();
-					ObjCheckAssign(this,val);
-					/*
-					for(var i in val){
-						//console.log(val[i]['#']);
-						if(val[i] != null){
-							//console.log(val[i]['#']);
-							this.get(val[i]['#']).val((data)=>{
-								delete data._;
-								console.log(data);
-								val[i] = data;
+					  if(val !=null){
+						  delete val._;
+					  }
+					  gunObjDataAssign(this,val);
+					  cb.call(this, val, field);
+				  }, opt);
+				};
 
-								ObjCheckAssign(this,data);
-							});
-						}
-					}
-					*/
-					//console.log(val);
+				Gun.chain.liveobj = function (cb, opt) {
+				  return this.on(function (val, field) {
+				    delete val._;
+					gunObjDataAssign(this,val);
 				    cb.call(this, val, field);
 				  }, opt);
 				};
 
-
+				Gun.chain.eachobj = function () {
+				  var each = this.map();
+				  return this.valueobj.apply(each, arguments);
+				};
 
 
 				Gun.chain.value = function (cb, opt) {
@@ -134,10 +133,31 @@
   					//console.log(id, data);
 				//})
 
-				scene.table(function(data){
-					console.log(data);
+				//scene.valueobj(function(data){
+					//console.log(data);
+				//});
+
+				//scene.eachobj(function(data){
+					//console.log(data);
+				//});
+
+
+				scene.on().eachobj(function(thought, id){
+					console.log(id);
+					console.log(thought);
+					var li = $('#' + id).get(0) || $('<li>').attr('id', id).appendTo('ul');
+					if(thought){
+						//console.log(thought);
+						$(li).text(thought['text']);
+					} else {
+						$(li).hide();
+					}
 				});
 
+				$('body').on('dblclick', 'li', function(event){
+					console.log("id:"+this.id);
+					scene.path(this.id).put(null);
+				});
 
 
 				// Create an interface for the `greetings`
