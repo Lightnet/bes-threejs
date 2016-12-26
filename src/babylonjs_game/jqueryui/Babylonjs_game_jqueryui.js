@@ -160,6 +160,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
     }
 
     create_sceneobject_jqui(){
+        var self = this;
         var div_sceneobject = document.createElement("div");
         div_sceneobject.id = "sceneobject";
 
@@ -167,9 +168,19 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         strhtml +=  `<div id="accordion_sceneobject">`;
         strhtml +=  `<h3>Transform</h3>`;
         strhtml +=  `<div>`;
-        strhtml +=  `<p>
-                Mesh
-                    </p>`;
+
+        strhtml +=  `PX:<input id="obj_px" value="0">`;
+        strhtml +=  `<br>PY:<input id="obj_py" value="0">`;
+        strhtml +=  `<br>PZ:<input id="obj_pz" value="0">`;
+
+        strhtml +=  `<br>RX:<input id="obj_rx" value="0">`;
+        strhtml +=  `<br>RY:<input id="obj_ry" value="0">`;
+        strhtml +=  `<br>RZ:<input id="obj_rz" value="0">`;
+        strhtml +=  `<br>SX:<input id="obj_sx" value="1">`;
+        strhtml +=  `<br>SY:<input id="obj_sy" value="1">`;
+        strhtml +=  `<br>SZ:<input id="obj_sz" value="1">`;
+
+
         strhtml +=  `</div>`;
         strhtml +=  `<h3>Mesh</h3>`;
         strhtml +=  `<div>`;
@@ -209,7 +220,168 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         $(function(){
             $("#sceneobject").dialog();
             $("#accordion_sceneobject").accordion();
-            $("#sceneobject").dialog('close');
+
+            var obj_px = $( "#obj_px" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.position.x = Number($(this).val());
+                    if(self.selectobject.rpgobj !=null){
+                        self.selectobject.rpgobj.x = Number($(this).val());
+                    }
+                }
+            });
+
+            $( "#obj_py" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.position.y = Number($(this).val());
+                    if(self.selectobject.rpgobj !=null){
+                        self.selectobject.rpgobj.y = Number($(this).val());
+                    }
+                }
+            });
+            $( "#obj_pz" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.position.z = Number($(this).val());
+                    if(self.selectobject.rpgobj !=null){
+                        self.selectobject.rpgobj.z = Number($(this).val());
+                    }
+                }
+            });
+
+            $( "#obj_rx" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.rotation.x = Number($(this).val());
+                }
+            });
+            $( "#obj_ry" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.rotation.y = Number($(this).val());
+                }
+            });
+            $( "#obj_rz" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.rotation.z = Number($(this).val());
+                }
+            });
+
+            $( "#obj_sx" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.scaling.x = Number($(this).val());
+                }
+            });
+            $( "#obj_sy" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.scaling.y = Number($(this).val());
+                }
+            });
+            $( "#obj_sz" ).spinner({step: 0.01,numberFormat: "n",
+            spin: function(event, ui) {
+                //console.log( ui.value);
+                $(this).val(ui.value).trigger('value_changed');
+            }}).on('keydown', function (e) {
+                if(e.keyCode == 13){
+                    console.log(this.value);
+                    $(this).val(this.value).trigger('value_changed');
+                }
+            }).on('value_changed', function(e){
+                //console.log('value changed to '+$(this).val());
+                //console.log($(this).val());
+                if(self.selectobject !=null){
+                    self.selectobject.scaling.z = Number($(this).val());
+                }
+            });
+
+
+
+
+            //$("#sceneobject").dialog('close');
         });
     }
 

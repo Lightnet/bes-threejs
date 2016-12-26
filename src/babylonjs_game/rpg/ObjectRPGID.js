@@ -67,9 +67,9 @@ export class ObjectRPGID{
 			"y" : args['position']['y'] || 0,
 			"z" : args['position']['z'] || 0
 			};
-			console.log("??????");
+			//console.log("??????");
 		}else{
-			console.log("DEAFFULT");
+			//console.log("Default");
 			this.position = {"x": 0,"y" : 0,"z" : 0};
 		}
 

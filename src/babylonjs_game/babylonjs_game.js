@@ -53,21 +53,6 @@ Math.degrees = function(radians) {
     return radians * 180 / Math.PI;
 };
 
-//RFC Type 4 (random) schema
-/*
-var uuid = function() {
-    var buf = new Uint32Array(4);
-    window.crypto.getRandomValues(buf);
-    var idx = -1;
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        idx++;
-        var r = (buf[idx>>3] >> ((idx%8)*4))&15;
-        var v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
-};
-*/
-
 export class Babylonjs_game extends Babylonjs_framework {
 
     constructor(args) {
@@ -181,6 +166,7 @@ export class Babylonjs_game extends Babylonjs_framework {
     }
 
     ScenePickObject() {
+        console.log("PICK? Setup");
         var self = this;
         //When pointer down event is raised
         this.scene.onPointerDown = function(evt, pickResult) {
@@ -188,6 +174,8 @@ export class Babylonjs_game extends Babylonjs_framework {
             if (pickResult.hit) {
                 //console.log(pickResult);
                 self.selectobject = pickResult.pickedMesh;
+                console.log("PICKED");
+                console.log(self.selectobject);
                 self.updateselectobject();
                 //impact.position.x = pickResult.pickedPoint.x;
                 //impact.position.y = pickResult.pickedPoint.y;
@@ -320,7 +308,7 @@ export class Babylonjs_game extends Babylonjs_framework {
         var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), this.scene);
 
         this.create_window_jqui();
-
+        this.ScenePickObject();
 
 
         this.init_physics();

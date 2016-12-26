@@ -95,6 +95,7 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                 console.log("set object scene[update]");
                 if(id !=null){
                     //gscene.path(id).put(JSON.stringify(obj));
+                    console.log(id);
                     gscene.path(id).put(obj);
                 }
             }else{
@@ -162,7 +163,7 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                 }
 
                 if(obj.nameClass == RPGCylinder.getClass()){
-                    console.log("found! RPGCylinder");
+                    //console.log("found! RPGCylinder");
                     this.parse_object(obj);
                 }
 

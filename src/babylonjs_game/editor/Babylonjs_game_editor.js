@@ -411,6 +411,20 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
     updateselectobject(){
         var self = this;
         if(self.selectobject !=null){
+
+            $("#obj_px").spinner("value",self.selectobject.position.x);
+            $("#obj_py").spinner("value",self.selectobject.position.y);
+            $("#obj_pz").spinner("value",self.selectobject.position.z);
+
+
+
+
+
+
+
+
+
+            /*
             if(self.selectobject_text_id !=null){
                 self.selectobject_text_id.text = self.selectobject.id;
             }
@@ -445,6 +459,7 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
             if(self.selectobject_text_sz !=null){
                 self.selectobject_text_sz.text = self.selectobject.scaling.z.toString();
             }
+            */
         }
     }
 }
