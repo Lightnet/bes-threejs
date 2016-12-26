@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html>
+	<head>
+		<title> threejs </title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<!---->
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/gun.js"></script>
+		<style>
+			html, body {
+				margin: 0px;
+				height: 100%;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<script>
+			window.addEventListener('DOMContentLoaded', function () {
+				Gun.chain.image = function (img) {
+				  if (!img.src) {
+				    return this.val(function (src) {
+				      img.src = src;
+				    });
+				  }
+				  var canvas = document.createElement('canvas');
+				  var ctx = canvas.getContext('2d');
+				  canvas.width = img.width;
+				  canvas.height = img.height;
+				  ctx.drawImage(img, 0, 0, img.width, img.height);
+				  var data = canvas.toDataURL();
+				  return this.put(data);
+				};
+
+				Gun.chain.local = function (data, cb, opt) {
+				  opt = opt || {};
+				  opt.peers = {};
+				  return this.put(data, cb, opt);
+				};
+
+				Gun.chain.each = function () {
+				  var each = this.map();
+				  return this.val.apply(each, arguments);
+				};
+
+				Gun.create = function () {
+				  return Gun.apply(this, arguments);
+				};
+
+				Gun.chain.live = function (cb, opt) {
+				  return this.on(function (val, field) {
+				    delete val._;
+				    cb.call(this, val, field);
+				  }, opt);
+				};
+
+				Gun.chain.value = function (cb, opt) {
+				  return this.val(function (val, field) {
+				    delete val._;
+				    cb.call(this, val, field);
+				  }, opt);
+				};
+
+				function ObjCheckAssign(self,data){
+					for(var i in data){
+						if(typeof data[i] === 'object'){
+							//console.log("found!");
+							if(data[i] !=null){
+								self.get(data[i]['#']).val((objdata)=>{
+									delete objdata._;
+									data[i] = objdata;
+									ObjCheckAssign(self,objdata);
+								});
+							}
+						}
+					}
+				}
+
+				Gun.chain.table = function (cb, opt) {
+				  return this.val(function (val, field) {
+				    delete val._;
+					//console.log(Gun);
+					//console.log(this);
+					//this.get();
+					ObjCheckAssign(this,val);
+					/*
+					for(var i in val){
+						//console.log(val[i]['#']);
+						if(val[i] != null){
+							//console.log(val[i]['#']);
+							this.get(val[i]['#']).val((data)=>{
+								delete data._;
+								console.log(data);
+								val[i] = data;
+
+								ObjCheckAssign(this,data);
+							});
+						}
+					}
+					*/
+					//console.log(val);
+				    cb.call(this, val, field);
+				  }, opt);
+				};
+
+
+
+
+				Gun.chain.value = function (cb, opt) {
+				  return this.val(function (val, field) {
+				    delete val._;
+				    cb.call(this, val, field);
+				  }, opt);
+				};
+
+				var peers = ['http://127.0.0.1/gun'];
+				var gun = Gun(peers);
+				//console.log(io);
+				/*
+				var socket = io('http://127.0.0.1:80');
+
+				socket.on('connect', function () {
+					console.log('server connected');
+				});
+				socket.on('disconnect', function () {
+					console.log('server disconnected');
+				});
+				*/
+				var scene = gun.get('scene');
+				//scene.map(function (id, data) {
+  					//console.log(id, data);
+				//})
+
+				scene.table(function(data){
+					console.log(data);
+				});
+
+
+
+				// Create an interface for the `greetings`
+				// key, storing it in a variable.
+				/*
+				var greetings = gun.get('greetings');
+
+				greetings.value(function(data){
+					//console.log(data);
+					var bfound = false;
+					for(var o in data){
+						if(data[o] !=null){
+							//console.log(data[o]);
+							//console.log(data[o]);
+
+							if(data[o]['#'] !=null){
+								console.log(data[o]['#']);
+								greetings.get(data[o]['#']).value(function(data){
+									console.log(data);
+									if(data['uuid'] !=null){
+										bfound = true;
+									}
+								});
+							}
+						}
+					}
+					//console.log(data[1]);
+				});
+				*/
+				//setTimeout(function () {
+					//greetings.set({test:"test4"});
+				//}, 3000);
+
+				//gun.get('greetings').each(function (data,id) {
+				  //console.log(data,id);
+			  	//});
+
+
+				//greetings.set({test:"test"});
+
+			});
+		</script>
+	</body>
+</html>
