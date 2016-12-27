@@ -91,6 +91,18 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
             //console.log("....CALLS");
             var gscene = this.gun.get('scene');
 
+            //check child keys var is object to put var
+            function gunObjectAssign(_gun, _obj){
+                for(var i in _obj){
+                    if(typeof _obj[i] == 'object'){
+                        console.log(i);
+                        //pathing for object child of object
+                        _gun.path(i).put(_obj[i]);
+                        gunObjectAssign(_gun.path(i),_obj[i]);
+                    }
+                }
+            }
+
             if(bfind){
                 console.log("set object scene[update]");
                 if(id !=null){
@@ -98,13 +110,15 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                     console.log(id);
                     gscene.path(id).put(obj);
 
-                    for(var i in obj){
-                        if(typeof obj[i] == 'object'){
-                            console.log(i);
+                    gunObjectAssign(gscene.path(id),obj);
+
+                    //for(var i in obj){
+                        //if(typeof obj[i] == 'object'){
+                            //console.log(i);
                             //pathing for object child of object
-                            gscene.path(id).path(i).put(obj[i]);
-                        }
-                    }
+                            //gscene.path(id).path(i).put(obj[i]);
+                        //}
+                    //}
                 }
             }else{
                 console.log("save object scene[insert]");
@@ -211,10 +225,21 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
 
     ClearSceneMap(){
         console.log("clear scene...");
+        var delobjs = [];
+        //console.log(this.scene.meshes.length);
         for(var i = 0; i < this.scene.meshes.length;i++){
+            //console.log(this.scene.meshes[i]);
             if(this.scene.meshes[i].rpgobj !=null){
-                console.log(this.scene.meshes[i].dispose());
+                //console.log(this.scene.meshes[i]);
+                //this.scene.meshes[i].dispose();
+                //console.log(this.scene.meshes[i].dispose());
+                delobjs.push(this.scene.meshes[i]);
             }
         }
+        for(var j = 0; j < delobjs.length;j++){
+            delobjs[j].dispose();
+        }
+        delobjs = null;
+        //console.log(this.scene.meshes.length);
     }
 }

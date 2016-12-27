@@ -378,10 +378,8 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
                 }
             });
 
-
-
-
-            //$("#sceneobject").dialog('close');
+            
+            $("#sceneobject").dialog('close');
         });
     }
 
