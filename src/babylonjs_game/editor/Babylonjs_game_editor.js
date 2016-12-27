@@ -18,8 +18,6 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
         super(args);
     }
 
-
-
     parse_object(args){
         var _obj;
         if(args !=null){
@@ -118,7 +116,6 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
         return _obj;
     }
 
-
 	parse_createcube(args){
 		//console.log("found");
 		//console.log(args);
@@ -164,9 +161,9 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
     }
 
 
-
-
-
+    //===========================================
+    //
+    //===========================================
     getGroundPosition() {
         var scene = this.scene;
         // Use a predicate to get position on the ground
@@ -349,6 +346,10 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
 	    zChar.position = new BABYLON.Vector3(0, 0, 0.9 * size);
 	}
 
+    //===========================================
+    //
+    //===========================================
+
     setupeditor(){
         //console.log("setupeditor");
         var self = this;
@@ -407,6 +408,10 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
 
         this.editor_ui = editor_group2d;
     }
+
+    //===========================================
+    //
+    //===========================================
 
     updateselectobject(){
         var self = this;

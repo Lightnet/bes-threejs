@@ -39,11 +39,12 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
             for(var o in data){
                 if(data[o] !=null){
                     if(data[o]['#'] !=null){
-                        //console.log(data[o]['#']);
+                        console.log(data[o]['#']);
                         self.gun.get(data[o]['#']).value(function(objdata){
-                            //console.log(objdata);
+                            console.log(objdata);
                             if(objdata['uuid'] !=null){
-                                if(objdata['uuid'] == uuid){
+                                if(objdata['uuid'].toString() == String(uuid)){
+                                    console.log(objdata['uuid']);
                                     //return cb(true, data[o]['#']);
                                     bfound = true;
                                     //console.log("found!");
@@ -90,7 +91,6 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
         this.check_gunsceneobj(obj['uuid'],(bfind,id)=>{
             //console.log("....CALLS");
             var gscene = this.gun.get('scene');
-
             //check child keys var is object to put var
             function gunObjectAssign(_gun, _obj){
                 for(var i in _obj){
@@ -102,23 +102,12 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                     }
                 }
             }
-
             if(bfind){
                 console.log("set object scene[update]");
                 if(id !=null){
-                    //gscene.path(id).put(JSON.stringify(obj));
                     console.log(id);
                     gscene.path(id).put(obj);
-
                     gunObjectAssign(gscene.path(id),obj);
-
-                    //for(var i in obj){
-                        //if(typeof obj[i] == 'object'){
-                            //console.log(i);
-                            //pathing for object child of object
-                            //gscene.path(id).path(i).put(obj[i]);
-                        //}
-                    //}
                 }
             }else{
                 console.log("save object scene[insert]");
@@ -210,6 +199,8 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                 }
             }
         });
+        //load scene...
+        this.ui_updatesceneobject();
     }
 
     //BABYLONJSAPI.DeleteSceneMap();

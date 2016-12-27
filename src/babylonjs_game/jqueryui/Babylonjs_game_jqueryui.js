@@ -138,14 +138,90 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
     }
 
     create_scene_jqui(){
-        var div_scene = document.createElement("div");
-        div_scene.id = "scene";
-        document.getElementsByTagName('body')[0].appendChild(div_scene);
+        var self = this;
+        var _div = document.createElement("div");
+        _div.id = "scene";
+        var strhtml = `<button onclick="BABYLONJSAPI.ui_updatesceneobject();">Refresh</button>
+        <button onclick="BABYLONJSAPI.ui_delete_select_sceneobject();">Delete</button>
+        <br><span>Selected:</span> <span id="select-result">none</span>`;
+        strhtml += `<ol id="selectsceneobj" style="list-style-type: none; margin: 0; padding: 0; width: 60%;  ">`;
+        //strhtml +=    `<li class="ui-widget-content">Item 1</li>`;
+        strhtml += `</ol>`;
+        _div.innerHTML = strhtml;
+
+        document.getElementsByTagName('body')[0].appendChild(_div);
+        //var selectsceneobj = document.getElementById("selectsceneobj");
 
         $(function(){
             $("#scene").dialog();
-            $("#scene").dialog('close');
+            //$("#scene").dialog('close');
+            $( "#selectsceneobj" ).selectable({
+                stop: function() {
+                    console.log("selected");
+                    var result = $( "#select-result" ).empty();
+                    $( ".ui-selected", this ).each(function() {
+                        console.log(this);
+                        console.log(this.id);
+                        if(this.id != null){
+                            self.ui_select_sceneobject(this.id);
+                        }
+                        var index = $( "#selectsceneobj li" ).index( this );
+                        result.append( " #" + ( index + 1 ) );
+                    });
+                }
+            });
+            //var ELList = `<li class="ui-widget-content">Item 1</li>`;
+            //$( "#selectsceneobj" ).append( ELList );
+            //$( "#selectsceneobj" ).empty();
+            //$('.container').append(listHTML);
         });
+    }
+    //BABYLONJSAPI.ui_updatesceneobject();
+    ui_updatesceneobject(){
+        $( "#selectsceneobj" ).empty();
+        for(var i = 0; i < this.scene.meshes.length;i++){
+            if( this.scene.meshes[i].rpgobj != null){
+                var rpgobj = this.scene.meshes[i].rpgobj;
+                var ELList = `<li class="ui-widget-content" id="` + rpgobj.uuid + `">` + rpgobj.nameClass  + `</li>`;
+                $( "#selectsceneobj" ).append( ELList );
+            }
+        }
+    }
+
+    ui_select_sceneobject(_id){
+        console.log("select object");
+        for(var i = 0; i < this.scene.meshes.length;i++){
+            if( this.scene.meshes[i].rpgobj != null){
+                //var rpgobj = this.scene.meshes[i].rpgobj;
+                if( this.scene.meshes[i].rpgobj.uuid == _id){
+                    this.selectobject = this.scene.meshes[i];
+                    this.updateselectobject()
+                }
+            }
+        }
+    }
+
+    ui_delete_select_sceneobject(){
+        console.log("delete select object");
+        if(this.selectobject !=null){
+            if(this.selectobject.rpgobj !=null){
+                this.check_gunsceneobj(this.selectobject.rpgobj['uuid'],(bfind,id)=>{
+                    //console.log("....CALLS");
+                    var gscene = this.gun.get('scene');
+                    if(bfind){
+                        console.log("set scene object delete");
+                        if(id !=null){
+                            console.log(id);
+                            gscene.path(id).put(null);
+                        }
+                    }
+                    console.log("object delete!");
+                    //need to change this later
+                    this.selectobject.dispose();
+                });
+
+            }
+        }
     }
 
     create_character_jqui(){
@@ -378,7 +454,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
                 }
             });
 
-            
+
             $("#sceneobject").dialog('close');
         });
     }
