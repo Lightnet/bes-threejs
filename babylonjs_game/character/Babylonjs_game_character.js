@@ -1,5 +1,5 @@
-define(["exports", "../system/Babylonjs_game_module"], function (exports, _Babylonjs_game_module) {
-    "use strict";
+define(['exports', '../system/Babylonjs_game_module', '../rpg/RPGCharacter', '../rpg/RPGNPCCharacter'], function (exports, _Babylonjs_game_module, _RPGCharacter, _RPGNPCCharacter) {
+    'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -64,7 +64,7 @@ define(["exports", "../system/Babylonjs_game_module"], function (exports, _Babyl
         }
 
         _createClass(Babylonjs_game_character, [{
-            key: "create_character",
+            key: 'create_character',
             value: function create_character(args) {
                 //console.log('create_character');
                 args = args || {};
@@ -83,9 +83,17 @@ define(["exports", "../system/Babylonjs_game_module"], function (exports, _Babyl
 
                 objphysics.setPhysicsState({ impostor: BABYLON.PhysicsEngine.SphereImpostor, move: true, restitution: 0, mass: 1, friction: 10 });
                 //console.log(typeof args['x']);
-                objphysics.position.x = typeof args['x'] === 'number' ? args['x'] : 4;
-                objphysics.position.y = typeof args['y'] === 'number' ? args['y'] : 0.5;
-                objphysics.position.z = typeof args['z'] === 'number' ? args['z'] : 0;
+                //console.log(args['x'],args['y'],args['z']);
+                //var px = Number( args['x'] ) ;
+                //console.log(px);
+
+                objphysics.position.x = Number(args['x']);
+                objphysics.position.y = Number(args['y']);
+                objphysics.position.z = Number(args['z']);
+
+                //console.log(objphysics.position);
+
+
                 //console.log(args['x'],":",args['y'],":",args['z']);
                 //console.log(objphysics.position.x,":",objphysics.position.y,":",objphysics.position.z);
                 objphysics.showBoundingBox = true;

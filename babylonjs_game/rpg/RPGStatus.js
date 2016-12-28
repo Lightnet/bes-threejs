@@ -44,6 +44,8 @@ define(['exports', './ObjectRPGID', './RPGStats'], function (exports, _ObjectRPG
 
 						var _this = _possibleConstructorReturn(this, (RPGStatus.__proto__ || Object.getPrototypeOf(RPGStatus)).call(this, args));
 
+						_this.objtype = "status";
+						_this.nameClass = "RPGStatus";
 						args = args || {};
 
 						_this.stats = new _RPGStats.RPGStats();

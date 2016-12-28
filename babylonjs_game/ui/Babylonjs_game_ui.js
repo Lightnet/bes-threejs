@@ -94,7 +94,7 @@ define(['exports', '../system/Babylonjs_game_module'], function (exports, _Babyl
                 var _id = typeof args['id'] === 'string' ? args['id'] : "progressbar";
 
                 var _fcolor = typeof args['fcolor'] === 'string' ? args['fcolor'] : '#64DD17FF';
-                console.log(_fcolor);
+                //console.log(_fcolor);
                 var _x = typeof args['x'] === 'number' ? args['x'] : 0; //rect position
                 var _y = typeof args['y'] === 'number' ? args['y'] : 0;
                 var _width = typeof args['width'] === 'number' ? args['width'] : 128; //rect size

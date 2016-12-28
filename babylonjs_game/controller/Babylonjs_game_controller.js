@@ -1,4 +1,4 @@
-define(['exports', '../system/Babylonjs_game_module', '../rpg/RPGStatus', '../rpg/RPGStats', '../rpg/ObjectRPGID'], function (exports, _Babylonjs_game_module, _RPGStatus, _RPGStats, _ObjectRPGID) {
+define(['exports', '../system/Babylonjs_game_module', '../rpg/RPGStatus', '../rpg/RPGStats', '../rpg/ObjectRPGID', '../rpg/RPGNPCCharacter'], function (exports, _Babylonjs_game_module, _RPGStatus, _RPGStats, _ObjectRPGID, _RPGNPCCharacter) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -96,8 +96,8 @@ define(['exports', '../system/Babylonjs_game_module', '../rpg/RPGStatus', '../rp
                 camera.setTarget(model);
             }
         }, {
-            key: 'spawn_player',
-            value: function spawn_player(args) {
+            key: 'spawn_character',
+            value: function spawn_character(args) {
                 args = args || {};
                 var self = this;
 
@@ -108,9 +108,15 @@ define(['exports', '../system/Babylonjs_game_module', '../rpg/RPGStatus', '../rp
                 if (args == null) {
                     args = {};
                 };
-                var _x = typeof args['x'] === 'number' ? args['x'] : 0;
-                var _y = typeof args['y'] === 'number' ? args['y'] : 0.5;
-                var _z = typeof args['z'] === 'number' ? args['z'] : 0;
+                var _x = Number(args['x']) || 0;
+                var _y = Number(args['y']) || 1;
+                var _z = Number(args['z']) || 0;
+                if (args['position'] != null) {
+                    _x = args['position']['x'] || 0;
+                    _y = args['position']['y'] || 0;
+                    _z = args['position']['z'] || 0;
+                }
+
                 var bplayer = typeof args['bplayer'] === 'boolean' ? args['bplayer'] : false;
                 //console.log("create movement");
                 var self = this;
@@ -126,6 +132,7 @@ define(['exports', '../system/Babylonjs_game_module', '../rpg/RPGStatus', '../rp
                 var Material = new BABYLON.StandardMaterial("material", this.scene);
                 Material.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
                 var model = this.create_character({ x: _x, y: _y, z: _z });
+                model.rpgobj = new _RPGNPCCharacter.RPGNPCCharacter(args);
 
                 model.status = _status;
 

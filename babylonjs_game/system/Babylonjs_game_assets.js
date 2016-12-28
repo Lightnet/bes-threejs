@@ -1,5 +1,5 @@
-define(['exports', './Babylonjs_game_module'], function (exports, _Babylonjs_game_module) {
-				'use strict';
+define(["exports", "./Babylonjs_game_module"], function (exports, _Babylonjs_game_module) {
+				"use strict";
 
 				Object.defineProperty(exports, "__esModule", {
 								value: true
@@ -54,19 +54,6 @@ define(['exports', './Babylonjs_game_module'], function (exports, _Babylonjs_gam
 								if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 				}
 
-				//RFC Type 4 (random) schema
-				var uuid = function uuid() {
-								var buf = new Uint32Array(4);
-								window.crypto.getRandomValues(buf);
-								var idx = -1;
-								return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-												idx++;
-												var r = buf[idx >> 3] >> idx % 8 * 4 & 15;
-												var v = c == 'x' ? r : r & 0x3 | 0x8;
-												return v.toString(16);
-								});
-				};
-
 				var Babylonjs_game_assets = exports.Babylonjs_game_assets = function (_Babylonjs_game_modul) {
 								_inherits(Babylonjs_game_assets, _Babylonjs_game_modul);
 
@@ -77,7 +64,7 @@ define(['exports', './Babylonjs_game_module'], function (exports, _Babylonjs_gam
 								}
 
 								_createClass(Babylonjs_game_assets, [{
-												key: 'createscene_assets',
+												key: "createscene_assets",
 												value: function createscene_assets() {
 																var self = this;
 																//console.log("adding preload assets...");
@@ -133,7 +120,7 @@ define(['exports', './Babylonjs_game_module'], function (exports, _Babylonjs_gam
                 */
 												}
 								}, {
-												key: 'getmesh',
+												key: "getmesh",
 												value: function getmesh(_name) {
 																//console.log("get mesh?");
 																var model = null;
@@ -141,10 +128,10 @@ define(['exports', './Babylonjs_game_module'], function (exports, _Babylonjs_gam
 																				//console.log(this.models[i].mesh.name," : ",_name);
 																				if (this.models[i].mesh.name == _name) {
 																								//console.log("match????");
-																								var mid = uuid(); //random id generator
+																								var mid = this.uuid(); //random id generator
 																								//model = this.meshes[i].clone(mid,null,true);
 																								model = this.models[i].mesh.clone("mesh" + mid);
-																								var mid = uuid(); //random id generator
+																								var mid = this.uuid(); //random id generator
 																								model.position = new BABYLON.Vector3(0, 0, 3);
 																								model.skeleton = this.models[i].mesh.skeleton.clone("skeleton" + mid);
 																								//model.skeleton = this.models[i].skeleton.clone("skeleton"+mid);

@@ -1,4 +1,4 @@
-define(['exports', './babylonjs_game_module'], function (exports, _babylonjs_game_module) {
+define(['exports', '../system/babylonjs_game_module'], function (exports, _babylonjs_game_module) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {

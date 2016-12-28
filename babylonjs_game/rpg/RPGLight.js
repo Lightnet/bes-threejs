@@ -20,6 +20,24 @@ define(['exports', './ObjectRPGID'], function (exports, _ObjectRPGID2) {
         return call && (typeof call === "object" || typeof call === "function") ? call : self;
     }
 
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
+            }
+        }
+
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
+
     function _inherits(subClass, superClass) {
         if (typeof superClass !== "function" && superClass !== null) {
             throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
@@ -39,10 +57,21 @@ define(['exports', './ObjectRPGID'], function (exports, _ObjectRPGID2) {
     var RPGLight = exports.RPGLight = function (_ObjectRPGID) {
         _inherits(RPGLight, _ObjectRPGID);
 
+        _createClass(RPGLight, null, [{
+            key: 'getClass',
+            value: function getClass() {
+                return 'RPGLight';
+            }
+        }]);
+
         function RPGLight(args) {
             _classCallCheck(this, RPGLight);
 
-            return _possibleConstructorReturn(this, (RPGLight.__proto__ || Object.getPrototypeOf(RPGLight)).call(this, args));
+            var _this = _possibleConstructorReturn(this, (RPGLight.__proto__ || Object.getPrototypeOf(RPGLight)).call(this, args));
+
+            _this.objtype = "light";
+            _this.nameClass = "RPGLight";
+            return _this;
         }
 
         return RPGLight;
