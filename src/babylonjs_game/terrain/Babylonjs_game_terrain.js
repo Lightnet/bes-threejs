@@ -31,7 +31,7 @@ export class Babylonjs_game_terrain extends Babylonjs_game_module{
         var wireframe = args['wireframe'] || false;
         //var ground = BABYLON.Mesh.CreateGround("ground", 128, 128, 2, this.scene, false);//not error
         //var ground = BABYLON.Mesh.CreateGround("ground", 128, 128, 32, this.scene, false);//error
-        var ground = BABYLON.Mesh.CreateGround("ground", 128, 128, 2, this.scene, false);
+        var ground = BABYLON.Mesh.CreateGround("ground", 128, 128, 32, this.scene, false);
         var uuid = args['uuid'] || this.uuid();
         ground.rpgobj = new RPGTerrain(args);
     	var material = new BABYLON.StandardMaterial("mat", this.scene);
@@ -43,13 +43,15 @@ export class Babylonjs_game_terrain extends Babylonjs_game_module{
         ground.position.y = _y;
         ground.position.z = _z;
         //console.log(ground);
-        //var vp = ground.getVerticesData(BABYLON.VertexBuffer.PositionKind);
-        //for (var i =0; i  < vp.length - 3; i += 3) {
+        var vp = ground.getVerticesData(BABYLON.VertexBuffer.PositionKind);
+        for (var i =0; i  < vp.length - 3; i += 3) {
             //vp[i + 1] = Math.floor(Math.random() * 8);
-        //}
-        //ground.setVerticesData(BABYLON.VertexBuffer.PositionKind,vp, false); //this is correct function params height set
-        //ground.showBoundingBox = showBoundingBox;
-        ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.MeshImpostor, restitution: 0.9, mass:0, friction:1});
+        }
+        ground.setVerticesData(BABYLON.VertexBuffer.PositionKind,vp, false); //this is correct function params height set
+        ground.showBoundingBox = showBoundingBox;
+        //ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.MeshImpostor, restitution: 0.9, mass:0, friction:1}); //bugged
+
+        ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.HeightmapImpostor, restitution: 0.9, mass:0, friction:1});//works
         //console.log(ground);
         return ground;
     }
