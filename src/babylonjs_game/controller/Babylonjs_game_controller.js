@@ -11,6 +11,7 @@ import {Babylonjs_game_module} from '../system/Babylonjs_game_module';
 import {RPGStatus} from '../rpg/RPGStatus';
 import {RPGStats} from '../rpg/RPGStats';
 import {ObjectRPGID} from '../rpg/ObjectRPGID';
+import {RPGNPCCharacter} from '../rpg/RPGNPCCharacter';
 
 export class Babylonjs_game_controller extends Babylonjs_game_module{
 
@@ -49,7 +50,7 @@ export class Babylonjs_game_controller extends Babylonjs_game_module{
         camera.setTarget(model);
 	}
 
-    spawn_player(args){
+    spawn_character(args){
         args = args || {};
         var self = this;
 
@@ -58,9 +59,17 @@ export class Babylonjs_game_controller extends Babylonjs_game_module{
         console.log(_status);
 
         if(args == null){args = {};};
-        var _x = (typeof args['x'] === 'number') ? args['x'] : 0;
-        var _y = (typeof args['y'] === 'number') ? args['y'] : 0.5;
-        var _z = (typeof args['z'] === 'number') ? args['z'] : 0;
+        var _x = Number( args['x']) || 0;
+        var _y = Number( args['y']) || 1;
+        var _z = Number( args['z']) || 0;
+        if(args['position'] !=null){
+            _x = args['position']['x'] || 0;
+            _y = args['position']['y'] || 0;
+            _z = args['position']['z'] || 0;
+        }
+
+
+
         var bplayer = (typeof args['bplayer'] === 'boolean') ? args['bplayer'] : false;
         //console.log("create movement");
 		var self = this;
@@ -76,6 +85,7 @@ export class Babylonjs_game_controller extends Babylonjs_game_module{
         var Material = new BABYLON.StandardMaterial("material", this.scene);
         Material.emissiveColor = new BABYLON.Color3(0, 0.58, 0.86);
         var model = this.create_character({x:_x,y:_y,z:_z});
+        model.rpgobj = new RPGNPCCharacter(args);
 
         model.status = _status;
 

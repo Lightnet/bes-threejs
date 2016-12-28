@@ -26,9 +26,9 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         this.create_terrain_jqui();
         this.create_shape_jqui();
 
-        //this.create_navmenu();
-        this.create_leftsidebar();
-        this.create_rightsidebar();
+        this.create_navmenu();
+        //this.create_leftsidebar();
+        //this.create_rightsidebar();
     }
 
     create_leftsidebar(){
@@ -84,7 +84,6 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
             });
 
         });
-
     }
 
     create_rightsidebar(){
@@ -320,15 +319,35 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         }
     }
 
+    //BABYLONJSAPI.ui_create_character();
     create_character_jqui(){
         var _div = document.createElement("div");
         _div.id = "character";
-        document.getElementsByTagName('body')[0].appendChild(_div);
+        var _strui = `
+        PX:<input id="char_px" value="0">
+        <br>PY:<input id="char_py" value="1">
+        <br>PZ:<input id="char_pz" value="0">
+        <br><button onclick="BABYLONJSAPI.ui_create_character();">Create Character</button>
+        `;
 
+        _div.innerHTML = _strui;
+        document.getElementsByTagName('body')[0].appendChild(_div);
         $(function(){
             $("#character").dialog();
             $("#character").dialog('close');
         });
+    }
+
+    ui_create_character(){
+
+        this.spawn_character({
+                                x: document.getElementById("char_px").value || 0,
+                                y: document.getElementById("char_py").value || 0,
+                                z: document.getElementById("char_pz").value || 0
+                            });
+
+        //var npc = this.spawn_character({y: 64});
+
     }
 
     create_sceneobject_jqui(){

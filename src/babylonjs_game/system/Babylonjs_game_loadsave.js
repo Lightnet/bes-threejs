@@ -15,6 +15,8 @@ import {RPGCube} from '../rpg/RPGCube';
 import {RPGSphere} from '../rpg/RPGSphere';
 import {RPGCylinder} from '../rpg/RPGCylinder';
 
+import {RPGNPCCharacter} from '../rpg/RPGNPCCharacter';
+
 export class Babylonjs_game_loadsave extends Babylonjs_game_module{
     constructor(args){
         super(args);
@@ -82,6 +84,8 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
             //console.log("match! RPGSphere");
         }else if(obj instanceof RPGCylinder){
             console.log("match! RPGCylinder");
+        }else if(obj instanceof RPGNPCCharacter){
+            console.log("match! RPGNPCCharacter");
         }else{
             console.log("Not match getClass!");
             return;
@@ -176,6 +180,11 @@ export class Babylonjs_game_loadsave extends Babylonjs_game_module{
                 if(obj.nameClass == RPGCylinder.getClass()){
                     //console.log("found! RPGCylinder");
                     this.parse_object(obj);
+                }
+
+                if(obj.nameClass == RPGNPCCharacter.getClass()){
+                    //console.log("found! RPGCylinder");
+                    this.create_character(obj);
                 }
 
             }

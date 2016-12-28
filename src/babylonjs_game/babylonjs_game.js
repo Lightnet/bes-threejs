@@ -317,15 +317,16 @@ export class Babylonjs_game extends Babylonjs_framework {
         //this.create_gamepadinput();
 
         //this.simpleterrain04();
+        //this.createterrain();
         //var terrain = this.createterrain({wireframe:true,x:0,y:0,z:0});
         //console.log(terrain);
 
-        //var npc = this.spawn_player({y: 64});
+        //var npc = this.spawn_character({y: 64});
         //console.log(npc);
         //npc.status.bshop = true;
         //var item0 = new RPGItem({name: "Potion MP"});
         //npc.status.shop.push(item0);
-        //this.spawn_player({y: 32, bplayer: true});
+        //this.spawn_character({y: 32, bplayer: true});
 
     }
 
@@ -413,13 +414,13 @@ export class Babylonjs_game extends Babylonjs_framework {
         //this.simpleterrain01();
         this.simpleterrain03();
         //this.simpleterrain04();
-        //this.spawn_player({y:32});
-        var npc = this.spawn_player({y: 64});
+        //this.spawn_character({y:32});
+        var npc = this.spawn_character({y: 64});
         console.log(npc);
         npc.status.bshop = true;
         var item0 = new RPGItem({name: "Potion MP"});
         npc.status.shop.push(item0);
-        this.spawn_player({y: 32, bplayer: true});
+        this.spawn_character({y: 32, bplayer: true});
         //console.log(player);
         //this.create_character();
         //this.loadmap_requestXML();

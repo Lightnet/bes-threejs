@@ -73,6 +73,16 @@ export class ObjectRPGID{
 			this.position = {"x": 0,"y" : 0,"z" : 0};
 		}
 
+		if(args['x'] != null){
+			this.position.x = args['x'] || 0;
+		}
+		if(args['y'] != null){
+			this.position.y = args['y'] || 0;
+		}
+		if(args['z'] != null){
+			this.position.z = args['z'] || 0;
+		}
+
 		if(args['rotation'] != null){
 			this.rotation = {
 			x : args['rotation']['x'] || 0,
