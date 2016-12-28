@@ -421,6 +421,14 @@ export class Babylonjs_game_editor extends Babylonjs_game_module{
             $("#obj_py").spinner("value",self.selectobject.position.y);
             $("#obj_pz").spinner("value",self.selectobject.position.z);
 
+            $("#obj_rx").spinner("value",self.selectobject.rotation.x);
+            $("#obj_ry").spinner("value",self.selectobject.rotation.y);
+            $("#obj_rz").spinner("value",self.selectobject.rotation.z);
+
+            $("#obj_sx").spinner("value",self.selectobject.scaling.x);
+            $("#obj_sy").spinner("value",self.selectobject.scaling.y);
+            $("#obj_sz").spinner("value",self.selectobject.scaling.z);
+
 
             /*
             if(self.selectobject_text_id !=null){

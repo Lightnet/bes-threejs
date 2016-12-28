@@ -26,18 +26,112 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         this.create_terrain_jqui();
         this.create_shape_jqui();
 
-        this.create_navmenu();
+        //this.create_navmenu();
+        this.create_leftsidebar();
+        this.create_rightsidebar();
+    }
 
-        //var re_number = /[+-]?[0-9]+(?:\.[0-9]+)?/g;
-        //add listener if key is press
-        //jQuery('.numbersOnly').keyup(function () {
-            //this.value = this.value.replace(/[^0-9\.]/g,'');
-            //this.value = this.value.replace(re_number,'');
-        //});
+    create_leftsidebar(){
+        //http://jsfiddle.net/eHded/4/
+        //http://stackoverflow.com/questions/19392453/jquery-show-hide-sliding-panel-from-left-side
+        var _style = document.createElement("style");
+        var _style_ = `
+        .panel {
+        	width:300px;
+        	float:left;
+        	height:550px;
+        	background:#d9dada;
+        	position:relative;
+        	left:-300px;
+        }
+
+        .panel.expand {
+            left: 0;
+        }
+
+        .slider-arrow {
+        	padding:5px;
+        	width:10px;
+        	float:left;
+        	background:#d9dada;
+        	font:400 12px Arial, Helvetica, sans-serif;
+        	color:#000;
+        	text-decoration:none;
+        	position:relative;
+        	left:-300px;
+        }`;
+        _style.innerHTML = _style_;
+        document.getElementsByTagName('head')[0].appendChild(_style);
+
+        var _div = document.createElement("div");
+        //_div.id="container";
+        //_div.style = "float:right;";
+        _div.style.position = "absolute";
+        _div.style.top = 0;
+        _div.style.left = 0;
+        //_div.style.width = "100%";
+        //_div.style.height = "100%";
+        _div.innerHTML =`
+            <div class="panel">Hello World</div>
+            <a href="javascript:void(0);" class="slider-arrow show">&raquo;</a>`;
+        //document.getElementById('TopRight').appendChild(_div);
+        document.getElementsByTagName('body')[0].appendChild(_div);
+
+        $(function(){
+
+            $('.slider-arrow').click(function() {
+                $('.panel').toggleClass('expand');
+            });
+
+        });
 
     }
 
+    create_rightsidebar(){
+        //http://jsfiddle.net/shijukbabu/QgD5Y/8/
+        var _style = document.createElement("style");
+        var _style_ = `
+        #side{
+            float:right;
+            width:50px;
+            height:50px;
+            background:#BBB;
+        }
 
+        .hide{
+            display:none;
+        }
+
+        #slidable{
+            float:right;
+            height:50px;
+            background:#888;
+            width:200px;
+        }`;
+        _style.innerHTML = _style_;
+        document.getElementsByTagName('head')[0].appendChild(_style);
+
+        var _div = document.createElement("div");
+        _div.id="container";
+        _div.style = "float:right;";
+        _div.style.position = "absolute";
+        _div.style.top = 0;
+        _div.style.right = 0;
+        //_div.style.width = "100%";
+        //_div.style.height = "100%";
+        _div.innerHTML =`
+            <div id="slidable"class="hide">Foobar</div>
+            <div id="side"></div>`;
+        //document.getElementById('TopRight').appendChild(_div);
+        document.getElementsByTagName('body')[0].appendChild(_div);
+
+        $(function(){
+            $( "#side" ).click(function() {
+                $('#slidable').animate({width: 'toggle'});
+            });
+        });
+
+    }
 
     create_navmenu(){
         var _div = document.createElement("div");
@@ -45,6 +139,8 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         _div.style.position = "absolute";
         _div.style.top = 0;
         _div.style.left = 0;
+        //_div.style.width = "100%";
+        //_div.style.height = "100%";
 
         var strhtml = `<ul id="navmenu">`;
         strhtml += `<li>`;
@@ -154,7 +250,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
 
         $(function(){
             $("#scene").dialog();
-            //$("#scene").dialog('close');
+            $("#scene").dialog('close');
             $( "#selectsceneobj" ).selectable({
                 stop: function() {
                     console.log("selected");
@@ -294,7 +390,7 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         document.getElementsByTagName('body')[0].appendChild(div_sceneobject);
 
         $(function(){
-            $("#sceneobject").dialog();
+            $("#sceneobject").dialog({width:400});
             $("#accordion_sceneobject").accordion();
 
             var obj_px = $( "#obj_px" ).spinner({step: 0.01,numberFormat: "n",

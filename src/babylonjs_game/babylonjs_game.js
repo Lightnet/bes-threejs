@@ -308,8 +308,7 @@ export class Babylonjs_game extends Babylonjs_framework {
         var sun = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(60, 100, 10), this.scene);
 
         this.create_window_jqui();
-        this.ScenePickObject();
-
+        //this.bo();
 
         this.init_physics();
         this.create2DHUD();
