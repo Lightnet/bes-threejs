@@ -90,6 +90,7 @@ export class Babylonjs_game_gundb extends Babylonjs_game_module{
         };
 
         this.peers = ['http://127.0.0.1/gun'];
+        //this.peers = ['https://hgdb.herokuapp.com/gun'];
         this.gun = Gun(this.peers);
         //var gun = this.gun;
         //gun.get('greetings').each(function (example) {

@@ -29,6 +29,89 @@ export class Babylonjs_game_jqueryui extends Babylonjs_game_module{
         this.create_navmenu();
         //this.create_leftsidebar();
         //this.create_rightsidebar();
+        this.create_login_jqui();
+    }
+
+
+    create_login_jqui(){
+        var _div = document.createElement("div");
+        _div.id = "login";
+        var texthtml = `
+        <br>User:<input id="login_username" value="guest">
+        <br>Pass:<input id="login_password" value="guest">
+        <button onclick="BABYLONJSAPI.ui_login();">Login</button>
+        <button onclick="BABYLONJSAPI.ui_register();">Register</button>
+        `;
+
+        _div.innerHTML = texthtml;
+
+
+        document.getElementsByTagName('body')[0].appendChild(_div);
+
+        $(function(){
+            $("#login").dialog();
+            //$("#login").dialog('close');
+        });
+    }
+
+    ui_login(){
+        console.log(document.getElementById("login_username").value);
+        console.log(document.getElementById("login_password").value);
+        this.gunLogin(document.getElementById("login_username").value,document.getElementById("login_password").value,(res)=>{
+            console.log("Status login:");
+            console.log(res);
+        });
+    }
+
+    _getgunkey(_username){
+        return 'users/' + _username;
+    }
+
+    ui_register(){
+        console.log(document.getElementById("login_username").value);
+        console.log(document.getElementById("login_password").value);
+        this.gunRegister(document.getElementById("login_username").value,document.getElementById("login_password").value,(res)=>{
+            console.log("Status login:");
+            console.log(res);
+        });
+    }
+
+    gunLogin(_user,_pass,cb,opt){
+        var self = this;
+        cb = cb || function() {};
+        opt = opt || {};
+
+        var guser = this.gun.get(self._getgunkey(_user),(error, node)=>{
+            //console.log(error);
+            //console.log(node);
+            if((node == null)&&(error == null)){
+                //cb('user do not exist!');
+                cb('error!');
+            }
+            if(node !=null){
+                console.log(node);
+                cb('found!');
+            }
+        });
+    }
+
+    gunRegister(_user,_pass,cb,opt){
+        var self = this;
+        cb = cb || function() {};
+        opt = opt || {};
+
+        var guser = this.gun.get(self._getgunkey(_user),(error, node)=>{
+            //console.log(error);
+            //console.log(node);
+            if((node == null)&&(error == null)){
+                //cb('user do not exist!');
+                cb('create user');
+                guser.put({access:"base"});
+            }
+            if(node !=null){
+                cb('User Exist');
+            }
+        });
     }
 
     create_leftsidebar(){

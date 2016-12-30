@@ -25,7 +25,7 @@ export class Babylonjs_game_character extends Babylonjs_game_module{
         //console.log("here tmp model?");
         tmpmodel.isVisible = true;
         //var objphysics = BABYLON.MeshBuilder.CreateCylinder("indicator", { height: 1, diameterTop: 0, diameterBottom: 0.5 }, this.scene);
-        var objphysics = BABYLON.MeshBuilder.CreateSphere("indicator", {diameter: 1,diameterX:1}, this.scene);
+        var objphysics = BABYLON.MeshBuilder.CreateSphere("indicator", {diameter:1, diameterX:1}, this.scene);
         objphysics.isVisible = false;
         tmpmodel.objphysics = objphysics;
         tmpmodel.objtype = "npc";

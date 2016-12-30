@@ -186,7 +186,7 @@ export class Babylonjs_game extends Babylonjs_framework {
 
     //override function...
     start_scenerender() {
-        /*
+
 		var self = this;
 		this.engine.runRenderLoop(function() {
             //console.log("hellow");
@@ -202,9 +202,10 @@ export class Babylonjs_game extends Babylonjs_framework {
                 }
 			}
 		});
-        */
+
     }
 
+    /*
     canvasrender() {
         //console.log("render?");
         var self = this;
@@ -221,23 +222,8 @@ export class Babylonjs_game extends Babylonjs_framework {
                 if (self.selectobject != null) {}
             }
         });
-        /*
-		this.engine.runRenderLoop(function() {
-            //console.log("hellow");
-			if(self.scenes[self.scenename] !=null){
-				self.scenes[self.scenename].render();
-				for(var i =0; i < self.scenes[self.scenename].meshes.length;i++){
-                    //console.log("hellow");
-					if(typeof self.scenes[self.scenename].meshes[i].update === 'function'){
-						self.scenes[self.scenename].meshes[i].update();
-					}
-				}
-                if(self.selectobject !=null){
-                }
-			}
-		});
-        */
     }
+    */
 
     init() {
         super.init();
@@ -297,7 +283,7 @@ export class Babylonjs_game extends Babylonjs_framework {
     setup_game() {
         var self = this;
         console.log("setup game!");
-        this.canvasrender();
+        //this.canvasrender();
 
         this.setup_gamedata();
         this.createshopmenu_variable();
@@ -311,21 +297,20 @@ export class Babylonjs_game extends Babylonjs_framework {
         //this.bo();
 
         this.init_physics();
-        this.create2DHUD();
-
+        //this.create2DHUD();
         this.create_input();
         //this.create_gamepadinput();
-
         //this.simpleterrain04();
         //this.createterrain();
-        //var terrain = this.createterrain({wireframe:true,x:0,y:0,z:0});
-        //console.log(terrain);
 
-        //var npc = this.spawn_character({y: 64});
-        //console.log(npc);
-        //npc.status.bshop = true;
-        //var item0 = new RPGItem({name: "Potion MP"});
-        //npc.status.shop.push(item0);
+
+        //var tmpmodel = this.getMeshAssets("block_floor");
+        //var tmpmodel = this.getMeshAssets("block_framedoor");
+        //var tmpmodel = this.getMeshAssets("block_stair");
+        //var tmpmodel = this.getMeshAssets("block_ceiling");
+        //var tmpmodel = this.getMeshAssets("block_wall");
+        //tmpmodel.isVisible = true;
+
         //this.spawn_character({y: 32, bplayer: true});
 
     }
