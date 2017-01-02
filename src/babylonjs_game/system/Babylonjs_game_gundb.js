@@ -88,6 +88,8 @@ export class Babylonjs_game_gundb extends Babylonjs_game_module{
           var each = this.map();
           return this.valueobj.apply(each, arguments);
         };
+        //http://stackoverflow.com/questions/7667958/clear-localstorage
+        localStorage.clear();
 
         this.peers = ['http://127.0.0.1/gun'];
         //this.peers = ['https://hgdb.herokuapp.com/gun'];
