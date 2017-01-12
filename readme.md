@@ -6,7 +6,7 @@ License: cc (creative commons)
 
 There are multiples Licenses for the project areas.
 
-NOTE: This is no longer update. It has reworked for better design and setup for clean.
+# NOTE: This is no longer update. It has reworked for better design and setup for clean.
 
  * https://github.com/Lightnet/project-besabtide
 
