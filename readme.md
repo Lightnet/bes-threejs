@@ -6,6 +6,10 @@ License: cc (creative commons)
 
 There are multiples Licenses for the project areas.
 
+NOTE: This is no longer update. It has reworked for better design and setup for clean.
+
+ * https://github.com/Lightnet/project-besabtide
+
 Scripting Languages: This run on mixed javascript basics and Babel.js es6. To run pure javascript base for server and client development in nodejs and web client.
 
 Information: The web game develop scripted on es6 javascript with babel.js compiler tool from nodejs with npm. It not for production that is currently in develop phase. Current for dungeon map and editor for role playing game design.
